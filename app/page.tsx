@@ -1,17 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import dynamic from "next/dynamic";
-import { useEffect, useRef, useState, useCallback, useMemo, memo } from "react";
+import { useEffect, useRef, useState, useCallback, memo } from "react";
 import { WorkflowDiagram } from "@/components/WorkflowDiagram";
 import { ExpertiseCards } from "../components/Expertisecards";
+import { HeroBg } from "@/components/Herobg";
 import { SplashScreen } from "@/components/SplashScreen";
-
-// ─── Plasma: load lazily, only on client, only after page is interactive ───
-const Plasma = dynamic(() => import("@/components/Plasma"), {
-  ssr: false,
-  loading: () => null,
-});
 
 /* ─────────────────────────────────────────
    Hooks
@@ -168,16 +162,13 @@ const ParallaxOrbs = memo(function ParallaxOrbs() {
    Page
 ───────────────────────────────────────── */
 export default function Home() {
+  const [splashDone, setSplashDone] = useState(false);
   const [heroReady, setHeroReady] = useState(false);
-  // Plasma deferred — show only after hero paint
-  const [showPlasma, setShowPlasma] = useState(false);
   const lowMotion = useLowMotion();
 
   useEffect(() => {
-    const t1 = setTimeout(() => setHeroReady(true), 80);
-    // Show plasma after hero text paints — short delay so text is visible first
-    const t2 = setTimeout(() => setShowPlasma(true), 300);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
+    const t = setTimeout(() => setHeroReady(true), 80);
+    return () => clearTimeout(t);
   }, []);
 
   const whyRef    = useInView();
@@ -186,6 +177,10 @@ export default function Home() {
 
   return (
     <div className="flex flex-col overflow-x-hidden">
+      {/* Splash — shown above content until complete */}
+      {!splashDone && (
+        <SplashScreen onComplete={() => setSplashDone(true)} minDuration={2500} />
+      )}
 
       {/* ══════════════════════════════════════
           HERO
@@ -202,12 +197,8 @@ export default function Home() {
         }}
         className="flex items-center overflow-hidden border-b border-emerald-500/15 py-20 sm:py-28"
       >
-        {/* Plasma bg — deferred so it doesn't block hero text paint */}
-        {showPlasma && (
-          <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-            <Plasma color="#10b981" speed={0.4} direction="forward" scale={1.3} opacity={0.55} mouseInteractive />
-          </div>
-        )}
+        {/* CSS-only animated background — zero GPU shader cost */}
+        <HeroBg />
 
         {/* Dark scrim */}
         <div style={{ position:"absolute",inset:0,zIndex:1,background:"rgba(5,7,10,0.62)",backdropFilter:"blur(3px)" }} />
@@ -478,7 +469,7 @@ export default function Home() {
           </div>
         </section>
 
-      </div>
+    </div>
     </div>
   );
 }
