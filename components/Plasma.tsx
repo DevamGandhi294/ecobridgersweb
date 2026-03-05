@@ -2,10 +2,14 @@ import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 import './Plasma.css';
 
-const hexToRgb = hex => {
+const hexToRgb = (hex: string): [number, number, number] => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (!result) return [1, 0.5, 0.2];
-  return [parseInt(result[1], 16) / 255, parseInt(result[2], 16) / 255, parseInt(result[3], 16) / 255];
+  return [
+    parseInt(result[1], 16) / 255,
+    parseInt(result[2], 16) / 255,
+    parseInt(result[3], 16) / 255,
+  ];
 };
 
 const vertex = `#version 300 es
@@ -73,42 +77,46 @@ void main() {
   fragColor = vec4(finalColor, alpha);
 }`;
 
+interface PlasmaProps {
+  color?: string;
+  speed?: number;
+  direction?: 'forward' | 'reverse' | 'pingpong';
+  scale?: number;
+  opacity?: number;
+  mouseInteractive?: boolean;
+}
+
 export const Plasma = ({
   color = '#ffffff',
   speed = 1,
   direction = 'forward',
   scale = 1,
   opacity = 1,
-  mouseInteractive = true
-}) => {
-  const containerRef = useRef(null);
-  const mousePos = useRef({ x: 0, y: 0 });
+  mouseInteractive = true,
+}: PlasmaProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
     const containerEl = containerRef.current;
+    if (!containerEl) return;
 
     const useCustomColor = color ? 1.0 : 0.0;
-    const customColorRgb = color ? hexToRgb(color) : [1, 1, 1];
+    const customColorRgb = color ? hexToRgb(color) : [1, 1, 1] as [number, number, number];
     const directionMultiplier = direction === 'reverse' ? -1.0 : 1.0;
 
-    const renderer = new Renderer({
-      webgl: 2,
-      alpha: true,
-      antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
-    });
-    const gl = renderer.gl;
-    const canvas = gl.canvas;
+    const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1 : 1.5);
 
-    /* KEY FIX: canvas must be absolute to fill the container */
+    const renderer = new Renderer({ webgl: 2, alpha: true, antialias: false, dpr });
+    const gl = renderer.gl;
+    const canvas = gl.canvas as HTMLCanvasElement;
+
     canvas.style.position = 'absolute';
     canvas.style.inset = '0';
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.display = 'block';
 
-    containerRef.current.appendChild(canvas);
+    containerEl.appendChild(canvas);
 
     const geometry = new Triangle(gl);
     const program = new Program(gl, {
@@ -124,64 +132,92 @@ export const Plasma = ({
         uScale:            { value: scale },
         uOpacity:          { value: opacity },
         uMouse:            { value: new Float32Array([0, 0]) },
-        uMouseInteractive: { value: mouseInteractive ? 1.0 : 0.0 }
-      }
+        uMouseInteractive: { value: mouseInteractive ? 1.0 : 0.0 },
+      },
     });
 
     const mesh = new Mesh(gl, { geometry, program });
 
-    const handleMouseMove = e => {
-      if (!mouseInteractive || !containerEl) return;
-      const rect = containerEl.getBoundingClientRect();
-      mousePos.current.x = e.clientX - rect.left;
-      mousePos.current.y = e.clientY - rect.top;
-      program.uniforms.uMouse.value[0] = mousePos.current.x;
-      program.uniforms.uMouse.value[1] = mousePos.current.y;
+    let mouseThrottleId: ReturnType<typeof setTimeout> | null = null;
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!mouseInteractive || mouseThrottleId) return;
+      mouseThrottleId = setTimeout(() => {
+        mouseThrottleId = null;
+        const rect = containerEl.getBoundingClientRect();
+        program.uniforms.uMouse.value[0] = e.clientX - rect.left;
+        program.uniforms.uMouse.value[1] = e.clientY - rect.top;
+      }, 32);
     };
 
-    if (mouseInteractive) containerEl.addEventListener('mousemove', handleMouseMove);
+    if (mouseInteractive) {
+      containerEl.addEventListener('mousemove', handleMouseMove, { passive: true });
+    }
 
+    let resizeTid: ReturnType<typeof setTimeout> | null = null;
     const setSize = () => {
-      if (!containerEl) return;
       const rect = containerEl.getBoundingClientRect();
-      const width  = Math.max(1, Math.floor(rect.width));
-      const height = Math.max(1, Math.floor(rect.height));
-      renderer.setSize(width, height);
+      const w = Math.max(1, Math.floor(rect.width));
+      const h = Math.max(1, Math.floor(rect.height));
+      renderer.setSize(w, h);
       program.uniforms.iResolution.value[0] = gl.drawingBufferWidth;
       program.uniforms.iResolution.value[1] = gl.drawingBufferHeight;
     };
 
-    const ro = new ResizeObserver(setSize);
+    const ro = new ResizeObserver(() => {
+      if (resizeTid) clearTimeout(resizeTid);
+      resizeTid = setTimeout(setSize, 100);
+    });
     ro.observe(containerEl);
     setSize();
 
     let raf = 0;
+    let paused = false;
     const t0 = performance.now();
-    const loop = t => {
-      let timeValue = (t - t0) * 0.001;
+    let pausedAt = 0;
+    let totalPaused = 0;
+
+    const loop = (t: number) => {
+      if (paused) return;
+      const elapsed = (t - t0 - totalPaused) * 0.001;
+
       if (direction === 'pingpong') {
         const dur = 10;
-        const seg = timeValue % dur;
-        const fwd = Math.floor(timeValue / dur) % 2 === 0;
+        const seg = elapsed % dur;
+        const fwd = Math.floor(elapsed / dur) % 2 === 0;
         const u = seg / dur;
         const smooth = u * u * (3 - 2 * u);
         program.uniforms.uDirection.value = 1.0;
         program.uniforms.iTime.value = fwd ? smooth * dur : (1 - smooth) * dur;
       } else {
-        program.uniforms.iTime.value = timeValue;
+        program.uniforms.iTime.value = elapsed;
       }
+
       renderer.render({ scene: mesh });
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
 
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        paused = true;
+        pausedAt = performance.now();
+        cancelAnimationFrame(raf);
+      } else {
+        totalPaused += performance.now() - pausedAt;
+        paused = false;
+        raf = requestAnimationFrame(loop);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
-      if (mouseInteractive && containerEl)
-        containerEl.removeEventListener('mousemove', handleMouseMove);
-      try { containerEl?.removeChild(canvas); }
-      catch { console.warn('Canvas already removed'); }
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      if (mouseInteractive) containerEl.removeEventListener('mousemove', handleMouseMove);
+      if (mouseThrottleId) clearTimeout(mouseThrottleId);
+      if (resizeTid) clearTimeout(resizeTid);
+      try { containerEl.removeChild(canvas); } catch { /* already removed */ }
     };
   }, [color, speed, direction, scale, opacity, mouseInteractive]);
 
@@ -189,3 +225,4 @@ export const Plasma = ({
 };
 
 export default Plasma;
+

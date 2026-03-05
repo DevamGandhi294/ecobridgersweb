@@ -1,4 +1,5 @@
 import Link from "next/link";
+import TextPressure from '@/components/TextPressure';
 
 export default function AboutPage() {
     const stats = [
@@ -118,7 +119,20 @@ export default function AboutPage() {
                             Ideas and Technology
                         </span>
                     </h1>
-
+                    <div style={{position: 'relative', height: '300px'}}>
+                    <TextPressure
+                        text="EcoBridgers"
+                        flex
+                        alpha
+                        stroke={false}
+                        width
+                        weight 
+                        italic
+                        textColor="#378b6f"
+                        strokeColor="#5227FF"
+                        minFontSize={36}
+                    />
+                    </div>
                     <p className="mt-6 max-w-3xl text-lg leading-relaxed text-zinc-300">
                         EcoBridges is a project-based technology team focused on designing and developing IoT
                         systems, software platforms, and cloud-connected applications that solve real-world problems.

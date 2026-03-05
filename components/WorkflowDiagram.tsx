@@ -1,79 +1,66 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback, memo } from "react";
 
-interface Step {
-  title: string;
-  desc: string;
-}
-
+interface Step { title: string; desc: string; }
 interface Props {
   processSteps: readonly Step[];
   processIcons: readonly string[];
 }
+interface ArrowLine { x1: number; y1: number; x2: number; y2: number; }
+interface ElbowRight { startX: number; startY: number; cornerX: number; rocketY: number; rocketLeftX: number; }
+interface ElbowLeft  { rocketLeftX: number; rocketY: number; leftWallX: number; discussionLeftX: number; discussionCY: number; }
+interface Paths { topArrows: ArrowLine[]; elbowRight: ElbowRight | null; elbowLeft: ElbowLeft | null; }
 
-interface ArrowLine {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-}
-
-interface ElbowRight {
-  startX: number;
-  startY: number;
-  cornerX: number;
-  rocketY: number;
-  rocketLeftX: number;
-}
-
-interface ElbowLeft {
-  rocketLeftX: number;
-  rocketY: number;
-  leftWallX: number;
-  discussionLeftX: number;
-  discussionCY: number;
-}
-
-interface Paths {
-  topArrows: ArrowLine[];
-  elbowRight: ElbowRight | null;
-  elbowLeft: ElbowLeft | null;
-}
-
-const ICON_SIZE = 88;
-const ROCKET_SIZE = 88;
+const ICON_SIZE    = 88;
+const ROCKET_SIZE  = 88;
 const ROCKET_RADIUS = ROCKET_SIZE / 2;
 const STEP_DURATION = 3000;
-const TOTAL_STEPS = 6;
+const TOTAL_STEPS   = 6;
+
+const activeColor   = "rgba(16,185,129,1)";
+const inactiveColor = "rgba(16,185,129,0.35)";
+const sc = (a: boolean) => a ? activeColor : inactiveColor;
+const sw = (a: boolean) => a ? "3" : "2";
+
+// ── Arrow marker — rendered once, outside main component ──
+const SvgDefs = memo(function SvgDefs() {
+  return (
+    <defs>
+      <marker id="arrow-active"   markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill={activeColor} />
+      </marker>
+      <marker id="arrow-inactive" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill={inactiveColor} />
+      </marker>
+    </defs>
+  );
+});
 
 export function WorkflowDiagram({ processSteps, processIcons }: Props) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const iconRefs = useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
-  const rocketCircleRef = useRef<HTMLDivElement | null>(null);
+  const containerRef     = useRef<HTMLDivElement>(null);
+  const iconRefs         = useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
+  const rocketCircleRef  = useRef<HTMLDivElement | null>(null);
 
-  const [paths, setPaths] = useState<Paths>({
-    topArrows: [],
-    elbowRight: null,
-    elbowLeft: null,
-  });
+  const [paths, setPaths]     = useState<Paths>({ topArrows: [], elbowRight: null, elbowLeft: null });
   const [svgSize, setSvgSize] = useState({ w: 0, h: 0 });
   const [activeStep, setActiveStep] = useState(0);
 
+  // ── Step timer ──
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % TOTAL_STEPS);
-    }, STEP_DURATION);
-    return () => clearInterval(interval);
+    const id = setInterval(() => setActiveStep(p => (p + 1) % TOTAL_STEPS), STEP_DURATION);
+    return () => clearInterval(id);
   }, []);
 
+  // ── Path recalc — debounced so resize doesn't thrash ──
   const recalc = useCallback(() => {
     const container = containerRef.current;
     if (!container) return;
+
     const cRect = container.getBoundingClientRect();
     setSvgSize({ w: cRect.width, h: cRect.height });
 
-    const iconRects = iconRefs.current.map((el) => {
+    const iconRects = iconRefs.current.map(el => {
       if (!el) return null;
       const r = el.getBoundingClientRect();
       return {
@@ -87,8 +74,8 @@ export function WorkflowDiagram({ processSteps, processIcons }: Props) {
     const rocketEl = rocketCircleRef.current;
     if (!rocketEl) return;
     const rr = rocketEl.getBoundingClientRect();
-    const rocketCX = rr.left - cRect.left + rr.width  / 2;
-    const rocketCY = rr.top  - cRect.top  + rr.height / 2;
+    const rocketCX       = rr.left - cRect.left + rr.width  / 2;
+    const rocketCY       = rr.top  - cRect.top  + rr.height / 2;
     const rocketTrueLeft = rocketCX - ROCKET_RADIUS;
 
     const topArrows: ArrowLine[] = [];
@@ -101,34 +88,26 @@ export function WorkflowDiagram({ processSteps, processIcons }: Props) {
 
     const step3 = iconRects[3];
     const elbowRight: ElbowRight | null = step3
-      ? {
-          startX: step3.right,
-          startY: step3.cy,
-          cornerX: cRect.width - 2,
-          rocketY: rocketCY,
-          rocketLeftX: rocketTrueLeft,
-        }
+      ? { startX: step3.right, startY: step3.cy, cornerX: cRect.width - 2, rocketY: rocketCY, rocketLeftX: rocketTrueLeft }
       : null;
 
     const step0 = iconRects[0];
     const elbowLeft: ElbowLeft | null = step0
-      ? {
-          rocketLeftX: rocketTrueLeft,
-          rocketY: rocketCY,
-          leftWallX: 2,
-          discussionLeftX: step0.left,
-          discussionCY: step0.cy,
-        }
+      ? { rocketLeftX: rocketTrueLeft, rocketY: rocketCY, leftWallX: 2, discussionLeftX: step0.left, discussionCY: step0.cy }
       : null;
 
     setPaths({ topArrows, elbowRight, elbowLeft });
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(recalc, 50);
-    const ro = new ResizeObserver(recalc);
+    const t = setTimeout(recalc, 50);
+    let debounceId: ReturnType<typeof setTimeout>;
+    const ro = new ResizeObserver(() => {
+      clearTimeout(debounceId);
+      debounceId = setTimeout(recalc, 80); // debounced — not on every px
+    });
     if (containerRef.current) ro.observe(containerRef.current);
-    return () => { clearTimeout(timer); ro.disconnect(); };
+    return () => { clearTimeout(t); clearTimeout(debounceId); ro.disconnect(); };
   }, [recalc]);
 
   const isLineActive       = (i: number) => activeStep === i;
@@ -136,15 +115,6 @@ export function WorkflowDiagram({ processSteps, processIcons }: Props) {
   const isLeftElbowActive  = activeStep === 4 || activeStep === 5;
   const isNodeActive       = (i: number) => activeStep === i;
   const isRocketActive     = activeStep === 4;
-
-  const activeColor   = "rgba(16,185,129,1)";
-  const inactiveColor = "rgba(16,185,129,0.35)";
-  const sc = (a: boolean) => (a ? activeColor : inactiveColor);
-  const sw = (a: boolean) => (a ? "3" : "2");
-
-  // Arrow marker IDs
-  const activeMarkerId   = "arrow-active";
-  const inactiveMarkerId = "arrow-inactive";
 
   return (
     <div
@@ -161,138 +131,66 @@ export function WorkflowDiagram({ processSteps, processIcons }: Props) {
           height={svgSize.h}
           style={{ overflow: "visible" }}
         >
-          <defs>
-            {/* Active arrowhead */}
-            <marker
-              id={activeMarkerId}
-              markerWidth="10"
-              markerHeight="7"
-              refX="9"
-              refY="3.5"
-              orient="auto"
-            >
-              <polygon
-                points="0 0, 10 3.5, 0 7"
-                fill={activeColor}
-              />
-            </marker>
-            {/* Inactive arrowhead */}
-            <marker
-              id={inactiveMarkerId}
-              markerWidth="10"
-              markerHeight="7"
-              refX="9"
-              refY="3.5"
-              orient="auto"
-            >
-              <polygon
-                points="0 0, 10 3.5, 0 7"
-                fill={inactiveColor}
-              />
-            </marker>
-          </defs>
+          <SvgDefs />
 
-          {/* Top row straight lines with arrowheads */}
+          {/* Top row arrows */}
           {paths.topArrows.map((a, i) => {
             const active = isLineActive(i);
             return (
               <line
                 key={i}
-                x1={a.x1} y1={a.y1}
-                x2={a.x2} y2={a.y2}
+                x1={a.x1} y1={a.y1} x2={a.x2} y2={a.y2}
                 stroke={sc(active)}
                 strokeWidth={sw(active)}
-                markerEnd={`url(#${active ? activeMarkerId : inactiveMarkerId})`}
+                markerEnd={`url(#arrow-${active ? "active" : "inactive"})`}
                 style={{ transition: "stroke 0.4s, stroke-width 0.4s" }}
               />
             );
           })}
 
-          {/* RIGHT elbow with arrowhead at end */}
+          {/* Right elbow */}
           {paths.elbowRight && (() => {
             const { startX, startY, cornerX, rocketY, rocketLeftX } = paths.elbowRight!;
             const active = isRightElbowActive;
-            // Split into 3 segments; put arrow only on last segment pointing into rocket
+            const t = `stroke ${0.4}s, stroke-width 0.4s`;
             return (
               <>
-                {/* Segment 1: horizontal right */}
-                <line
-                  x1={startX} y1={startY}
-                  x2={cornerX} y2={startY}
-                  stroke={sc(active)}
-                  strokeWidth={sw(active)}
-                  style={{ transition: "stroke 0.4s, stroke-width 0.4s" }}
-                />
-                {/* Segment 2: vertical down */}
-                <line
-                  x1={cornerX} y1={startY}
-                  x2={cornerX} y2={rocketY}
-                  stroke={sc(active)}
-                  strokeWidth={sw(active)}
-                  style={{ transition: "stroke 0.4s, stroke-width 0.4s" }}
-                />
-                {/* Segment 3: horizontal left → rocket with arrowhead */}
-                <line
-                  x1={cornerX} y1={rocketY}
-                  x2={rocketLeftX} y2={rocketY}
-                  stroke={sc(active)}
-                  strokeWidth={sw(active)}
-                  markerEnd={`url(#${active ? activeMarkerId : inactiveMarkerId})`}
-                  style={{ transition: "stroke 0.4s, stroke-width 0.4s" }}
-                />
+                <line x1={startX}  y1={startY}  x2={cornerX}    y2={startY}  stroke={sc(active)} strokeWidth={sw(active)} style={{ transition: t }} />
+                <line x1={cornerX} y1={startY}  x2={cornerX}    y2={rocketY} stroke={sc(active)} strokeWidth={sw(active)} style={{ transition: t }} />
+                <line x1={cornerX} y1={rocketY} x2={rocketLeftX} y2={rocketY} stroke={sc(active)} strokeWidth={sw(active)} markerEnd={`url(#arrow-${active ? "active" : "inactive"})`} style={{ transition: t }} />
               </>
             );
           })()}
 
-          {/* LEFT elbow with arrowhead at end */}
+          {/* Left elbow */}
           {paths.elbowLeft && (() => {
             const { rocketLeftX, rocketY, leftWallX, discussionLeftX, discussionCY } = paths.elbowLeft!;
             const active = isLeftElbowActive;
+            const t = `stroke 0.4s, stroke-width 0.4s`;
             return (
               <>
-                {/* Segment 1: horizontal left from rocket */}
-                <line
-                  x1={rocketLeftX} y1={rocketY}
-                  x2={leftWallX} y2={rocketY}
-                  stroke={sc(active)}
-                  strokeWidth={sw(active)}
-                  style={{ transition: "stroke 0.4s, stroke-width 0.4s" }}
-                />
-                {/* Segment 2: vertical up */}
-                <line
-                  x1={leftWallX} y1={rocketY}
-                  x2={leftWallX} y2={discussionCY}
-                  stroke={sc(active)}
-                  strokeWidth={sw(active)}
-                  style={{ transition: "stroke 0.4s, stroke-width 0.4s" }}
-                />
-                {/* Segment 3: horizontal right → discussion node with arrowhead */}
-                <line
-                  x1={leftWallX} y1={discussionCY}
-                  x2={discussionLeftX} y2={discussionCY}
-                  stroke={sc(active)}
-                  strokeWidth={sw(active)}
-                  markerEnd={`url(#${active ? activeMarkerId : inactiveMarkerId})`}
-                  style={{ transition: "stroke 0.4s, stroke-width 0.4s" }}
-                />
+                <line x1={rocketLeftX}      y1={rocketY}     x2={leftWallX}       y2={rocketY}     stroke={sc(active)} strokeWidth={sw(active)} style={{ transition: t }} />
+                <line x1={leftWallX}        y1={rocketY}     x2={leftWallX}       y2={discussionCY} stroke={sc(active)} strokeWidth={sw(active)} style={{ transition: t }} />
+                <line x1={leftWallX}        y1={discussionCY} x2={discussionLeftX} y2={discussionCY} stroke={sc(active)} strokeWidth={sw(active)} markerEnd={`url(#arrow-${active ? "active" : "inactive"})`} style={{ transition: t }} />
               </>
             );
           })()}
         </svg>
       )}
 
-      {/* TOP ROW — 4 step icon boxes */}
+      {/* Top row — 4 step icon boxes */}
       <div className="relative z-10 grid grid-cols-4">
         {processSteps.slice(0, 4).map((step, idx) => {
           const active = isNodeActive(idx);
           return (
             <div key={step.title} className="flex flex-col items-center text-center">
               <div
-                ref={(el) => { iconRefs.current[idx] = el; }}
+                ref={el => { iconRefs.current[idx] = el; }}
                 style={{
                   width: ICON_SIZE,
                   height: ICON_SIZE,
                   transition: "box-shadow 0.4s, transform 0.4s",
+                  willChange: "transform",
                   boxShadow: active
                     ? "0 0 0 3px rgba(16,185,129,0.6), 0 0 32px rgba(16,185,129,0.5)"
                     : "none",
@@ -308,10 +206,7 @@ export function WorkflowDiagram({ processSteps, processIcons }: Props) {
               </div>
               <p
                 className="mt-3 text-[12px] font-bold leading-snug"
-                style={{
-                  color: active ? "rgb(52,211,153)" : "rgb(212,212,216)",
-                  transition: "color 0.4s",
-                }}
+                style={{ color: active ? "rgb(52,211,153)" : "rgb(212,212,216)", transition: "color 0.4s" }}
               >
                 {step.title}
               </p>
@@ -320,7 +215,7 @@ export function WorkflowDiagram({ processSteps, processIcons }: Props) {
         })}
       </div>
 
-      {/* BOTTOM ROW — Rocket centred */}
+      {/* Bottom — Rocket */}
       <div className="relative z-10 mt-14 flex justify-center">
         <div className="flex flex-col items-center text-center">
           <div
@@ -329,6 +224,7 @@ export function WorkflowDiagram({ processSteps, processIcons }: Props) {
               width: ROCKET_SIZE,
               height: ROCKET_SIZE,
               transition: "box-shadow 0.4s, transform 0.4s",
+              willChange: "transform",
               boxShadow: isRocketActive
                 ? "0 0 0 4px rgba(16,185,129,0.5), 0 0 40px rgba(16,185,129,0.6)"
                 : "0 0 28px rgba(16,185,129,0.25)",
@@ -344,10 +240,7 @@ export function WorkflowDiagram({ processSteps, processIcons }: Props) {
           </div>
           <p
             className="mt-3 text-[13px] font-bold leading-tight"
-            style={{
-              color: isRocketActive ? "rgb(110,231,183)" : "rgb(52,211,153)",
-              transition: "color 0.4s",
-            }}
+            style={{ color: isRocketActive ? "rgb(110,231,183)" : "rgb(52,211,153)", transition: "color 0.4s" }}
           >
             {processSteps[4].title}
           </p>

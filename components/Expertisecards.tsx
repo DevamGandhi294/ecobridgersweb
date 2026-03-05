@@ -1,143 +1,447 @@
 "use client";
 
+import React, { useEffect, useRef, useState, ReactElement } from "react";
+
+/* ─────────────────────────────────────────
+   Data — 5 cards
+───────────────────────────────────────── */
 const highlights = [
   {
     icon: "🔌",
     title: "IoT & Embedded Systems",
     desc: "Smart systems using sensors, microcontrollers, and edge devices with real-time monitoring and control.",
-    accent: "from-emerald-500 to-teal-500",
-    glow: "rgba(16,185,129,0.15)",
+    longDesc: "From ESP32 to Raspberry Pi — we design, wire, and program complete embedded solutions that talk to the cloud, respond to events, and hold up under real field conditions.",
+    accent: ["#10b981", "#14b8a6"],
     tag: "Hardware",
     href: "/services#iot",
+    pattern: "circuit",
+    number: "01",
   },
   {
     icon: "🌐",
     title: "Web & Cloud Platforms",
     desc: "Admin dashboards, control panels, APIs, and real-time cloud connectivity using modern technologies.",
-    accent: "from-cyan-500 to-blue-600",
-    glow: "rgba(6,182,212,0.18)",
+    longDesc: "Next.js frontends, Node/Python backends, WebSocket streams, REST & GraphQL APIs — all wired to your IoT infrastructure or standalone product.",
+    accent: ["#06b6d4", "#3b82f6"],
     tag: "Cloud",
     href: "/services#web",
+    pattern: "grid",
+    number: "02",
   },
   {
     icon: "📱",
     title: "Mobile Applications",
     desc: "Cross-platform apps for monitoring, control, and analytics — tightly integrated with IoT systems.",
-    accent: "from-violet-500 to-purple-500",
-    glow: "rgba(139,92,246,0.15)",
+    longDesc: "Flutter-based apps that bridge your users to your hardware or platform. Push notifications, live charts, remote control — all in one polished package.",
+    accent: ["#8b5cf6", "#a855f7"],
     tag: "Mobile",
     href: "/services#mobile",
+    pattern: "dots",
+    number: "03",
   },
   {
     icon: "🧠",
     title: "AI-Assisted Solutions",
     desc: "Data-driven insights, predictive indicators, and intelligent automation using AI/ML techniques.",
-    accent: "from-pink-500 to-rose-500",
-    glow: "rgba(236,72,153,0.15)",
+    longDesc: "Anomaly detection, predictive maintenance, computer vision at the edge — practical ML that adds real value without overengineering.",
+    accent: ["#ec4899", "#f43f5e"],
     tag: "AI / ML",
     href: "/services#ai",
+    pattern: "wave",
+    number: "04",
+  },
+  {
+    icon: "🔒",
+    title: "Security & DevOps",
+    desc: "Secure deployments, CI/CD pipelines, containerised services, and hardened IoT communication protocols.",
+    longDesc: "Docker, GitHub Actions, MQTT over TLS, VPN-tunnelled device fleets — your product ships fast and stays safe from day one.",
+    accent: ["#f59e0b", "#f97316"],
+    tag: "DevOps",
+    href: "/services#devops",
+    pattern: "hex",
+    number: "05",
   },
 ] as const;
 
-export function ExpertiseCards() {
+/* ─────────────────────────────────────────
+   SVG micro-patterns
+───────────────────────────────────────── */
+function PatternCircuit({ color }: { color: string }) {
   return (
-    <section className="space-y-8">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", inset: 0, opacity: 0.06 }}>
+      <defs>
+        <pattern id="circuit" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M10 0v10h10v10H10v10" stroke={color} strokeWidth="0.8" fill="none" />
+          <circle cx="10" cy="10" r="1.5" fill={color} />
+          <circle cx="20" cy="20" r="1.5" fill={color} />
+          <path d="M30 0v20h-10" stroke={color} strokeWidth="0.8" fill="none" />
+          <circle cx="30" cy="20" r="1.5" fill={color} />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#circuit)" />
+    </svg>
+  );
+}
+function PatternGrid({ color }: { color: string }) {
+  return (
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", inset: 0, opacity: 0.055 }}>
+      <defs>
+        <pattern id="grid" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M24 0H0v24" stroke={color} strokeWidth="0.6" fill="none" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+  );
+}
+function PatternDots({ color }: { color: string }) {
+  return (
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", inset: 0, opacity: 0.07 }}>
+      <defs>
+        <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="1.2" fill={color} />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dots)" />
+    </svg>
+  );
+}
+function PatternWave({ color }: { color: string }) {
+  return (
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", inset: 0, opacity: 0.06 }}>
+      <defs>
+        <pattern id="wave" x="0" y="0" width="60" height="20" patternUnits="userSpaceOnUse">
+          <path d="M0 10 C15 0,45 0,60 10 C75 20,105 20,120 10" stroke={color} strokeWidth="0.7" fill="none" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#wave)" />
+    </svg>
+  );
+}
+function PatternHex({ color }: { color: string }) {
+  return (
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", inset: 0, opacity: 0.055 }}>
+      <defs>
+        <pattern id="hex" x="0" y="0" width="30" height="26" patternUnits="userSpaceOnUse">
+          <polygon points="15,1 28,8 28,18 15,25 2,18 2,8" stroke={color} strokeWidth="0.7" fill="none" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hex)" />
+    </svg>
+  );
+}
+
+const patterns: Record<string, (c: string) => ReactElement> = {
+  circuit: (c) => <PatternCircuit color={c} />,
+  grid:    (c) => <PatternGrid    color={c} />,
+  dots:    (c) => <PatternDots    color={c} />,
+  wave:    (c) => <PatternWave    color={c} />,
+  hex:     (c) => <PatternHex     color={c} />,
+};
+
+/* ─────────────────────────────────────────
+   useInView
+───────────────────────────────────────── */
+function useInView(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, visible };
+}
+
+/* ─────────────────────────────────────────
+   Single card component
+───────────────────────────────────────── */
+type CardSize = "feature" | "tall" | "normal";
+
+function ExpertiseCard({
+  item,
+  size = "normal",
+  delay = 0,
+  visible,
+}: {
+  item: (typeof highlights)[number];
+  size?: CardSize;
+  delay?: number;
+  visible: boolean;
+}) {
+  const [hovered, setHovered] = useState(false);
+  const [mouseLocal, setMouseLocal] = useState({ x: 50, y: 50 });
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  function onMouseMove(e: React.MouseEvent) {
+    const r = cardRef.current?.getBoundingClientRect();
+    if (!r) return;
+    setMouseLocal({
+      x: ((e.clientX - r.left) / r.width)  * 100,
+      y: ((e.clientY - r.top)  / r.height) * 100,
+    });
+  }
+
+  const [from, to] = item.accent;
+  const isFeature = size === "feature";
+  const isTall    = size === "tall";
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onMouseMove={onMouseMove}
+      style={{
+        opacity:    visible ? 1 : 0,
+        transform:  visible ? "translateY(0) scale(1)" : "translateY(40px) scale(0.97)",
+        transition: `opacity 0.7s ease ${delay}ms, transform 0.7s cubic-bezier(.2,.8,.4,1) ${delay}ms`,
+        height: "100%",
+      }}
+    >
+      <a
+        href={item.href}
+        className="relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/70 backdrop-blur-sm h-full group"
+        style={{
+          boxShadow: hovered
+            ? `0 0 0 1px ${from}55, 0 24px 60px -12px ${from}30, inset 0 0 80px 0 ${from}08`
+            : "none",
+          transition: "box-shadow 0.4s ease",
+          padding: isFeature ? "clamp(1.5rem,3vw,2.25rem)" : "1.5rem",
+          minHeight: isFeature ? "clamp(300px,38vw,460px)" : isTall ? "200px" : "180px",
+        }}
+      >
+        {/* Background pattern */}
+        <div className="pointer-events-none">
+          {patterns[item.pattern](from)}
+        </div>
+
+        {/* Spotlight radial follow */}
+        <div
+          className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+          style={{
+            opacity: hovered ? 1 : 0,
+            background: `radial-gradient(320px circle at ${mouseLocal.x}% ${mouseLocal.y}%, ${from}18 0%, transparent 65%)`,
+          }}
+        />
+
+        {/* Glow orb top-right */}
+        <div
+          className="pointer-events-none absolute -right-8 -top-8 rounded-full transition-all duration-500"
+          style={{
+            width:  isFeature ? "200px" : "140px",
+            height: isFeature ? "200px" : "140px",
+            background: `radial-gradient(circle, ${from}30 0%, transparent 70%)`,
+            filter: "blur(32px)",
+            opacity: hovered ? 1 : 0.5,
+            transform: hovered ? "scale(1.3)" : "scale(1)",
+          }}
+        />
+
+        {/* Scan-line shimmer on hover */}
+        <div
+          className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl"
+          style={{ opacity: hovered ? 1 : 0, transition: "opacity 0.3s" }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: "-100%",
+              left: 0,
+              right: 0,
+              height: "200%",
+              background: `linear-gradient(180deg, transparent 0%, ${from}0a 48%, ${from}16 50%, ${from}0a 52%, transparent 100%)`,
+              animation: hovered ? "scanDown 1.6s ease-in-out" : "none",
+            }}
+          />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 flex flex-col h-full">
+
+          {/* Number + tag row */}
+          <div className="flex items-center justify-between mb-auto">
+            <span
+              className="font-mono text-xs font-bold tracking-widest"
+              style={{ color: `${from}88` }}
+            >
+              {item.number}
+            </span>
+            <span
+              className="rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest"
+              style={{
+                background: `linear-gradient(135deg, ${from}22, ${to}18)`,
+                border: `1px solid ${from}35`,
+                color: from,
+              }}
+            >
+              {item.tag}
+            </span>
+          </div>
+
+          {/* Icon */}
+          <div
+            className="mt-5 flex items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
+            style={{
+              width:      isFeature ? "clamp(56px,8vw,76px)" : "52px",
+              height:     isFeature ? "clamp(56px,8vw,76px)" : "52px",
+              fontSize:   isFeature ? "clamp(1.6rem,3vw,2.2rem)" : "1.5rem",
+              background: `linear-gradient(135deg, ${from}20, ${to}12)`,
+              border:     `1px solid ${from}30`,
+              boxShadow:  hovered ? `0 0 24px 0 ${from}30` : "none",
+              transition: "box-shadow 0.4s ease",
+            }}
+          >
+            {item.icon}
+          </div>
+
+          {/* Title */}
+          <h3
+            className="mt-4 font-extrabold leading-tight text-white"
+            style={{ fontSize: isFeature ? "clamp(1.2rem,2.5vw,1.65rem)" : "1rem" }}
+          >
+            {item.title}
+          </h3>
+
+          {/* Desc */}
+          <p
+            className="mt-2 leading-relaxed text-zinc-400"
+            style={{ fontSize: isFeature ? "0.9rem" : "0.78rem" }}
+          >
+            {isFeature ? item.longDesc : item.desc}
+          </p>
+
+          {/* View more arrow */}
+          <div
+            className="mt-5 flex items-center gap-1.5 text-xs font-semibold transition-all duration-300"
+            style={{
+              color: from,
+              opacity: hovered ? 1 : 0.6,
+              transform: hovered ? "translateX(4px)" : "translateX(0)",
+            }}
+          >
+            View more
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Bottom accent bar */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-[2px] transition-all duration-500"
+          style={{
+            background: `linear-gradient(to right, transparent, ${from}, ${to}, transparent)`,
+            opacity: hovered ? 1 : 0,
+            transform: hovered ? "scaleX(1)" : "scaleX(0.4)",
+            transformOrigin: "center",
+          }}
+        />
+
+        {/* Watermark */}
+        <div
+          className="pointer-events-none absolute -bottom-3 -right-3 select-none leading-none transition-all duration-500"
+          style={{
+            fontSize: isFeature ? "8rem" : "5.5rem",
+            opacity: hovered ? 0.07 : 0.03,
+            transform: hovered ? "scale(1.1) rotate(-6deg)" : "scale(1) rotate(-6deg)",
+            filter: `drop-shadow(0 0 20px ${from})`,
+          }}
+        >
+          {item.icon}
+        </div>
+      </a>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   Main export
+───────────────────────────────────────── */
+export function ExpertiseCards() {
+  const { ref, visible } = useInView(0.1);
+
+  return (
+    <section ref={ref} className="space-y-10">
       <style>{`
-        @keyframes scaleBreath {
-          0%, 100% { transform: scale(1); }
-          50%       { transform: scale(0.95); }
-        }
-        .scale-breath-1 {
-          animation: scaleBreath 6s ease-in-out infinite;
-        }
-        .scale-breath-2 {
-          animation: scaleBreath 6s ease-in-out infinite;
-          animation-delay: 3s;
+        @keyframes scanDown {
+          0%   { top: -100%; }
+          100% { top: 100%;  }
         }
       `}</style>
 
-      {/* Header */}
-      <div className="space-y-3">
-        <div className="inline-flex items-center gap-2 rounded-lg border border-cyan-500/20 bg-cyan-500/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-cyan-400">
+      {/* ── Header ── */}
+      <div
+        className="space-y-3 transition-all duration-700"
+        style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(28px)" }}
+      >
+        <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/25 bg-cyan-500/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-cyan-400">
           Core Expertise
         </div>
-        <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+        <h2
+          className="font-extrabold tracking-tight text-white"
+          style={{ fontSize: "clamp(2rem,5vw,3.25rem)" }}
+        >
           What We Build
         </h2>
+        <p className="max-w-2xl text-sm text-zinc-500 sm:text-base">
+          End-to-end capability across hardware, software, mobile, AI, and infrastructure.
+        </p>
       </div>
 
-      {/* 4-card grid */}
-      <div className="grid grid-cols-2 gap-5 lg:grid-cols-4 lg:items-stretch">
-        {highlights.map((item, idx) => {
-          const isMiddle = idx === 1 || idx === 2;
-          const animClass = idx === 1 ? "scale-breath-1" : idx === 2 ? "scale-breath-2" : "";
+      {/* ═══════════════════════════════════════
+          DESKTOP LAYOUT  (md+)
+          ┌─────────────────┬──────────────────┐
+          │                 │  card 2  │ card 3 │
+          │   Feature card  ├──────────┴────────┤
+          │   (card 1)      │  card 4  │ card 5 │
+          └─────────────────┴──────────┴────────┘
+      ═══════════════════════════════════════ */}
+      <div className="hidden md:grid gap-4" style={{ gridTemplateColumns: "1fr 1fr 1fr", gridTemplateRows: "auto auto" }}>
 
-          return (
-            <div
-              key={item.title}
-              className={animClass}
-              style={{ willChange: isMiddle ? "transform" : undefined }}
-            >
-              <div
-                style={{ boxShadow: `0 0 48px 0 ${item.glow}` }}
-                className={[
-                  "group relative overflow-hidden rounded-3xl border backdrop-blur-sm transition-colors duration-500 flex flex-col p-8 h-full",
-                  isMiddle
-                    ? "border-white/10 bg-zinc-900/50 hover:border-white/20"
-                    : "border-white/15 bg-gradient-to-br from-zinc-800/80 to-zinc-900/60 hover:border-white/25",
-                  "min-h-[320px]",
-                ].join(" ")}
-              >
-                {/* Glow orb */}
-                <div
-                  className={`absolute -right-10 -top-10 h-40 w-40 rounded-full blur-3xl bg-gradient-to-br ${item.accent} transition-opacity duration-500 ${isMiddle ? "opacity-10 group-hover:opacity-20" : "opacity-20 group-hover:opacity-30"}`}
-                />
+        {/* Feature card — spans 2 rows left column */}
+        <div style={{ gridRow: "1 / 3", gridColumn: "1 / 2" }}>
+          <ExpertiseCard item={highlights[0]} size="feature" delay={0}   visible={visible} />
+        </div>
 
-                {/* Tag pill */}
-                <div className={`mb-6 inline-flex w-fit items-center gap-1.5 rounded-full bg-gradient-to-r ${item.accent} px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white`}>
-                  <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
-                  {item.tag}
-                </div>
+        {/* Top-right pair */}
+        <div style={{ gridRow: "1 / 2", gridColumn: "2 / 3" }}>
+          <ExpertiseCard item={highlights[1]} size="normal" delay={100} visible={visible} />
+        </div>
+        <div style={{ gridRow: "1 / 2", gridColumn: "3 / 4" }}>
+          <ExpertiseCard item={highlights[2]} size="normal" delay={180} visible={visible} />
+        </div>
 
-                {/* Icon */}
-                <div className="text-5xl leading-none">{item.icon}</div>
+        {/* Bottom-right pair */}
+        <div style={{ gridRow: "2 / 3", gridColumn: "2 / 3" }}>
+          <ExpertiseCard item={highlights[3]} size="normal" delay={260} visible={visible} />
+        </div>
+        <div style={{ gridRow: "2 / 3", gridColumn: "3 / 4" }}>
+          <ExpertiseCard item={highlights[4]} size="normal" delay={340} visible={visible} />
+        </div>
+      </div>
 
-                {/* Text */}
-                <h3 className="mt-5 text-xl font-bold leading-snug text-white">{item.title}</h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-zinc-400">{item.desc}</p>
+      {/* ═══════════════════════════════════════
+          MOBILE LAYOUT (< md)
+          Single column — feature card first,
+          then a 2-col mini-grid for the rest
+      ═══════════════════════════════════════ */}
+      <div className="flex flex-col gap-4 md:hidden">
 
-                {/* View button */}
-                <a
-                  href={item.href}
-                  className={`mt-6 inline-flex items-center gap-2 self-start rounded-xl border bg-gradient-to-r ${item.accent} bg-clip-text px-4 py-2 text-xs font-semibold text-transparent border-current transition-all duration-300 group-hover:shadow-md`}
-                  style={{ borderImage: "none", border: "1px solid", borderColor: "rgba(255,255,255,0.15)" }}
-                >
-                  <span className={`bg-gradient-to-r ${item.accent} bg-clip-text text-transparent font-bold`}>
-                    View More
-                  </span>
-                  <svg
-                    className={`h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                    style={{ color: "rgba(255,255,255,0.5)" }}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
+        {/* Feature card full-width */}
+        <ExpertiseCard item={highlights[0]} size="feature" delay={0} visible={visible} />
 
-                {/* Bottom accent bar */}
-                <div className={`absolute bottom-0 left-0 h-0.5 w-full bg-gradient-to-r ${item.accent} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
-
-                {/* Watermark emoji */}
-                <div className="pointer-events-none absolute -bottom-4 -right-4 text-[7rem] leading-none opacity-[0.04] group-hover:scale-110 group-hover:opacity-[0.08] transition-all duration-500">
-                  {item.icon}
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        {/* 2-col grid for cards 2-5 */}
+        <div className="grid grid-cols-2 gap-4">
+          {highlights.slice(1).map((item, i) => (
+            <ExpertiseCard key={item.title} item={item} size="normal" delay={(i + 1) * 80} visible={visible} />
+          ))}
+        </div>
       </div>
     </section>
   );
