@@ -44,7 +44,7 @@ const Counter = memo(function Counter({ target, suffix = "" }: { target: number;
 });
 
 /* ─────────────────────────────────────────
-   Static data — outside component, never recreated
+   Static data
 ───────────────────────────────────────── */
 const clientTypes = [
   { label: "Startups & Innovators",    icon: "💡", color: "from-amber-500/20 to-orange-500/10",  border: "hover:border-amber-500/40",  glow: "hover:shadow-amber-500/10"  },
@@ -84,8 +84,7 @@ const SectionBadge = memo(function SectionBadge({
 });
 
 /* ─────────────────────────────────────────
-   Parallax orbs — isolated so mousemove
-   NEVER re-renders the rest of the page
+   Parallax orbs — isolated, zero re-renders
 ───────────────────────────────────────── */
 const ParallaxOrbs = memo(function ParallaxOrbs() {
   const orbsRef = useRef<HTMLDivElement>(null);
@@ -102,7 +101,6 @@ const ParallaxOrbs = memo(function ParallaxOrbs() {
     window.addEventListener("mousemove", handler, { passive: true });
     return () => window.removeEventListener("mousemove", handler);
   }, []);
-
   return (
     <div ref={orbsRef} style={{ position:"absolute",zIndex:2,inset:0,pointerEvents:"none" }} aria-hidden>
       <div style={{ position:"absolute",top:"15%",left:"8%",width:"clamp(280px,40vw,540px)",height:"clamp(280px,40vw,540px)",borderRadius:"50%",background:"radial-gradient(circle,rgba(16,185,129,.18) 0%,transparent 70%)",filter:"blur(48px)",transition:"transform 0.6s cubic-bezier(.2,.8,.4,1)",willChange:"transform" }} />
@@ -113,16 +111,53 @@ const ParallaxOrbs = memo(function ParallaxOrbs() {
 });
 
 /* ─────────────────────────────────────────
+   Plasma quality settings
+   
+   LOW  — used during splash (hidden behind it)
+          DPR 0.35 = ~91% less pixels to render
+          speed 0.15 = shader runs slower = less GPU work
+          no mouse interaction
+   
+   FULL — switched 700ms before splash exits
+          user never sees the quality change
+          by splash exit, full quality is already running
+───────────────────────────────────────── */
+const PLASMA_LOW = {
+  speed: 0.15,         // slow — less GPU work
+  opacity: 0.3,        // dimmer — less blending cost
+  mouseInteractive: false,
+} as const;
+
+const PLASMA_FULL = {
+  speed: 0.4,
+  opacity: 0.55,
+  mouseInteractive: true,
+} as const;
+
+// Timing must match SplashScreen minDuration
+const SPLASH_DURATION   = 2800; // total splash time in ms
+const PLASMA_UPGRADE_AT = 2100; // upgrade 700ms before splash exits (2800 - 700)
+
+/* ─────────────────────────────────────────
    Page
 ───────────────────────────────────────── */
 export default function Home() {
-  const [splashDone, setSplashDone] = useState(false);
-  const [heroReady,  setHeroReady]  = useState(false);
+  const [splashDone,    setSplashDone]    = useState(false);
+  const [heroReady,     setHeroReady]     = useState(false);
+  const [plasmaQuality, setPlasmaQuality] = useState<"low" | "full">("low");
 
   useEffect(() => {
-    const t = setTimeout(() => setHeroReady(true), 80);
-    return () => clearTimeout(t);
+    // Hero entrance
+    const t1 = setTimeout(() => setHeroReady(true), 80);
+
+    // Upgrade Plasma to full quality 700ms before splash exits
+    // User is still seeing splash at this point — invisible upgrade
+    const t2 = setTimeout(() => setPlasmaQuality("full"), PLASMA_UPGRADE_AT);
+
+    return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
+
+  const plasmaProps = plasmaQuality === "low" ? PLASMA_LOW : PLASMA_FULL;
 
   const whyRef    = useInView();
   const clientRef = useInView();
@@ -130,19 +165,15 @@ export default function Home() {
 
   return (
     <>
-      {/* ══════════════════════════════════════
-          SPLASH — covers page while everything loads
-          Page is ALWAYS mounted underneath so
-          Plasma + all components initialise during splash.
-          When splash exits → page is already ready, zero lag.
-      ══════════════════════════════════════ */}
+      {/* Splash — on top while page + Plasma load underneath */}
       {!splashDone && (
-        <SplashScreen onComplete={() => setSplashDone(true)} minDuration={2800} />
+        <SplashScreen
+          onComplete={() => setSplashDone(true)}
+          minDuration={SPLASH_DURATION}
+        />
       )}
 
-      {/* ══════════════════════════════════════
-          PAGE — always rendered, hidden behind splash
-      ══════════════════════════════════════ */}
+      {/* Page — always mounted */}
       <div className="flex flex-col overflow-x-hidden">
 
         {/* ── HERO ── */}
@@ -156,15 +187,15 @@ export default function Home() {
           }}
           className="flex items-center overflow-hidden border-b border-emerald-500/15 py-20 sm:py-28"
         >
-          {/* Plasma — direct, no dynamic import, loads during splash */}
+          {/* Plasma — starts low quality, upgrades to full before splash exits */}
           <div style={{ position:"absolute", inset:0, zIndex:0 }}>
             <Plasma
               color="#10b981"
-              speed={0.4}
               direction="forward"
               scale={1.3}
-              opacity={0.55}
-              mouseInteractive
+              speed={plasmaProps.speed}
+              opacity={plasmaProps.opacity}
+              mouseInteractive={plasmaProps.mouseInteractive}
             />
           </div>
 
@@ -188,7 +219,7 @@ export default function Home() {
             }}
           />
 
-          {/* Parallax orbs — zero re-renders on mousemove */}
+          {/* Parallax orbs */}
           <ParallaxOrbs />
 
           {/* Hero content */}
@@ -262,7 +293,7 @@ export default function Home() {
                   { num: "One",                              label: "Optimized Stack",  accent: "#f472b6" },
                 ].map(({ num, label, accent }) => (
                   <div key={label} className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/[0.08] hover:-translate-y-0.5 hover:shadow-xl sm:p-6">
-                    <div className="absolute top-0 left-1/2 h-px w-12 -translate-x-1/2 opacity-0 transition-opacity group-hover:opacity-100" style={{ background: `linear-gradient(to right, transparent, ${accent}, transparent)` }} />
+                    <div className="absolute top-0 left-1/2 h-px w-12 -translate-x-1/2 opacity-0 transition-opacity group-hover:opacity-100" style={{ background:`linear-gradient(to right, transparent, ${accent}, transparent)` }} />
                     <div className="relative">
                       <div className="text-2xl font-extrabold text-white sm:text-3xl lg:text-4xl">{num}</div>
                       <div className="mt-1.5 text-xs font-medium text-zinc-500 sm:text-sm">{label}</div>
@@ -285,9 +316,7 @@ export default function Home() {
               style={{ opacity: whyRef.visible ? 1 : 0, transform: whyRef.visible ? "translateY(0)" : "translateY(32px)" }}
             >
               <SectionBadge color="emerald">Why Choose Us</SectionBadge>
-              <h2 className="text-balance font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(2rem,5vw,3.25rem)" }}>
-                Why EcoBridges?
-              </h2>
+              <h2 className="text-balance font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(2rem,5vw,3.25rem)" }}>Why EcoBridges?</h2>
               <p className="max-w-3xl text-base leading-relaxed text-zinc-400 sm:text-lg">
                 At EcoBridges, we don't just build projects — we build solutions that actually work in real environments.
               </p>
@@ -295,15 +324,13 @@ export default function Home() {
           </section>
 
           {/* EXPERTISE */}
-          <section>
-            <ExpertiseCards />
-          </section>
+          <section><ExpertiseCards /></section>
 
           {/* WORKFLOW */}
           <section className="space-y-10">
             <div className="space-y-3 text-center">
               <SectionBadge color="cyan">Our Workflow</SectionBadge>
-              <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(2rem,5vw,3.25rem)" }}>How We Work</h2>
+              <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(2rem,5vw,3.25rem)" }}>How We Work</h2>
               <p className="mx-auto max-w-2xl text-sm text-zinc-400 sm:text-base">Five clear steps from first discussion to final deployment.</p>
             </div>
             <WorkflowDiagram processSteps={processSteps} processIcons={processIcons} />
@@ -316,7 +343,7 @@ export default function Home() {
               style={{ opacity: clientRef.visible ? 1 : 0, transform: clientRef.visible ? "translateY(0)" : "translateY(32px)" }}
             >
               <SectionBadge color="violet">Our Clients</SectionBadge>
-              <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(2rem,5vw,3.25rem)" }}>Who We Work With</h2>
+              <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(2rem,5vw,3.25rem)" }}>Who We Work With</h2>
               <p className="mx-auto max-w-2xl text-base text-zinc-400 sm:text-lg">Project-based services and product-oriented development for:</p>
             </div>
             <div className="grid gap-4 grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -324,13 +351,11 @@ export default function Home() {
                 <div
                   key={type.label}
                   className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/60 p-6 text-center backdrop-blur-sm transition-all duration-500 ${type.border} hover:-translate-y-1.5 hover:shadow-xl ${type.glow}`}
-                  style={{ opacity: clientRef.visible ? 1 : 0, transform: clientRef.visible ? "translateY(0)" : "translateY(32px)", transitionDelay: `${idx * 80}ms`, transitionDuration: "600ms", willChange: "transform, opacity" }}
+                  style={{ opacity: clientRef.visible ? 1 : 0, transform: clientRef.visible ? "translateY(0)" : "translateY(32px)", transitionDelay:`${idx * 80}ms`, transitionDuration:"600ms", willChange:"transform, opacity" }}
                 >
                   <div className={`absolute inset-0 bg-gradient-to-br ${type.color} opacity-0 transition-opacity duration-300 group-hover:opacity-100`} />
                   <div className="relative">
-                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/5 text-2xl ring-1 ring-white/10 transition-transform duration-300 group-hover:scale-110 group-hover:ring-white/20">
-                      {type.icon}
-                    </div>
+                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/5 text-2xl ring-1 ring-white/10 transition-transform duration-300 group-hover:scale-110 group-hover:ring-white/20">{type.icon}</div>
                     <div className="text-sm font-semibold text-white">{type.label}</div>
                   </div>
                 </div>
@@ -342,7 +367,7 @@ export default function Home() {
           <section
             ref={ctaRef.ref}
             className="relative overflow-hidden rounded-3xl border border-white/10 p-8 sm:p-14 lg:p-20 transition-all duration-700"
-            style={{ opacity: ctaRef.visible ? 1 : 0, transform: ctaRef.visible ? "translateY(0)" : "translateY(44px)", background: "linear-gradient(135deg,#0a0f0d 0%,#061a12 40%,#040d10 100%)" }}
+            style={{ opacity: ctaRef.visible ? 1 : 0, transform: ctaRef.visible ? "translateY(0)" : "translateY(44px)", background:"linear-gradient(135deg,#0a0f0d 0%,#061a12 40%,#040d10 100%)" }}
           >
             <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
               <div className="absolute -left-24 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-emerald-500/12 blur-[100px]" />
@@ -353,9 +378,7 @@ export default function Home() {
             </div>
             <div className="relative space-y-6 text-center">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/10 text-2xl">🚀</div>
-              <h2 className="text-balance font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(1.75rem,5vw,3rem)" }}>
-                Have an Idea or Problem to Solve?
-              </h2>
+              <h2 className="text-balance font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(1.75rem,5vw,3rem)" }}>Have an Idea or Problem to Solve?</h2>
               <p className="mx-auto max-w-2xl text-base leading-relaxed text-zinc-300 sm:text-lg">
                 Whether it's an IoT system, a web platform, a mobile app, or a complete end-to-end solution —{" "}
                 <span className="font-bold text-emerald-400">EcoBridges is ready to build it with you.</span>
