@@ -35,8 +35,6 @@
      --font-display: 'Rajdhani', sans-serif;
      --font-body: 'Jost', sans-serif;
 ───────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
-
 /* ─────────────────────────────────────────
    CSS Variables
 ───────────────────────────────────────── */
@@ -115,62 +113,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ─────────────────────────────────────────
-   Custom Cursor
+   Custom Cursor — Trail Particles
+   Hide default cursor on desktop only
 ───────────────────────────────────────── */
-.custom-cursor {
-  position: fixed;
-  width: var(--cursor-size);
-  height: var(--cursor-size);
-  background: #34d399;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s ease, height 0.2s ease, background 0.2s ease, opacity 0.2s ease;
-  mix-blend-mode: difference;
-  will-change: transform;
-}
-
-.custom-cursor-ring {
-  position: fixed;
-  width: var(--cursor-ring);
-  height: var(--cursor-ring);
-  border: 1.5px solid rgba(52, 211, 153, 0.6);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99998;
-  transform: translate(-50%, -50%);
-  transition: width 0.35s cubic-bezier(.2,.8,.4,1),
-              height 0.35s cubic-bezier(.2,.8,.4,1),
-              border-color 0.3s ease,
-              opacity 0.3s ease;
-  will-change: transform;
-}
-
-/* Cursor states */
-.cursor-hover .custom-cursor {
-  width: 16px;
-  height: 16px;
-  background: #06b6d4;
-}
-.cursor-hover .custom-cursor-ring {
-  width: 52px;
-  height: 52px;
-  border-color: rgba(6, 182, 212, 0.5);
-}
-.cursor-click .custom-cursor {
-  width: 8px;
-  height: 8px;
-}
-.cursor-click .custom-cursor-ring {
-  width: 24px;
-  height: 24px;
-  border-color: rgba(52, 211, 153, 0.9);
-}
-
-/* All interactive elements hide cursor too */
+html, body,
 a, button, [role="button"], input, select, textarea, label {
   cursor: none;
+}
+
+/* Restore on touch devices — trail cursor is desktop only */
+@media (pointer: coarse) {
+  html, body, a, button, [role="button"],
+  input, select, textarea, label, * {
+    cursor: auto !important;
+  }
 }
 
 /* ─────────────────────────────────────────
@@ -197,6 +153,27 @@ a, button, [role="button"], input, select, textarea, label {
 /* ─────────────────────────────────────────
    Keyframes
 ───────────────────────────────────────── */
+@keyframes hero-bg-pulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.85; }
+}
+
+/* Scan line — colour controlled by --scan-color CSS var on parent */
+/* (The existing .hero-scan-line rule still applies; this extends it) */
+.hero-scan-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--scan-color, rgba(52,211,153,0.35)),
+    transparent
+  );
+  animation: scan-line 8s linear infinite;
+  pointer-events: none;
+  z-index: 5;
+}
 
 /* Floating badge shimmer */
 @keyframes badge-shimmer {

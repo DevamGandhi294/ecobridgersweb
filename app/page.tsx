@@ -8,45 +8,158 @@ import { SplashScreen } from "@/components/SplashScreen";
 import Plasma from "@/components/Plasma";
 
 /* ─────────────────────────────────────────
-   Custom Cursor — zero React state,
-   all DOM mutations via refs
+   Trail Particles Cursor
+   
+   - Sharp emerald dot follows mouse exactly
+   - Leaves a comet tail of dissolving particles
+   - Particles vary in size, speed, and color
+     (emerald → cyan → white) for depth
+   - On hover: dot grows, ring appears
+   - On click: burst of 8 particles explode out
+   - Everything via direct DOM — zero React renders
 ───────────────────────────────────────── */
 function CustomCursor() {
-  const dotRef  = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const dot  = dotRef.current;
-    const ring = ringRef.current;
-    if (!dot || !ring) return;
+    const dot = dotRef.current;
+    if (!dot) return;
 
     let mouseX = 0, mouseY = 0;
-    let ringX  = 0, ringY  = 0;
+    let lastX  = 0, lastY  = 0;
     let raf: number;
+    let isHover = false;
 
-    // Dot follows mouse instantly
+    // Particle color palette — emerald to cyan to white
+    const COLORS = [
+      "rgba(52,211,153,",   // emerald
+      "rgba(34,211,238,",   // cyan
+      "rgba(16,185,129,",   // deep emerald
+      "rgba(110,231,183,",  // light emerald
+      "rgba(255,255,255,",  // white spark
+    ];
+
+    // Pool of particle DOM elements — reuse to avoid GC pressure
+    const POOL_SIZE = 40;
+    const pool: HTMLDivElement[] = [];
+
+    for (let i = 0; i < POOL_SIZE; i++) {
+      const p = document.createElement("div");
+      p.style.cssText = `
+        position:fixed; border-radius:50%; pointer-events:none;
+        z-index:99997; transform:translate(-50%,-50%);
+        will-change:transform,opacity;
+      `;
+      p.style.display = "none";
+      document.body.appendChild(p);
+      pool.push(p);
+    }
+
+    let poolIdx = 0;
+
+    function spawnParticle(x: number, y: number, burst = false) {
+      const p = pool[poolIdx % POOL_SIZE];
+      poolIdx++;
+
+      const size    = burst ? Math.random() * 5 + 3 : Math.random() * 4 + 2;
+      const color   = COLORS[Math.floor(Math.random() * COLORS.length)];
+      const angle   = burst
+        ? (Math.random() * Math.PI * 2)
+        : (Math.atan2(mouseY - lastY, mouseX - lastX) + (Math.random() - 0.5) * 1.2);
+      const speed   = burst ? Math.random() * 80 + 40 : Math.random() * 30 + 10;
+      const life    = burst ? Math.random() * 400 + 300 : Math.random() * 500 + 300;
+
+      const dx = Math.cos(angle) * speed;
+      const dy = Math.sin(angle) * speed;
+
+      p.style.display = "block";
+      p.style.width   = `${size}px`;
+      p.style.height  = `${size}px`;
+      p.style.left    = `${x}px`;
+      p.style.top     = `${y}px`;
+      p.style.background = `${color}1)`;
+      p.style.boxShadow  = `0 0 ${size * 2}px ${color}0.6)`;
+      p.style.opacity    = "1";
+      p.style.transition = "none";
+
+      const start = performance.now();
+
+      function tick(now: number) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / life, 1);
+        // Ease out movement
+        const ease = 1 - progress * progress;
+        p.style.left    = `${x + dx * progress}px`;
+        p.style.top     = `${y + dy * progress}px`;
+        p.style.opacity = `${(1 - progress) * (burst ? 0.9 : 0.7)}`;
+        p.style.width   = `${size * (1 - progress * 0.5)}px`;
+        p.style.height  = `${size * (1 - progress * 0.5)}px`;
+
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          p.style.display = "none";
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // Throttle trail spawning by distance moved
+    let distAccum = 0;
+    const TRAIL_EVERY = 6; // px between particles
+
     const onMove = (e: MouseEvent) => {
+      lastX  = mouseX;
+      lastY  = mouseY;
       mouseX = e.clientX;
       mouseY = e.clientY;
+
       dot.style.left = `${mouseX}px`;
       dot.style.top  = `${mouseY}px`;
+
+      const dist = Math.hypot(mouseX - lastX, mouseY - lastY);
+      distAccum += dist;
+
+      // More particles when moving fast
+      const count = Math.min(Math.floor(dist / TRAIL_EVERY) + 1, 3);
+      if (distAccum > TRAIL_EVERY) {
+        for (let i = 0; i < count; i++) {
+          // Interpolate spawn position along movement path
+          const t = i / count;
+          spawnParticle(
+            lastX + (mouseX - lastX) * t,
+            lastY + (mouseY - lastY) * t,
+          );
+        }
+        distAccum = 0;
+      }
     };
 
-    // Ring follows with smooth lag
-    const loop = () => {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
-      ring.style.left = `${ringX}px`;
-      ring.style.top  = `${ringY}px`;
-      raf = requestAnimationFrame(loop);
+    // Click burst
+    const onClick = (e: MouseEvent) => {
+      for (let i = 0; i < 10; i++) spawnParticle(e.clientX, e.clientY, true);
+      // Brief scale-down on dot
+      dot.style.transform = "translate(-50%,-50%) scale(0.5)";
+      setTimeout(() => {
+        dot.style.transform = "translate(-50%,-50%) scale(1)";
+      }, 120);
     };
-    raf = requestAnimationFrame(loop);
 
-    // Hover state
-    const onEnter = () => document.body.classList.add("cursor-hover");
-    const onLeave = () => document.body.classList.remove("cursor-hover");
-    const onDown  = () => document.body.classList.add("cursor-click");
-    const onUp    = () => document.body.classList.remove("cursor-click");
+    // Hover: dot grows + glows
+    const onEnter = () => {
+      isHover = true;
+      dot.style.width      = "16px";
+      dot.style.height     = "16px";
+      dot.style.background = "rgba(6,182,212,0.9)";
+      dot.style.boxShadow  = "0 0 12px rgba(6,182,212,0.8), 0 0 24px rgba(6,182,212,0.4)";
+    };
+    const onLeave = () => {
+      isHover = false;
+      dot.style.width      = "8px";
+      dot.style.height     = "8px";
+      dot.style.background = "rgba(52,211,153,0.95)";
+      dot.style.boxShadow  = "0 0 8px rgba(52,211,153,0.8), 0 0 16px rgba(52,211,153,0.4)";
+    };
 
     const interactives = document.querySelectorAll("a, button, [role='button']");
     interactives.forEach(el => {
@@ -54,27 +167,38 @@ function CustomCursor() {
       el.addEventListener("mouseleave", onLeave);
     });
 
-    window.addEventListener("mousemove",  onMove,  { passive: true });
-    window.addEventListener("mousedown",  onDown);
-    window.addEventListener("mouseup",    onUp);
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("click",     onClick);
 
     return () => {
-      cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mousedown", onDown);
-      window.removeEventListener("mouseup",   onUp);
+      window.removeEventListener("click",     onClick);
       interactives.forEach(el => {
         el.removeEventListener("mouseenter", onEnter);
         el.removeEventListener("mouseleave", onLeave);
       });
+      pool.forEach(p => document.body.removeChild(p));
     };
   }, []);
 
   return (
-    <>
-      <div ref={dotRef}  className="custom-cursor" />
-      <div ref={ringRef} className="custom-cursor-ring" />
-    </>
+    <div
+      ref={dotRef}
+      style={{
+        position: "fixed",
+        width: "8px",
+        height: "8px",
+        borderRadius: "50%",
+        background: "rgba(52,211,153,0.95)",
+        boxShadow: "0 0 8px rgba(52,211,153,0.8), 0 0 16px rgba(52,211,153,0.4)",
+        pointerEvents: "none",
+        zIndex: 99999,
+        transform: "translate(-50%,-50%)",
+        transition: "width 0.2s ease, height 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, transform 0.12s ease",
+        willChange: "transform",
+        mixBlendMode: "screen",
+      }}
+    />
   );
 }
 
@@ -296,7 +420,7 @@ export default function Home() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                 </span>
-                Built for Practical Delivery
+                Between ideas and innovation, there’s always a bridge.
               </div>
 
               {/* Heading — Syne font, gradient text */}
@@ -316,8 +440,8 @@ export default function Home() {
                   background:"linear-gradient(135deg,#fff 0%,#e2fdf3 45%,#34d399 100%)",
                   WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text"
                 }}>
-                  Bridging Ideas to<br className="hidden sm:block" />{" "}
-                  Real-World Technology
+                  Where Ideas Cross<br className="hidden sm:block" />{" "}
+                  the Bridge to Innovation
                 </span>
               </h1>
 
@@ -327,15 +451,15 @@ export default function Home() {
                   opacity: heroReady ? 1 : 0, transform: heroReady ? "translateY(0)" : "translateY(20px)",
                   willChange:"transform, opacity" }}
               >
-                EcoBridges is a project-based technology team building IoT systems, web platforms,
-                mobile applications, and cloud solutions using a fast, reliable, and scalable tech stack.
+                Ideas are everywhere, but turning them into real technology takes the right engineering.
+                From IoT systems to modern applications and cloud platforms, the bridge from concept to reality starts here.
               </p>
 
               <p
                 className="mt-3 mx-auto max-w-xl text-sm leading-relaxed text-zinc-500 transition-all duration-700 delay-[360ms]"
                 style={{ fontFamily:"var(--font-body)", opacity: heroReady ? 1 : 0, transform: heroReady ? "translateY(0)" : "translateY(16px)" }}
               >
-                We act as the bridge between your idea and a working, deployable product —<br className="hidden sm:block" /> from concept to execution.
+                Big ideas shouldn’t require big budgets.<br className="hidden sm:block" />The right engineering turns ideas into practical technology that works, scales, and delivers real value.
               </p>
 
               {/* CTAs */}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { navLinks } from "@/lib/navLinks";
+import { CustomCursor } from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
   title: "EcoBridgers - Bridging Ideas to Real-World Technology",
@@ -14,20 +15,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      {/*
-        KEY FIX: overflow-x-hidden on both html and body
-        prevents the scrollbar from adding extra width that
-        breaks 100vw full-bleed sections
-      */}
       <body className="antialiased bg-zinc-950 text-zinc-50 overflow-x-hidden">
+        {/* ── Custom cursor — renders on every page globally ── */}
+        <CustomCursor />
+
         <div className="min-h-screen overflow-x-hidden">
           <Header />
 
-          {/*
-            Main has NO max-width, NO padding, NO margin.
-            Each page controls its own layout.
-            The inner div provides centering for normal page sections.
-          */}
           <main className="w-full">
             {children}
           </main>
@@ -63,8 +57,8 @@ export default function RootLayout({
                 <div>
                   <h3 className="mb-3 text-sm font-semibold text-white">Services</h3>
                   <ul className="space-y-2 text-sm text-zinc-400">
-                    <li>IoT & Embedded Systems</li>
-                    <li>Web & Cloud Platforms</li>
+                    <li>IoT &amp; Embedded Systems</li>
+                    <li>Web &amp; Cloud Platforms</li>
                     <li>Mobile Applications</li>
                     <li>AI-Assisted Solutions</li>
                   </ul>
