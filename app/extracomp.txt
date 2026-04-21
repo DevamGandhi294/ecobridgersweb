@@ -1,0 +1,30 @@
+{/* ── System Flow Visualization ── */}
+        {/* <section className="rounded-3xl border border-white/10 bg-gradient-to-br from-zinc-900/90 to-zinc-900/40 p-8 backdrop-blur-sm sm:p-12">
+        <div className="space-y-3 text-center">
+          <div className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+            Full-Stack Integration
+          </div>
+          <h3 className="text-2xl font-bold text-white sm:text-3xl">From Device to Dashboard</h3>
+          <p className="mx-auto max-w-2xl text-sm text-zinc-400">
+            Hardware • Firmware • API • Cloud • UI
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-3 sm:grid-cols-5">
+          {["Device", "Gateway", "API", "Cloud", "Dashboard"].map((node, idx) => (
+            <div key={node} className="relative">
+              <div className="flex flex-col items-center gap-3">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-transparent text-xl font-bold text-emerald-400 backdrop-blur-sm">
+                  {idx + 1}
+                </div>
+                <div className="text-center">
+                  <div className="text-sm font-semibold text-white">{node}</div>
+                </div>
+              </div>
+              {idx < 4 && (
+                <div className="absolute left-[calc(50%+2rem)] top-8 hidden h-0.5 w-[calc(100%-2rem)] bg-gradient-to-r from-emerald-500/50 to-transparent sm:block" />
+              )}
+            </div>
+          ))}
+        </div>
+      </section> */}
