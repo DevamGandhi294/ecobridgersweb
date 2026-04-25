@@ -2,7 +2,7 @@
 
 import {
   useInView, SectionBadge, OfferShowcaseCard, PlatformBenefitsGrid,
-  ProcessCard, UseCaseCard, CreationProcessTimeline, TechBadge, InquiryForm, FormCard, ServiceCTA,
+  CreationProcessTimeline, TechMarquee, ServiceCTA,
 } from "@/components/ServicePageShell";
 import { ScrollToggleHero } from "@/components/ScrollToggleHero";
 
@@ -19,12 +19,12 @@ const offerings = [
   { icon:"📊", title:"Smart Analytics Dashboards",     desc:"Visualize insights with AI-annotated charts, summaries, and data highlights." },
 ];
 const useCases = [
-  { icon:"🔧", label:"Predictive Maintenance"       },
-  { icon:"🔍", label:"Anomaly Detection"            },
-  { icon:"📊", label:"Smart Analytics Dashboards"   },
-  { icon:"🧭", label:"Data-Driven Decision Support" },
-  { icon:"⚡", label:"Energy Optimization"          },
-  { icon:"✅", label:"Quality Control Monitoring"   },
+  { icon:"🔧", label:"Predictive Maintenance",       desc: "Anticipate equipment failures before they happen, saving downtime." },
+  { icon:"🔍", label:"Anomaly Detection",            desc: "Spot irregular patterns instantly, avoiding expensive false positives." },
+  { icon:"📊", label:"Smart Analytics Dashboards",   desc: "Transform raw data into beautiful, actionable ML insights effortlessly." },
+  { icon:"🧭", label:"Data-Driven Decision Support", desc: "Guide operational strategies with statistically sound recommendation engines." },
+  { icon:"⚡", label:"Energy Optimization",          desc: "Autonomously manage power loads to maximize hardware efficiency dynamically." },
+  { icon:"✅", label:"Quality Control Monitoring",   desc: "Automatically flag defects directly on the manufacturing baseline flow." },
 ];
 const process = [
   { step:"01", title:"Data Assessment",       desc:"Understand your existing data sources, format, and quality." },
@@ -36,7 +36,7 @@ const process = [
 ];
 const techStack = ["Python","Pandas","Scikit-learn","TensorFlow Lite","Firebase ML","Node.js","Chart.js","Recharts","REST API","FastAPI","NumPy"];
 
-const platformBenefits = useCases.map((u) => ({ title: u.label }));
+const platformBenefits = useCases.map((u) => ({ title: u.label, desc: u.desc }));
 
 export default function AIServicePage() {
   const offerRef = useInView();
@@ -73,7 +73,7 @@ export default function AIServicePage() {
             <OfferShowcaseCard
               items={offerings}
               accentColor={ACCENT}
-              imageSrc="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80"
+              imageSrc="/images/photo-1677442136019-21780ecad995.jpg"
               imageAlt="AI analytics and machine learning visualization"
               isActive={offerRef.visible}
             />
@@ -94,13 +94,13 @@ export default function AIServicePage() {
           />
         </section>
 
-        <section ref={procRef.ref} className="relative overflow-hidden rounded-3xl border border-white/10 p-8 sm:p-12 transition-all duration-700"
-          style={{ opacity:procRef.visible?1:0, transform:procRef.visible?"translateY(0)":"translateY(36px)", background:"linear-gradient(135deg,#090508,#0d050a,#080408)" }}>
+        <section ref={procRef.ref} className="relative space-y-8 transition-all duration-700"
+          style={{ opacity:procRef.visible?1:0, transform:procRef.visible?"translateY(0)":"translateY(36px)" }}>
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -left-20 top-0 h-64 w-64 rounded-full blur-[100px]" style={{ background:`${ACCENT}14` }} />
             <div className="absolute -right-20 bottom-0 h-48 w-48 rounded-full blur-[80px]" style={{ background:`${ACCENT}0e` }} />
           </div>
-          <div className="relative space-y-3 text-center mb-10">
+          <div className="relative mb-10 flex flex-col items-start space-y-3 text-left">
             <SectionBadge color="pink">Our Process</SectionBadge>
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(1.9rem,4.5vw,3rem)", fontFamily:"var(--font-display)" }}>How We Deliver</h2>
           </div>
@@ -114,18 +114,14 @@ export default function AIServicePage() {
         <section ref={techRef.ref} className="space-y-6 transition-all duration-700" style={{ opacity:techRef.visible?1:0, transform:techRef.visible?"translateY(0)":"translateY(28px)" }}>
           <SectionBadge color="pink">Technologies</SectionBadge>
           <h2 className="font-bold text-white text-2xl" style={{ fontFamily:"var(--font-display)" }}>Technologies We Use</h2>
-          <div className="flex flex-wrap gap-3">{techStack.map(t => <TechBadge key={t} label={t} accentColor={ACCENT} />)}</div>
+          <TechMarquee items={techStack} accentColor={ACCENT} />
         </section>
 
-        <ServiceCTA accentGradient={ACCENT_GRAD} accentColor={ACCENT}
+        <ServiceCTA accentGradient={ACCENT_GRAD} accentColor={ACCENT} badgeColor="pink"
           title="Ready to Add Intelligence to Your System?"
           subtitle="Let's analyze your data and build the AI layer that makes it actionable — smarter alerts, better decisions, less downtime."
           ctaText="Start the Conversation" />
       </div>
-      
     </div>
   );
-  <FormCard accentColor={ACCENT}>
-          <InquiryForm accentGradient={ACCENT_GRAD} accentColor={ACCENT} focusColor="#ec4899" serviceDefault="AI-Assisted Solutions" />
-        </FormCard>
 }

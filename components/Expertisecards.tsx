@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef, useState, ReactElement } from "react";
+import React, { useEffect, useMemo, useRef, useState, ReactElement } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 /* ─────────────────────────────────────────
    Data — 5 cards
@@ -168,11 +170,13 @@ function ExpertiseCard({
   size = "normal",
   delay = 0,
   visible,
+  animateByGsap = false,
 }: {
   item: (typeof highlights)[number];
   size?: CardSize;
   delay?: number;
   visible: boolean;
+  animateByGsap?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
   const [mouseLocal, setMouseLocal] = useState({ x: 50, y: 50 });
@@ -190,6 +194,7 @@ function ExpertiseCard({
   const [from, to] = item.accent;
   const isFeature = size === "feature";
   const isTall    = size === "tall";
+  const isStage   = animateByGsap;
 
   return (
     <div
@@ -198,9 +203,9 @@ function ExpertiseCard({
       onMouseLeave={() => setHovered(false)}
       onMouseMove={onMouseMove}
       style={{
-        opacity:    visible ? 1 : 0,
-        transform:  visible ? "translateY(0) scale(1)" : "translateY(40px) scale(0.97)",
-        transition: `opacity 0.7s ease ${delay}ms, transform 0.7s cubic-bezier(.2,.8,.4,1) ${delay}ms`,
+        opacity:    animateByGsap ? 1 : (visible ? 1 : 0),
+        transform:  animateByGsap ? "none" : (visible ? "translateY(0) scale(1)" : "translateY(40px) scale(0.97)"),
+        transition: animateByGsap ? "none" : `opacity 0.7s ease ${delay}ms, transform 0.7s cubic-bezier(.2,.8,.4,1) ${delay}ms`,
         height: "100%",
       }}
     >
@@ -212,8 +217,8 @@ function ExpertiseCard({
             ? `0 0 0 1px ${from}55, 0 24px 60px -12px ${from}30, inset 0 0 80px 0 ${from}08`
             : "none",
           transition: "box-shadow 0.4s ease",
-          padding: isFeature ? "clamp(1.5rem,3vw,2.25rem)" : "1.5rem",
-          minHeight: isFeature ? "clamp(300px,38vw,460px)" : isTall ? "200px" : "180px",
+          padding: isStage ? "1.8rem 1.8rem 2.4rem 1.8rem" : (isFeature ? "clamp(1.5rem,3vw,2.25rem)" : "1.5rem"),
+          minHeight: isStage ? "clamp(460px,68vh,700px)" : (isFeature ? "clamp(300px,38vw,460px)" : isTall ? "200px" : "180px"),
         }}
       >
         {/* Background pattern */}
@@ -265,7 +270,7 @@ function ExpertiseCard({
         <div className="relative z-10 flex flex-col h-full">
 
           {/* Number + tag row */}
-          <div className="flex items-center justify-between mb-auto">
+          <div className="flex items-center justify-between mb-6">
             <span
               className="font-mono text-xs font-bold tracking-widest"
               style={{ color: `${from}88` }}
@@ -303,7 +308,7 @@ function ExpertiseCard({
           {/* Title */}
           <h3
             className="mt-4 font-extrabold leading-tight text-white"
-            style={{ fontSize: isFeature ? "clamp(1.2rem,2.5vw,1.65rem)" : "1rem" }}
+            style={{ fontSize: isStage ? "clamp(1.35rem,2.2vw,1.75rem)" : (isFeature ? "clamp(1.2rem,2.5vw,1.65rem)" : "1rem") }}
           >
             {item.title}
           </h3>
@@ -311,14 +316,14 @@ function ExpertiseCard({
           {/* Desc */}
           <p
             className="mt-2 leading-relaxed text-zinc-400"
-            style={{ fontSize: isFeature ? "0.9rem" : "0.78rem" }}
+            style={{ fontSize: isStage ? "0.95rem" : (isFeature ? "0.9rem" : "0.78rem") }}
           >
             {isFeature ? item.longDesc : item.desc}
           </p>
 
           {/* View more arrow */}
           <div
-            className="mt-5 flex items-center gap-1.5 text-xs font-semibold transition-all duration-300"
+            className="mt-auto pt-5 flex items-center gap-1.5 text-xs font-semibold transition-all duration-300"
             style={{
               color: from,
               opacity: hovered ? 1 : 0.6,
@@ -365,9 +370,104 @@ function ExpertiseCard({
 ───────────────────────────────────────── */
 export function ExpertiseCards() {
   const { ref, visible } = useInView(0.1);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const cardWrapRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  const prefersReduced = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+  }, []);
+
+  useEffect(() => {
+    const onResize = () => setIsDesktop(window.innerWidth >= 1024);
+    onResize();
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktop) return;
+    if (prefersReduced) return;
+    const wrapEl = wrapRef.current;
+    const stageEl = stageRef.current;
+    if (!wrapEl || !stageEl) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const cards = cardWrapRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (!cards.length) return;
+
+    const ctx = gsap.context(() => {
+      const applyState = (activeIdx: number) => {
+        cards.forEach((el, idx) => {
+          const isActive = idx === activeIdx;
+          const rel = idx - activeIdx; // negative = old cards, positive = upcoming cards
+          const distance = Math.abs(rel);
+          const clamped = Math.min(distance, 4);
+
+          gsap.to(el, {
+            // Previous cards fan to the left; next cards fan to the right.
+            x: isActive ? 0 : (rel < 0 ? -(120 + clamped * 26) : (82 + clamped * 20)),
+            y: isActive ? 0 : (24 + clamped * 14),
+            rotate: isActive ? 0 : (rel < 0 ? -(8 + clamped * 1.3) : (5 + clamped * 1.1)),
+            scale: isActive ? 1.02 : Math.max(0.84, 0.96 - clamped * 0.03),
+            // Keep all 5 cards visible as stacked layers.
+            opacity: isActive ? 1 : Math.max(0.08, 0.24 - clamped * 0.04),
+            filter: isActive ? "blur(0px) brightness(1)" : "blur(1.8px) brightness(0.6)",
+            zIndex: isActive ? 40 : Math.max(10, 30 - clamped * 5),
+            duration: 0.72,
+            ease: "power3.out",
+          });
+
+          gsap.to(el, {
+            boxShadow: isActive
+              ? "0 0 0 1px rgba(255,255,255,0.08), 0 26px 70px -22px rgba(0,0,0,0.7)"
+              : "0 10px 30px -24px rgba(0,0,0,0.7)",
+            duration: 0.72,
+            ease: "power3.out",
+          });
+        });
+      };
+
+      // Set starting state and make first card visible immediately.
+      gsap.set(cards, {
+        x: 0,
+        y: 64,
+        rotate: 4,
+        scale: 0.92,
+        opacity: 0,
+        filter: "blur(8px)",
+        transformOrigin: "50% 50%",
+        willChange: "transform, filter, opacity",
+      });
+
+      // Pin stage at its natural position (under title), then switch cards while scrolling.
+      ScrollTrigger.create({
+        trigger: stageEl,
+        start: "top top+=140",
+        end: () => `+=${Math.max(1, cards.length - 1) * 260}`,
+        pin: stageEl,
+        pinSpacing: true,
+        scrub: true,
+        onUpdate: (self) => {
+          const hold = 0.16; // keep first card visible at pin start
+          const normalized = Math.max(0, (self.progress - hold) / (1 - hold));
+          const idx = Math.min(cards.length - 1, Math.floor(normalized * cards.length));
+          applyState(idx);
+        },
+      });
+
+      // Default active card (prevents blank/black stage).
+      applyState(0);
+    }, stageEl);
+
+    return () => ctx.revert();
+  }, [isDesktop, prefersReduced]);
 
   return (
-    <section ref={ref} className="space-y-10">
+    <section ref={ref} className="relative space-y-10 overflow-x-clip pb-8 mb-10 border-b border-white/10">
       <style>{`
         @keyframes scanDown {
           0%   { top: -100%; }
@@ -394,23 +494,48 @@ export function ExpertiseCards() {
         </p>
       </div>
 
-      {/* Responsive Grid Layout */}
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
-
-        {/* Card 1 — Feature card (Full width on mobile, spans 2 rows on desktop) */}
-        <div className="md:row-span-2 md:col-span-1">
-          <ExpertiseCard item={highlights[0]} size="feature" delay={0} visible={visible} />
+      {/* Desktop: pinned stage + scroll track (goned-style). Mobile: keep grid. */}
+      {isDesktop && !prefersReduced ? (
+        <div ref={wrapRef} className="relative">
+          {/* Pinned stage */}
+          <div
+            ref={stageRef}
+            className="relative z-10 mx-auto max-w-6xl"
+            style={{
+              height: "clamp(520px, 70vh, 760px)",
+              perspective: "1200px",
+            }}
+          >
+            {highlights.map((item, idx) => (
+              <div
+                key={item.title}
+                ref={(el) => {
+                  cardWrapRefs.current[idx] = el;
+                }}
+                className="absolute left-1/2 top-6 w-[min(420px,86%)] -translate-x-1/2"
+              >
+                <ExpertiseCard item={item} size="normal" visible={true} animateByGsap />
+              </div>
+            ))}
+          </div>
         </div>
+      ) : (
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+          {/* Card 1 — Feature card */}
+          <div className="md:row-span-2 md:col-span-1">
+            <ExpertiseCard item={highlights[0]} size="feature" delay={0} visible={visible} />
+          </div>
 
-        {/* Cards 2-5 (2-col grid on mobile, 1-col each on desktop) */}
-        <div className="grid grid-cols-2 gap-4 md:contents">
-          {highlights.slice(1).map((item, i) => (
-            <div key={item.title} className="md:col-span-1">
-              <ExpertiseCard item={item} size="normal" delay={(i + 1) * 80} visible={visible} />
-            </div>
-          ))}
+          {/* Cards 2-5 */}
+          <div className="grid grid-cols-2 gap-4 md:contents">
+            {highlights.slice(1).map((item, i) => (
+              <div key={item.title} className="md:col-span-1">
+                <ExpertiseCard item={item} size="normal" delay={(i + 1) * 80} visible={visible} />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }

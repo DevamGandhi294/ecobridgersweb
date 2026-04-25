@@ -2,7 +2,7 @@
 
 import {
   useInView, SectionBadge, OfferShowcaseCard, PlatformBenefitsGrid,
-  ProcessCard, UseCaseCard, CreationProcessTimeline, TechBadge, InquiryForm, FormCard, ServiceCTA,
+  CreationProcessTimeline, TechMarquee, ServiceCTA,
 } from "@/components/ServicePageShell";
 import { ScrollToggleHero } from "@/components/ScrollToggleHero";
 
@@ -19,12 +19,12 @@ const offerings = [
   { icon:"🎨", title:"Clean UI/UX Design",        desc:"Intuitive, beautiful interfaces that are easy to use for any type of user." },
 ];
 const useCases = [
-  { icon:"🔌", label:"IoT Control Apps"            },
-  { icon:"🔔", label:"Monitoring & Alert Systems"  },
-  { icon:"🏭", label:"Industrial Companion Apps"   },
-  { icon:"💼", label:"Custom Business Apps"        },
-  { icon:"🗺️", label:"Field Operations Apps"       },
-  { icon:"📋", label:"Data Collection Apps"        },
+  { icon:"🔌", label:"IoT Control Apps",           desc: "Take full remote control over connected hardware interfaces from your phone." },
+  { icon:"🔔", label:"Monitoring & Alert Systems", desc: "Receive mission-critical push notifications immediately when thresholds breach." },
+  { icon:"🏭", label:"Industrial Companion Apps",  desc: "Empower factory workers with intuitive tablets directly tracking machine health." },
+  { icon:"💼", label:"Custom Business Apps",       desc: "Internal workflow applications optimizing specific operational bottlenecks seamlessly." },
+  { icon:"🗺️", label:"Field Operations Apps",      desc: "Equip off-site teams with live geo-tracked routing and offline sync capabilities." },
+  { icon:"📋", label:"Data Collection Apps",       desc: "Digitize complex pen-and-paper surveys into lightning-fast native mobile forms." },
 ];
 const process = [
   { step:"01", title:"UX Planning",         desc:"Map user journeys, screens, and interaction flows before writing code." },
@@ -36,7 +36,7 @@ const process = [
 ];
 const techStack = ["Flutter","Dart","Firebase","REST API","MQTT","Provider","Riverpod","GetX","Google Play","App Store","FCM","BLE"];
 
-const platformBenefits = useCases.map((u) => ({ title: u.label }));
+const platformBenefits = useCases.map((u) => ({ title: u.label, desc: u.desc }));
 
 export default function MobileServicePage() {
   const offerRef = useInView();
@@ -73,7 +73,7 @@ export default function MobileServicePage() {
             <OfferShowcaseCard
               items={offerings}
               accentColor={ACCENT}
-              imageSrc="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80"
+              imageSrc="/images/photo-1512941937669-90a1b58e7e9c.jpg"
               imageAlt="Mobile app UI on smartphone"
               isActive={offerRef.visible}
             />
@@ -94,13 +94,13 @@ export default function MobileServicePage() {
           />
         </section>
 
-        <section ref={procRef.ref} className="relative overflow-hidden rounded-3xl border border-white/10 p-8 sm:p-12 transition-all duration-700"
-          style={{ opacity:procRef.visible?1:0, transform:procRef.visible?"translateY(0)":"translateY(36px)", background:"linear-gradient(135deg,#070509,#0a0710,#060408)" }}>
+        <section ref={procRef.ref} className="relative space-y-8 transition-all duration-700"
+          style={{ opacity:procRef.visible?1:0, transform:procRef.visible?"translateY(0)":"translateY(36px)" }}>
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -left-20 top-0 h-64 w-64 rounded-full blur-[100px]" style={{ background:`${ACCENT}14` }} />
             <div className="absolute -right-20 bottom-0 h-48 w-48 rounded-full blur-[80px]" style={{ background:`${ACCENT}0e` }} />
           </div>
-          <div className="relative space-y-3 text-center mb-10">
+          <div className="relative mb-10 flex flex-col items-start space-y-3 text-left">
             <SectionBadge color="violet">Our Process</SectionBadge>
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(1.9rem,4.5vw,3rem)", fontFamily:"var(--font-display)" }}>How We Deliver</h2>
           </div>
@@ -114,17 +114,14 @@ export default function MobileServicePage() {
         <section ref={techRef.ref} className="space-y-6 transition-all duration-700" style={{ opacity:techRef.visible?1:0, transform:techRef.visible?"translateY(0)":"translateY(28px)" }}>
           <SectionBadge color="violet">Technologies</SectionBadge>
           <h2 className="font-bold text-white text-2xl" style={{ fontFamily:"var(--font-display)" }}>Technologies We Use</h2>
-          <div className="flex flex-wrap gap-3">{techStack.map(t => <TechBadge key={t} label={t} accentColor={ACCENT} />)}</div>
+          <TechMarquee items={techStack} accentColor={ACCENT} />
         </section>
 
-        <ServiceCTA accentGradient={ACCENT_GRAD} accentColor={ACCENT}
+        <ServiceCTA accentGradient={ACCENT_GRAD} accentColor={ACCENT} badgeColor="violet"
           title="Ready to Build Your App?"
           subtitle="Android, iOS, or both — let's design and build your mobile app from scratch. Beautiful UI, powerful backend, delivered on time."
           ctaText="Start the Conversation" />
       </div>
     </div>
   );
-  <FormCard accentColor={ACCENT}>
-          <InquiryForm accentGradient={ACCENT_GRAD} accentColor={ACCENT} focusColor="#8b5cf6" serviceDefault="Mobile Applications" />
-        </FormCard>
 }

@@ -2,7 +2,7 @@
 
 import {
   useInView, SectionBadge, OfferShowcaseCard,
-  ProcessCard, UseCaseCard, TechBadge, PlatformBenefitsGrid, CreationProcessTimeline, InquiryForm, FormCard, ServiceCTA,
+  TechMarquee, PlatformBenefitsGrid, CreationProcessTimeline, ServiceCTA,
 } from "@/components/ServicePageShell";
 import { ScrollToggleHero } from "@/components/ScrollToggleHero";
 
@@ -20,12 +20,12 @@ const offerings = [
 ];
 
 const useCases = [
-  { icon:"📊", label:"Smart Monitoring Systems"        },
-  { icon:"⚙️", label:"Automation & Control"            },
-  { icon:"🏭", label:"Industrial Equipment Monitoring" },
-  { icon:"🌿", label:"Environmental Monitoring"        },
-  { icon:"🏗️", label:"Infrastructure Sensing"          },
-  { icon:"🔬", label:"Research & Prototypes"           },
+  { icon:"📊", label:"Smart Monitoring Systems", desc: "Live dashboards providing real-time oversight of key operational metrics and alerts." },
+  { icon:"⚙️", label:"Automation & Control", desc: "Self-regulating hardware that automatically triggers mechanical and logical actions." },
+  { icon:"🏭", label:"Industrial Equipment Monitoring", desc: "Predictive maintenance tracking to eliminate costly machine downtimes and faults." },
+  { icon:"🌿", label:"Environmental Monitoring", desc: "Precision sensor arrays tracking ambient temperatures, air quality maps, and humidity." },
+  { icon:"🏗️", label:"Infrastructure Sensing", desc: "Embeddable robust trackers monitoring physical stress and structural health logs." },
+  { icon:"🔬", label:"Research & Prototypes", desc: "Custom bespoke hardware iterations designed explicitly for rapid field validation." },
 ];
 
 const process = [
@@ -39,7 +39,7 @@ const process = [
 
 const techStack = ["ESP32","ESP8266","Arduino","Raspberry Pi","MQTT","LoRa","Firebase","Node.js","Python","C/C++","FreeRTOS","WebSockets"];
 
-const platformBenefits = useCases.map((u) => ({ title: u.label }));
+const platformBenefits = useCases.map((u) => ({ title: u.label, desc: u.desc }));
 
 function CityDataShowcase() {
   return (
@@ -130,7 +130,6 @@ export default function IoTServicePage() {
   const caseRef     = useInView();
   const procRef     = useInView();
   const techRef     = useInView();
-  const formRef     = useInView();
 
   return (
     <div className="flex flex-col overflow-x-hidden">
@@ -164,7 +163,7 @@ export default function IoTServicePage() {
             <OfferShowcaseCard
               items={offerings}
               accentColor={ACCENT}
-              imageSrc="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
+              imageSrc="/images/photo-1518770660439-4636190af475.jpg"
               imageAlt="IoT hardware and embedded electronics"
               isActive={offerRef.visible}
             />
@@ -220,16 +219,16 @@ export default function IoTServicePage() {
         </section>
 
         {/* PROCESS */}
-        <section ref={procRef.ref} className="relative overflow-hidden rounded-3xl border border-white/10 p-8 sm:p-12 transition-all duration-700"
-          style={{ opacity:procRef.visible?1:0, transform:procRef.visible?"translateY(0)":"translateY(36px)", background:"linear-gradient(135deg,#050709,#071209,#040810)" }}>
+        <section ref={procRef.ref} className="relative space-y-8 transition-all duration-700"
+          style={{ opacity:procRef.visible?1:0, transform:procRef.visible?"translateY(0)":"translateY(36px)" }}>
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -left-20 top-0 h-64 w-64 rounded-full blur-[100px]" style={{ background:`${ACCENT}14` }} />
             <div className="absolute -right-20 bottom-0 h-48 w-48 rounded-full blur-[80px]" style={{ background:`${ACCENT}0e` }} />
           </div>
-          <div className="relative space-y-3 text-center mb-10">
+          <div className="relative mb-10 flex flex-col items-start space-y-3 text-left">
             <SectionBadge color="emerald">how it happens</SectionBadge>
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(1.9rem,4.5vw,3rem)", fontFamily:"var(--font-display)" }}>six steps. no surprises.</h2>
-            <p className="mx-auto max-w-xl text-sm text-zinc-400" style={{ fontFamily:"var(--font-body)" }}>from first conversation to on-site deployment — you know exactly what's happening at every step.</p>
+            <p className="max-w-xl text-sm text-zinc-400" style={{ fontFamily:"var(--font-body)" }}>from first conversation to on-site deployment — you know exactly what's happening at every step.</p>
           </div>
           <div className="relative">
             <CreationProcessTimeline steps={process} accentColor={ACCENT} />
@@ -242,32 +241,7 @@ export default function IoTServicePage() {
         <section ref={techRef.ref} className="space-y-6 transition-all duration-700" style={{ opacity:techRef.visible?1:0, transform:techRef.visible?"translateY(0)":"translateY(28px)" }}>
           <SectionBadge color="emerald">the stack</SectionBadge>
           <h2 className="font-bold text-white text-2xl" style={{ fontFamily:"var(--font-display)" }}>tools we actually know, not just list on a spec sheet.</h2>
-          <div className="flex flex-wrap gap-3">
-            {techStack.map(t => <TechBadge key={t} label={t} accentColor={ACCENT} />)}
-          </div>
-        </section>
-
-        {/* FORM — standalone, no ServiceHero wrapper, no min-height */}
-        <section
-          ref={formRef.ref}
-          id="inquiry"
-          className="transition-all duration-700"
-          style={{ opacity:formRef.visible?1:0, transform:formRef.visible?"translateY(0)":"translateY(32px)" }}
-        >
-          <div className="mx-auto max-w-2xl">
-            <div className="mb-8 space-y-2">
-              <SectionBadge color="emerald">get in touch</SectionBadge>
-              <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(1.9rem,4.5vw,3rem)", fontFamily:"var(--font-display)" }}>
-                got hardware to build?
-              </h2>
-              <p className="text-base text-zinc-400" style={{ fontFamily:"var(--font-body)" }}>
-                napkin sketch, half-baked idea, or full spec — bring it. we'll design the full system: hardware, firmware, cloud, and dashboard.
-              </p>
-            </div>
-            <FormCard accentColor={ACCENT}>
-              <InquiryForm accentGradient={ACCENT_GRAD} accentColor={ACCENT} focusColor="#10b981" serviceDefault="IoT & Embedded Systems" />
-            </FormCard>
-          </div>
+          <TechMarquee items={techStack} accentColor={ACCENT} />
         </section>
 
       </div>

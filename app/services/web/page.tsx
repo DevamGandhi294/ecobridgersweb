@@ -2,7 +2,7 @@
 
 import {
   useInView, SectionBadge, OfferShowcaseCard, PlatformBenefitsGrid,
-  ProcessCard, UseCaseCard, CreationProcessTimeline, TechBadge, InquiryForm, FormCard, ServiceCTA,
+  CreationProcessTimeline, TechMarquee, ServiceCTA,
 } from "@/components/ServicePageShell";
 import { ScrollToggleHero } from "@/components/ScrollToggleHero";
 
@@ -19,12 +19,12 @@ const offerings = [
   { icon:"🔐", title:"Auth & Role Management",    desc:"Secure login, multi-role access control, and session management built in." },
 ];
 const useCases = [
-  { icon:"📡", label:"IoT Monitoring Dashboards"   },
-  { icon:"📋", label:"Data Logging & Reporting"    },
-  { icon:"🖥️", label:"Admin Control Panels"        },
-  { icon:"🗂️", label:"Management Portals"          },
-  { icon:"🏢", label:"Multi-Tenant SaaS Platforms" },
-  { icon:"⚙️", label:"API-First Backends"          },
+  { icon:"📡", label:"IoT Monitoring Dashboards",   desc: "Unify hundreds of edge device streams into a sleek, real-time command center." },
+  { icon:"📋", label:"Data Logging & Reporting",    desc: "Export automated pdf/csv compliance reports mapped directly from raw databases." },
+  { icon:"🖥️", label:"Admin Control Panels",        desc: "Granular UI panels for configuring fleets, remote updates, and alarm limits." },
+  { icon:"🗂️", label:"Management Portals",          desc: "Secure internal apps handling deep hierarchical business and operational structures." },
+  { icon:"🏢", label:"Multi-Tenant SaaS Platforms", desc: "Partition architecture securely so clients only access their own slice of the network." },
+  { icon:"⚙️", label:"API-First Backends",          desc: "Headless servers designed aggressively for raw low-latency data consumption." },
 ];
 const process = [
   { step:"01", title:"Discovery & Scoping",   desc:"Define user roles, data flows, and platform requirements." },
@@ -36,7 +36,7 @@ const process = [
 ];
 const techStack = ["Next.js","React","Node.js","Firebase","PostgreSQL","MySQL","REST API","WebSockets","Tailwind CSS","Vercel","Docker","TypeScript"];
 
-const platformBenefits = useCases.map((u) => ({ title: u.label }));
+const platformBenefits = useCases.map((u) => ({ title: u.label, desc: u.desc }));
 
 export default function WebServicePage() {
   const offerRef = useInView();
@@ -73,7 +73,7 @@ export default function WebServicePage() {
             <OfferShowcaseCard
               items={offerings}
               accentColor={ACCENT}
-              imageSrc="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80"
+              imageSrc="/images/photo-1460925895917-afdab827c52f.jpg"
               imageAlt="Web analytics dashboard on laptop"
               isActive={offerRef.visible}
             />
@@ -94,13 +94,13 @@ export default function WebServicePage() {
           />
         </section>
 
-        <section ref={procRef.ref} className="relative overflow-hidden rounded-3xl border border-white/10 p-8 sm:p-12 transition-all duration-700"
-          style={{ opacity:procRef.visible?1:0, transform:procRef.visible?"translateY(0)":"translateY(36px)", background:"linear-gradient(135deg,#050709,#060b10,#040810)" }}>
+        <section ref={procRef.ref} className="relative space-y-8 transition-all duration-700"
+          style={{ opacity:procRef.visible?1:0, transform:procRef.visible?"translateY(0)":"translateY(36px)" }}>
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -left-20 top-0 h-64 w-64 rounded-full blur-[100px]" style={{ background:`${ACCENT}14` }} />
             <div className="absolute -right-20 bottom-0 h-48 w-48 rounded-full blur-[80px]" style={{ background:`${ACCENT}0e` }} />
           </div>
-          <div className="relative space-y-3 text-center mb-10">
+          <div className="relative mb-10 flex flex-col items-start space-y-3 text-left">
             <SectionBadge color="cyan">Our Process</SectionBadge>
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(1.9rem,4.5vw,3rem)", fontFamily:"var(--font-display)" }}>How We Deliver</h2>
           </div>
@@ -114,18 +114,14 @@ export default function WebServicePage() {
         <section ref={techRef.ref} className="space-y-6 transition-all duration-700" style={{ opacity:techRef.visible?1:0, transform:techRef.visible?"translateY(0)":"translateY(28px)" }}>
           <SectionBadge color="cyan">Technologies</SectionBadge>
           <h2 className="font-bold text-white text-2xl" style={{ fontFamily:"var(--font-display)" }}>Technologies We Use</h2>
-          <div className="flex flex-wrap gap-3">{techStack.map(t => <TechBadge key={t} label={t} accentColor={ACCENT} />)}</div>
+          <TechMarquee items={techStack} accentColor={ACCENT} />
         </section>
 
-        <ServiceCTA accentGradient={ACCENT_GRAD} accentColor={ACCENT}
+        <ServiceCTA accentGradient={ACCENT_GRAD} accentColor={ACCENT} badgeColor="cyan"
           title="Ready to Build Your Platform?"
           subtitle="From dashboard to deployment — let's build your web platform together. Reliable, scalable, beautifully designed."
           ctaText="Start the Conversation" />
       </div>
     </div>
   );
-  <FormCard accentColor={ACCENT}>
-    <InquiryForm accentGradient={ACCENT_GRAD} accentColor={ACCENT} focusColor="#06b6d4" serviceDefault="Web & Cloud Platforms" />
-  </FormCard>
-      
 }

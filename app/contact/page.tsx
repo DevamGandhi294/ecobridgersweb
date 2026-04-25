@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from 'next'
+import { Mail, Smartphone, Globe } from "lucide-react";
 
 export const metadata: Metadata = {
     alternates: {
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
     const contactMethods = [
         {
-            icon: "📧",
+            Icon: Mail,
             title: "Email",
             value: "ecobridgers.tech@gmail.com",
             description: "For project inquiries",
@@ -20,7 +21,7 @@ export default function ContactPage() {
             actionText: "Send Email",
         },
         {
-            icon: "📱",
+            Icon: Smartphone,
             title: "WhatsApp",
             value: "+91 7862949437",
             description: "Quick responses",
@@ -28,7 +29,7 @@ export default function ContactPage() {
             actionText: "Chat on WhatsApp",
         },
         {
-            icon: "🌍",
+            Icon: Globe,
             title: "Location",
             value: "India",
             description: "Remote work available",
@@ -49,41 +50,54 @@ export default function ContactPage() {
     return (
         <div className="space-y-12">
             {/* Hero Section */}
-            <section className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-zinc-900 via-zinc-900 to-emerald-950/20 p-8 sm:p-12">
+            <section className="relative overflow-hidden rounded-3xl border border-zinc-200 bg-white pl-6 pr-2 py-6 shadow-sm sm:pl-16 sm:pr-6 sm:py-8 lg:pl-24 lg:pr-8 lg:py-10">
                 <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-                    <div className="absolute -left-20 top-0 h-72 w-72 animate-pulse rounded-full bg-emerald-500/10 blur-[100px]" />
-                    <div className="absolute -right-20 bottom-0 h-72 w-72 animate-pulse rounded-full bg-cyan-500/10 blur-[100px] [animation-delay:1s]" />
+                    <div className="absolute -left-20 top-0 h-72 w-72 animate-pulse rounded-full bg-emerald-500/20 blur-[100px]" />
+                    <div className="absolute -right-20 bottom-0 h-72 w-72 animate-pulse rounded-full bg-cyan-500/20 blur-[100px] [animation-delay:1s]" />
                 </div>
 
-                <div className="relative text-center">
-                    <h1 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl">
-                        Let's Build Something{" "}
-                        <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                            Together
-                        </span>
-                    </h1>
+                <div className="relative grid items-center gap-12 lg:grid-cols-2">
+                    {/* Left: Text Content */}
+                    <div className="space-y-15 text-center lg:text-left animate-fade-right">
+                        <h1 className="text-4xl font-bold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
+                            Let's Build Something<br className="hidden sm:block" />
+                            <span className="bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">
+                                Together
+                            </span>
+                        </h1>
+                        <p className="text-lg text-zinc-600">
+                            Have a project idea? Get in touch with us.
+                        </p>
+                    </div>
 
-                    <p className="mt-4 text-lg text-zinc-300">
-                        Have a project idea? Get in touch with us.
-                    </p>
+                    {/* Right: 3D Mobile Image */}
+                    <div className="flex justify-center lg:justify-end translate-x-8 sm:translate-x-12 lg:translate-x-0">
+                        <img
+                            src="/download.webp"
+                            alt="3D Mobile App Render"
+                            className="w-full max-w-[220px] sm:max-w-[260px] lg:max-w-[300px] drop-shadow-[0_20px_40px_rgba(52,211,153,0.25)] animate-float"
+                        />
+                    </div>
                 </div>
             </section>
 
             {/* Contact Methods */}
-            <section>
+            <section className="mx-auto max-w-5xl">
                 <div className="grid gap-6 md:grid-cols-3">
                     {contactMethods.map((method) => (
                         <div
                             key={method.title}
                             className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/90 to-zinc-900/50 p-6 backdrop-blur-sm transition-all hover:border-emerald-500/30"
                         >
-                            <div className="absolute -right-8 -top-8 text-8xl opacity-5 transition-all group-hover:scale-110 group-hover:opacity-10">
-                                {method.icon}
+                            <div className="absolute -right-8 -top-8 text-zinc-500 opacity-5 transition-all duration-500 group-hover:scale-110 group-hover:opacity-10">
+                                <method.Icon className="h-40 w-40" strokeWidth={1} />
                             </div>
 
                             <div className="relative">
-                                <div className="text-4xl">{method.icon}</div>
-                                <h3 className="mt-3 text-lg font-bold text-white">{method.title}</h3>
+                                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.1)]">
+                                    <method.Icon className="h-6 w-6" strokeWidth={2} />
+                                </div>
+                                <h3 className="text-lg font-bold text-white">{method.title}</h3>
                                 <p className="mt-2 text-base font-medium text-emerald-400">{method.value}</p>
                                 <p className="mt-2 text-sm text-zinc-400">{method.description}</p>
 
@@ -109,7 +123,7 @@ export default function ContactPage() {
             </section>
 
             {/* Contact Form */}
-            <section>
+            <section className="mx-auto max-w-4xl">
                 <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-zinc-900/90 to-zinc-900/50 p-8 backdrop-blur-sm">
                     <h2 className="text-2xl font-bold text-white">
                         Send Us a Message

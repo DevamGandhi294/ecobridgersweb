@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import {
   useInView, SectionBadge, ServiceHero, OfferingCard,
-  ProcessCard, UseCaseCard, TechBadge, InquiryForm, FormCard, ServiceCTA,
+  ProcessCard, UseCaseCard, TechBadge, ServiceCTA,
 } from "@/components/ServicePageShell";
 
 const ACCENT = "#06b6d4";
@@ -608,13 +608,11 @@ export default function WebServicePage() {
         <ServiceCTA
           accentGradient={ACCENT_GRAD}
           accentColor={ACCENT}
+          badgeColor="cyan"
           title="got a platform to build?"
           subtitle="rough idea or full spec — bring it. we'll architect the right solution, build it clean, and hand it over with documentation that doesn't suck."
           ctaText="let's build it →"
         />
-        <FormCard accentColor={ACCENT}>
-          <InquiryForm accentGradient={ACCENT_GRAD} accentColor={ACCENT} focusColor="#06b6d4" serviceDefault="Web & Cloud Platforms" />
-        </FormCard>
 
       </div>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, memo } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, memo, Fragment } from "react";
 import { ExpertiseCards } from "../components/Expertisecards";
 import { SplashScreen } from "@/components/SplashScreen";
 
@@ -19,21 +19,6 @@ function useInView(threshold = 0.15) {
   }, [threshold]);
   return { ref, visible };
 }
-
-/* ─────────────────────────────────────────
-   Counter
-───────────────────────────────────────── */
-const Counter = memo(function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const { ref, visible } = useInView(0.3);
-  useEffect(() => {
-    if (!visible) return;
-    let n = 0; const step = Math.ceil(target / 40);
-    const id = setInterval(() => { n += step; if (n >= target) { setCount(target); clearInterval(id); } else setCount(n); }, 30);
-    return () => clearInterval(id);
-  }, [visible, target]);
-  return <span ref={ref}>{count}{suffix}</span>;
-});
 
 /* ─────────────────────────────────────────
    Section Badge
@@ -180,8 +165,8 @@ function Hero({ heroReady }: { heroReady: boolean }) {
           }}
         >
           {/* Left text */}
-          <div style={{ opacity: heroReady ? 1 : 0, transform: heroReady ? "translateY(0)" : "translateY(32px)", transition: "opacity 0.7s ease, transform 0.7s ease" }}>
-            <h1 style={{ fontSize: "clamp(2.4rem,5vw,4.2rem)", fontWeight: 900, lineHeight: 1.08, color: "#f0fdf8", marginBottom: 24, fontFamily: "var(--font-display)" }}>
+          <div>
+            <h1 style={{ fontSize: "clamp(2.4rem,5vw,4.2rem)", fontWeight: 900, lineHeight: 1.08, color: "#f0fdf8", marginBottom: 24, fontFamily: "var(--font-display)", opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)" }}>
               Where Ideas Cross the Bridge to{" "}
               <GradientHeroWord>
                 Innovation
@@ -205,6 +190,7 @@ function Hero({ heroReady }: { heroReady: boolean }) {
                 color: "#34d399",
                 textTransform: "uppercase" as const,
                 backdropFilter: "blur(8px)",
+                opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.1s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s",
               }}
             >
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#34d399", boxShadow: "0 0 8px rgba(52,211,153,0.9)", animation: "archPulse 2s ease-in-out infinite", display: "inline-block" }} />
@@ -213,17 +199,17 @@ function Hero({ heroReady }: { heroReady: boolean }) {
             
 
             {/* Sub */}
-            <p style={{ fontSize: 17, color: "rgba(240,253,248,0.7)", lineHeight: 1.7, marginBottom: 16, maxWidth: 480, fontFamily: "var(--font-body)" }}>
+            <p style={{ fontSize: 17, color: "rgba(240,253,248,0.7)", lineHeight: 1.7, marginBottom: 16, maxWidth: 480, fontFamily: "var(--font-body)", opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.2s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s" }}>
               your idea is the starting point. we&apos;re the engine that turns it into something real —
               hardware that talks, software that scales, systems that don&apos;t quit.
             </p>
-            <p style={{ fontSize: 14, color: "rgba(240,253,248,0.45)", lineHeight: 1.6, marginBottom: 36, maxWidth: 440, fontFamily: "var(--font-body)" }}>
+            <p style={{ fontSize: 14, color: "rgba(240,253,248,0.45)", lineHeight: 1.6, marginBottom: 36, maxWidth: 440, fontFamily: "var(--font-body)", opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.3s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s" }}>
               from sensor to dashboard. from prototype to production.<br />
               no fluff. no gatekeeping. just engineering that works.
             </p>
 
             {/* CTAs */}
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 44 }}>
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 44, opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.4s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s" }}>
               <Link
                 href="/contact"
                 style={{
@@ -277,7 +263,7 @@ function Hero({ heroReady }: { heroReady: boolean }) {
             </div>
 
             {/* Chips */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.5s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s" }}>
               {["End-to-end delivery", "IoT → Cloud", "Ships on Time", "No Over-Engineering"].map((chip) => (
                 <span key={chip} style={{
                   background: "rgba(52,211,153,0.07)",
@@ -383,50 +369,6 @@ function Hero({ heroReady }: { heroReady: boolean }) {
             </div>
           </div>
         </div>
-
-        {/* Stats row */}
-        <div
-          style={{
-            maxWidth: 1280,
-            margin: "0 auto",
-            padding: "0 24px 48px",
-            opacity: heroReady ? 1 : 0,
-            transform: heroReady ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 0.8s ease 0.6s, transform 0.8s ease 0.6s",
-          }}
-        >
-          <div className="hero-stats-grid">
-            {[
-              { num: <Counter target={1} suffix="+" />, label: "years deep", sub: "just getting started", accent: "#34d399" },
-              { num: <Counter target={5} suffix="+" />, label: "projects shipped", sub: "with actual real users", accent: "#22d3ee" },
-              { num: "Full", label: "stack coverage", sub: "embedded → cloud", accent: "#a78bfa" },
-              { num: "Zero", label: "over-engineering", sub: "we actually mean it", accent: "#f472b6" },
-            ].map(({ num, label, sub, accent }, i) => (
-              <div
-                key={i}
-                className="hero-stat-card"
-                style={{
-                  position: "relative",
-                  overflow: "hidden",
-                  borderRadius: 16,
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  background: "rgba(255,255,255,0.03)",
-                  padding: "20px 24px",
-                  backdropFilter: "blur(8px)",
-                  transition: "all 0.3s",
-                  cursor: "default",
-                  minWidth: 0,
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.18)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.08)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.03)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
-              >
-                <div style={{ fontSize: "clamp(1.6rem,3vw,2.4rem)", fontWeight: 900, color: accent, fontFamily: "var(--font-display)", lineHeight: 1.1 }}>{num}</div>
-                <div style={{ marginTop: 6, fontSize: 13, fontWeight: 600, color: "rgba(240,253,248,0.75)", fontFamily: "var(--font-display)", lineHeight: 1.35, wordBreak: "break-word", hyphens: "auto" }}>{label}</div>
-                <div style={{ marginTop: 4, fontSize: 11, color: "rgba(240,253,248,0.35)", fontFamily: "var(--font-body)", lineHeight: 1.45, wordBreak: "break-word" }}>{sub}</div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
 
       {/* Responsive styles */}
@@ -436,32 +378,13 @@ function Hero({ heroReady }: { heroReady: boolean }) {
         @keyframes chipFloat { 0%,100%{transform:translateY(0px);} 50%{transform:translateY(-10px);} }
         @keyframes orbPulse { 0%,100%{opacity:0.8;transform:scale(1);} 50%{opacity:1;transform:scale(1.08);} }
         @keyframes archPulse { 0%,100%{opacity:0.6;} 50%{opacity:1;} }
-        .hero-stats-grid {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 14px;
-        }
-        @media (max-width: 900px) {
-          .hero-stats-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-          }
-          .hero-stat-card { padding: 18px 16px !important; }
-        }
-        @media (max-width: 480px) {
-          .hero-stats-grid {
-            grid-template-columns: 1fr;
-            gap: 10px;
-          }
-          .hero-stat-card { padding: 16px 18px !important; }
-        }
         @media (max-width: 768px) {
           .hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
           .hero-grid > div:last-child { display: none !important; }
-          .hero-stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .arch-nodes-grid { grid-template-columns: 1fr !important; gap: 6px !important; }
         }
-        @media (max-width: 480px) {
-          .hero-stats-grid { grid-template-columns: 1fr !important; }
+        @media (min-width: 768px) {
+          .mobile-arrow { display: none !important; }
         }
       `}</style>
     </section>
@@ -472,49 +395,18 @@ function Hero({ heroReady }: { heroReady: boolean }) {
    WHY ECOBRIDGES — Gen-Z bento
 ───────────────────────────────────────── */
 const WhySection = memo(function WhySection({ visible }: { visible: boolean }) {
-  const cards = [
-    {
-      icon: "💀", tag: "the hard truth",
-      headline: "Most tech projects die in spreadsheets.",
-      body: "Or explode in cost before they ship. We keep them alive by staying ruthlessly practical — no fluff, no filler, just execution that actually lands.",
-      accent: "#34d399", bg: "from-emerald-500/10 to-transparent",
-      border: "rgba(52,211,153,0.2)", glow: "rgba(52,211,153,0.12)",
-      pills: ["No Scope Creep", "Ships on Time", "On Budget"],
-    },
-    {
-      icon: "⚡", tag: "the approach",
-      headline: "Hardware. Software. Cloud. All talking fluently.",
-      body: "We connect all three in ways that feel effortless — because they're engineered that way. No unnecessary layers, no over-architected nonsense.",
-      accent: "#22d3ee", bg: "from-cyan-500/10 to-transparent",
-      border: "rgba(34,211,238,0.2)", glow: "rgba(34,211,238,0.12)",
-      pills: null,
-    },
-    {
-      icon: "🔩", tag: "the philosophy",
-      headline: "Efficiency isn't a feature. It's the foundation.",
-      body: "Design it right the first time and you spend less time firefighting, more time shipping. Over-engineering is a bug we refuse to commit.",
-      accent: "#fb923c", bg: "from-orange-500/10 to-transparent",
-      border: "rgba(251,146,60,0.2)", glow: "rgba(251,146,60,0.12)",
-      pills: null, stat: true,
-    },
-    {
-      icon: "🌍", tag: "real world only",
-      headline: "Built for factories, farms, cities, offices.",
-      body: "Not just demo-day ready. Real environments where things break, loads spike, and downtime costs money — we engineer for that from day one.",
-      accent: "#a78bfa", bg: "from-violet-500/10 to-transparent",
-      border: "rgba(167,139,250,0.2)", glow: "rgba(167,139,250,0.12)",
-      pills: null,
-    },
-    {
-      icon: "🎯", tag: "the process",
-      headline: "Scope locked. Timeline real. No surprises.",
-      body: "We scope it tight, give you a real timeline, and actually stick to it. No scope creep, no mystery invoices, no 'just one more sprint' traps.",
-      accent: "#22d3ee", bg: "from-cyan-500/10 to-transparent",
-      border: "rgba(34,211,238,0.2)", glow: "rgba(34,211,238,0.12)",
-      pills: ["Fixed Scope", "Real Deadlines", "No Surprises"],
-      stat: false,
-    },
-  ];
+  const palette = {
+    pink: { bg: "#ee93df", text: "#211225", border: "rgba(238,147,223,0.8)" },
+    lime: { bg: "#d6dd57", text: "#1e2210", border: "rgba(214,221,87,0.85)" },
+    blue: { bg: "#7e88ff", text: "#12162a", border: "rgba(126,136,255,0.85)" },
+    green: { bg: "#92e39f", text: "#0f2313", border: "rgba(146,227,159,0.85)" },
+    light: { bg: "#f2f3ef", text: "#171717", border: "rgba(255,255,255,0.65)" },
+  } as const;
+  const photoTiles = {
+    architecture: "/images/photo-1518773553398-650c184e0bb3.jpg",
+    fieldOps: "/images/photo-1581092160562-40aa08e78837.jpg",
+    dashboard: "/images/photo-1460925895917-afdab827c52f.jpg",
+  } as const;
 
   return (
     <section className="space-y-8">
@@ -527,122 +419,150 @@ const WhySection = memo(function WhySection({ visible }: { visible: boolean }) {
               EcoBridges?
             </span>
           </h2>
-          <p className="text-sm text-zinc-500 sm:text-right max-w-xs" style={{ fontFamily: "var(--font-body)" }}>no corporate bs. just real talk.</p>
-        </div>
-        <div className="relative overflow-hidden py-1">
-          <div style={{ display: "flex", gap: "10px", width: "max-content", animation: "marquee-scroll 22s linear infinite" }}>
-            {["no fluff", "ships on time", "real engineering", "zero over-engineering", "hw + sw + cloud", "production grade", "built to last", "no buzzwords", "actually scalable",
-              "no fluff", "ships on time", "real engineering", "zero over-engineering", "hw + sw + cloud", "production grade", "built to last", "no buzzwords", "actually scalable"
-            ].map((t, i) => (
-              <span key={i} className="whitespace-nowrap rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-zinc-600">{t}</span>
-            ))}
-          </div>
+          <p className="text-sm text-zinc-500 sm:text-right max-w-xs" style={{ fontFamily: "var(--font-body)" }}>
+            real projects. real delivery.
+          </p>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {(() => {
-          const c = cards[0]; return (
-            <div className="group relative col-span-1 sm:col-span-2 overflow-hidden rounded-3xl border bg-zinc-900/70 p-7 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1"
-              style={{ borderColor: c.border, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(40px)", transition: "opacity 0.7s,transform 0.7s,box-shadow 0.4s,border-color 0.3s,translate 0.3s" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 24px 64px -12px ${c.glow}`; (e.currentTarget as HTMLElement).style.borderColor = `${c.accent}55`; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; (e.currentTarget as HTMLElement).style.borderColor = c.border; }}
-            >
-              <div className={`absolute inset-0 bg-gradient-to-br ${c.bg} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
-              <div className="absolute -right-6 -top-6 text-[110px] opacity-[0.04] select-none pointer-events-none leading-none">{c.icon}</div>
-              <div className="relative space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl text-2xl" style={{ background: c.glow, border: `1px solid ${c.accent}30` }}>{c.icon}</div>
-                  <span className="rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest" style={{ background: c.glow, color: c.accent, border: `1px solid ${c.accent}30` }}>{c.tag}</span>
-                </div>
-                <h3 className="text-balance font-extrabold leading-tight text-white" style={{ fontSize: "clamp(1.3rem,3vw,1.9rem)", fontFamily: "var(--font-display)" }}>{c.headline}</h3>
-                <p className="text-sm leading-relaxed text-zinc-400 sm:text-base max-w-lg" style={{ fontFamily: "var(--font-body)" }}>{c.body}</p>
-                {c.pills && (
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    {c.pills.map(s => (
-                      <span key={s} className="rounded-full border px-3 py-1 text-xs font-semibold transition-all hover:scale-105" style={{ borderColor: `${c.accent}30`, color: c.accent, background: c.glow }}>✓ {s}</span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        })()}
 
-        {[cards[1], cards[2], cards[3]].map((c, ci) => (
-          <div
-            key={c.tag}
-            className={`group relative overflow-hidden rounded-3xl border bg-zinc-900/70 p-6 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 flex flex-col ${c.tag === "real world only" ? "sm:col-span-2 lg:col-span-2" : ""
-              }`}
-            style={{ borderColor: c.border, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(40px)", transition: "opacity 0.7s,transform 0.7s,box-shadow 0.4s,border-color 0.3s,translate 0.3s", transitionDelay: `${(ci + 1) * 100}ms` }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 50px -10px ${c.glow}`; (e.currentTarget as HTMLElement).style.borderColor = `${c.accent}55`; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; (e.currentTarget as HTMLElement).style.borderColor = c.border; }}
-          >
-            <div className={`absolute inset-0 bg-gradient-to-br ${c.bg} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
-            <div className="absolute -right-5 -top-5 text-[72px] opacity-[0.05] select-none pointer-events-none leading-none">{c.icon}</div>
-            <div className="relative flex flex-col flex-1 space-y-3">
-              <div className="flex items-center gap-2">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl text-xl" style={{ background: c.glow, border: `1px solid ${c.accent}30` }}>{c.icon}</div>
-                <span className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest" style={{ background: c.glow, color: c.accent, border: `1px solid ${c.accent}30` }}>{c.tag}</span>
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-8 xl:grid-cols-4 xl:gap-10">
+        <article
+          className="group overflow-hidden rounded-xl md:col-span-1 xl:col-span-2 md:flex"
+          style={{
+            background: palette.pink.bg,
+            color: palette.pink.text,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translate3d(0,0,0) scale(1)" : "translate3d(-32px,44px,0) scale(0.88)",
+            filter: visible ? "blur(0px)" : "blur(8px)",
+            transition: "transform 1250ms cubic-bezier(.16,1,.3,1), opacity 1250ms cubic-bezier(.16,1,.3,1), filter 1400ms cubic-bezier(.16,1,.3,1)",
+            willChange: "transform, filter, opacity",
+          }}
+        >
+          <div className="contents md:flex md:w-full md:items-stretch">
+            <div
+              className="relative min-h-[250px] overflow-hidden md:min-h-0 md:w-[44%] md:self-stretch"
+              role="img"
+              aria-label="Creative technology artwork"
+            >
+              <div
+                className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
+                style={{
+                  backgroundImage: "url('/images/photo-1550745165-9bc0b252726f.jpg')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              />
+            </div>
+            <div className="p-6 md:w-[56%] md:p-8 lg:p-9">
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">the hard truth</p>
               </div>
-              <h3 className="font-extrabold leading-snug text-white text-base sm:text-lg" style={{ fontFamily: "var(--font-display)" }}>{c.headline}</h3>
-              <p className="text-sm leading-relaxed text-zinc-400 flex-1" style={{ fontFamily: "var(--font-body)" }}>{c.body}</p>
-              {c.stat && (
-                <div className="pt-3 mt-auto space-y-2 border-t" style={{ borderColor: `${c.accent}18` }}>
-                  <div className="flex justify-between items-center">
-                    <p className="text-[10px] text-zinc-600 uppercase tracking-widest" style={{ fontFamily: "var(--font-display)" }}>less fixing. more building.</p>
-                    <p className="text-[10px] font-bold" style={{ color: c.accent }}>90%</p>
-                  </div>
-                  <div className="flex gap-1">
-                    {Array.from({ length: 20 }).map((_, i) => (
-                      <div key={i} className="h-5 w-full rounded-sm" style={{ background: i < 18 ? c.accent : "rgba(255,255,255,0.06)", opacity: i < 18 ? (0.25 + (i / 18) * 0.75) : 1 }} />
-                    ))}
-                  </div>
-                  <p className="text-[11px] text-zinc-600" style={{ fontFamily: "var(--font-body)" }}>~90% dev time saved on maintenance</p>
-                </div>
-              )}
-              {c.pills && (
-                <div className="flex flex-wrap gap-2 pt-2 mt-auto">
-                  {c.pills.map((s: string) => (
-                    <span key={s} className="rounded-full border px-3 py-1 text-xs font-semibold" style={{ borderColor: `${c.accent}30`, color: c.accent, background: c.glow }}>✓ {s}</span>
-                  ))}
-                </div>
-              )}
+              <h3
+                className="mt-4 break-words font-extrabold leading-[0.95] [hyphens:none]"
+                style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.48rem,2.9vw,2.2rem)", overflowWrap: "anywhere" }}
+              >
+                Most tech projects die in spreadsheet
+              </h3>
+              <p className="mt-6 max-w-[30ch] text-[1.08rem] leading-snug" style={{ fontFamily: "var(--font-body)" }}>
+                Practical scope. Clean execution. Shipped systems that actually survive the real world.
+              </p>
             </div>
           </div>
-        ))}
+        </article>
 
-        {(() => {
-          const c = cards[4]; return (
-            <div className="group relative col-span-1 sm:col-span-2 lg:col-span-3 overflow-hidden rounded-3xl border bg-zinc-900/70 p-7 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1"
-              style={{ borderColor: c.border, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(40px)", transition: "opacity 0.7s,transform 0.7s,box-shadow 0.4s,border-color 0.3s,translate 0.3s", transitionDelay: "300ms" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 24px 64px -12px ${c.glow}`; (e.currentTarget as HTMLElement).style.borderColor = `${c.accent}55`; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; (e.currentTarget as HTMLElement).style.borderColor = c.border; }}
-            >
-              <div className={`absolute inset-0 bg-gradient-to-br ${c.bg} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
-              <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-2xl" style={{ background: c.glow, border: `1px solid ${c.accent}30` }}>{c.icon}</div>
-                  <div className="space-y-2">
-                    <span className="rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest" style={{ background: c.glow, color: c.accent, border: `1px solid ${c.accent}30` }}>{c.tag}</span>
-                    <h3 className="font-extrabold leading-snug text-white" style={{ fontSize: "clamp(1.1rem,2.5vw,1.5rem)", fontFamily: "var(--font-display)" }}>{c.headline}</h3>
-                    <p className="text-sm leading-relaxed text-zinc-400 max-w-2xl" style={{ fontFamily: "var(--font-body)" }}>{c.body}</p>
-                  </div>
-                </div>
-                {c.stat && (
-                  <div className="shrink-0 space-y-2">
-                    <p className="text-[10px] text-zinc-600 uppercase tracking-widest" style={{ fontFamily: "var(--font-display)" }}>less fixing. more building.</p>
-                    <div className="flex gap-1">
-                      {Array.from({ length: 20 }).map((_, i) => (
-                        <div key={i} className="h-6 w-2 rounded-sm" style={{ background: i < 18 ? c.accent : "rgba(255,255,255,0.06)", opacity: i < 18 ? (0.35 + (i / 18) * 0.65) : 1 }} />
-                      ))}
-                    </div>
-                    <p className="text-[11px] text-zinc-600" style={{ fontFamily: "var(--font-body)" }}>~90% dev time saved on maintenance</p>
-                  </div>
-                )}
-              </div>
+        <article
+          className="overflow-hidden rounded-xl md:col-span-1 xl:col-span-1 xl:row-span-2 flex h-full flex-col"
+          style={{
+            background: palette.lime.bg,
+            color: palette.lime.text,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translate3d(0,0,0) scale(1)" : "translate3d(26px,44px,0) scale(0.88)",
+            filter: visible ? "blur(0px)" : "blur(8px)",
+            transition: "transform 1280ms cubic-bezier(.16,1,.3,1) 320ms, opacity 1280ms cubic-bezier(.16,1,.3,1) 320ms, filter 1450ms cubic-bezier(.16,1,.3,1) 320ms",
+            willChange: "transform, filter, opacity",
+          }}
+        >
+          <div className="h-60 w-full overflow-hidden">
+            <img
+              src={photoTiles.architecture}
+              alt="System architecture planning"
+              className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+              loading="lazy"
+            />
+          </div>
+          <div className="space-y-3 p-5 pt-4">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">the approach</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">impact</p>
             </div>
-          );
-        })()}
+            <h3 className="font-extrabold leading-tight" style={{ fontFamily: "var(--font-display)", fontSize: "1.6rem" }}>
+              Hardware. Software. Cloud.
+            </h3>
+            <p className="text-sm leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
+              One clean architecture — devices, APIs, and dashboards all talking fluently.
+            </p>
+            <p className="text-sm leading-relaxed opacity-90" style={{ fontFamily: "var(--font-body)" }}>
+              Designed right, you spend less time firefighting — typically ~90% less maintenance overhead.
+            </p>
+          </div>
+        </article>
+
+        <article
+          className="overflow-hidden rounded-xl md:col-span-2 xl:col-span-1 xl:row-span-2 flex h-full flex-col"
+          style={{
+            background: palette.blue.bg,
+            color: palette.blue.text,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translate3d(0,0,0) scale(1)" : "translate3d(34px,44px,0) scale(0.88)",
+            filter: visible ? "blur(0px)" : "blur(8px)",
+            transition: "transform 1310ms cubic-bezier(.16,1,.3,1) 640ms, opacity 1310ms cubic-bezier(.16,1,.3,1) 640ms, filter 1480ms cubic-bezier(.16,1,.3,1) 640ms",
+            willChange: "transform, filter, opacity",
+          }}
+        >
+          <div className="p-6 pb-4">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">real world only</p>
+            <h3 className="mt-3 font-extrabold leading-tight" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.25rem,2.6vw,1.85rem)" }}>
+              Built for factories, farms, cities, offices.
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
+              Not demo-day ready. Field-ready under messy, high-load conditions.
+            </p>
+          </div>
+
+          <div className="mt-auto min-h-52 flex-1 w-full overflow-hidden">
+            <img
+              src={photoTiles.fieldOps}
+              alt="On-site deployment environment"
+              className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+              loading="lazy"
+            />
+          </div>
+        </article>
+
+        <article
+          className="rounded-xl p-6 md:col-span-1 xl:col-span-2"
+          style={{
+            background: palette.green.bg,
+            color: palette.green.text,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translate3d(0,0,0) scale(1)" : "translate3d(-18px,44px,0) scale(0.88)",
+            filter: visible ? "blur(0px)" : "blur(8px)",
+            transition: "transform 1340ms cubic-bezier(.16,1,.3,1) 960ms, opacity 1340ms cubic-bezier(.16,1,.3,1) 960ms, filter 1510ms cubic-bezier(.16,1,.3,1) 960ms",
+            willChange: "transform, filter, opacity",
+          }}
+        >
+          <div className="flex items-start justify-between gap-3">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">the process</p>
+            <span className="text-[11px] font-semibold opacity-70">fixed scope</span>
+          </div>
+          <h3 className="mt-3 font-extrabold leading-tight" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.2rem,2.4vw,1.8rem)" }}>
+            Scope locked. Timeline real. No surprises.
+          </h3>
+          <p className="mt-3 text-sm leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
+            No scope creep, no mystery invoices, no "one more sprint" trap.
+          </p>
+        </article>
+
       </div>
     </section>
   );
@@ -738,7 +658,9 @@ function Terminal() {
           animation: "archPulse 1s ease-in-out infinite",
         }} />
       </div>
-      {outputText && <div style={{ color: "#34d399", marginTop: 4, lineHeight: 1.7 }}>{outputText}</div>}
+      <div style={{ color: "#34d399", marginTop: 4, lineHeight: 1.7, minHeight: "1.7em" }}>
+        {outputText}
+      </div>
     </div>
   );
 }
@@ -755,12 +677,68 @@ const ARCH_NODES = [
 
 function ArchitectureSection({ visible }: { visible: boolean }) {
   const techTags = ["MQTT", "Node.js", "Go", "PostgreSQL", "Redis", "Docker", "Kubernetes", "AWS", "React Native", "Flutter", "TensorFlow", "Kafka"];
+  const [pillExpanded, setPillExpanded] = useState(false);
+  const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [activeNode, setActiveNode] = useState<number | null>(null);
+  const [hoveredNode, setHoveredNode] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!visible) {
+      setPillExpanded(false);
+      return;
+    }
+    const t = setTimeout(() => setPillExpanded(true), 520);
+    return () => clearTimeout(t);
+  }, [visible]);
+
+  useEffect(() => {
+    let lastActive: number | null = null;
+    const handleScroll = () => {
+      if (window.innerWidth >= 768) {
+        if (lastActive !== null) {
+          lastActive = null;
+          setActiveNode(null);
+        }
+        return;
+      }
+      
+      const center = window.innerHeight / 2;
+      let closestIdx = -1;
+      let minDistance = Infinity;
+
+      nodeRefs.current.forEach((el, idx) => {
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const elCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(elCenter - center);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIdx = idx;
+        }
+      });
+      
+      const newActive = minDistance < window.innerHeight * 0.4 ? closestIdx : null;
+      if (lastActive !== newActive) {
+        lastActive = newActive;
+        setActiveNode(newActive);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    handleScroll();
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
 
   return (
     <section className="space-y-10">
       {/* Header */}
       <div
-        className="space-y-3 text-center transition-all duration-700"
+        className="space-y-3 text-left transition-all duration-700"
         style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(32px)" }}
       >
         <SectionBadge color="cyan">System Architecture</SectionBadge>
@@ -770,52 +748,139 @@ function ArchitectureSection({ visible }: { visible: boolean }) {
             Systems Connect
           </span>
         </h2>
-        <p className="mx-auto max-w-2xl text-sm text-zinc-400 sm:text-base" style={{ fontFamily: "var(--font-body)" }}>
+        <p className="max-w-2xl text-sm text-zinc-400 sm:text-base" style={{ fontFamily: "var(--font-body)" }}>
           A unified data pipeline from physical sensors to digital experiences — all interconnected, all scalable.
         </p>
       </div>
 
-      {/* Nodes + Flow */}
+      {/* Nodes in corners + center cross-pill */}
       <div
         className="transition-all duration-700"
         style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transitionDelay: "150ms" }}
       >
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, alignItems: "center", position: "relative" }} className="arch-nodes-grid">
-          {ARCH_NODES.map((node) => (
-            <div
-              key={node.id}
-              style={{
-                padding: "24px 16px",
-                textAlign: "center",
-                background: "rgba(5,10,8,0.7)",
-                backdropFilter: "blur(16px)",
-                border: `1px solid ${node.color}28`,
-                borderRadius: 16,
-                position: "relative",
-                zIndex: 1,
-                boxShadow: `0 0 20px ${node.color}12`,
-                transition: "all 0.3s",
-                cursor: "default",
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 0 40px ${node.color}30`;
-                (e.currentTarget as HTMLElement).style.borderColor = `${node.color}55`;
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 0 20px ${node.color}12`;
-                (e.currentTarget as HTMLElement).style.borderColor = `${node.color}28`;
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-              }}
-            >
-              <div style={{ fontSize: 32, marginBottom: 8 }}>{node.icon}</div>
-              <div style={{ fontSize: 15, fontWeight: 700, color: node.color, marginBottom: 4, fontFamily: "var(--font-display)" }}>{node.label}</div>
-              <div style={{ fontSize: 12, color: "rgba(52,211,153,0.45)", fontFamily: "var(--font-body)" }}>{node.desc}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{ margin: "-8px 0", padding: "0 12.5%" }}>
-          <ArchFlowSVG />
+        <div
+          className="arch-nodes-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2,minmax(0,1fr))",
+            gap: 16,
+            position: "relative",
+            alignItems: "stretch",
+          }}
+        >
+          {ARCH_NODES.map((node, index) => {
+            const isActive = activeNode === index || hoveredNode === index;
+            return (
+            <Fragment key={node.id}>
+              <div
+                ref={el => { nodeRefs.current[index] = el; }}
+                style={{
+                  padding: "22px 16px",
+                  minHeight: 120,
+                  textAlign: "center",
+                  background: "rgba(5,10,8,0.7)",
+                  backdropFilter: "blur(16px)",
+                  border: `1px solid ${isActive ? `${node.color}55` : `${node.color}28`}`,
+                  borderRadius: 16,
+                  position: "relative",
+                  zIndex: isActive ? 2 : 1,
+                  boxShadow: isActive ? `0 0 40px ${node.color}30` : `0 0 20px ${node.color}12`,
+                  transform: isActive ? "translateY(-4px)" : "translateY(0)",
+                  transition: "all 0.3s",
+                  cursor: "default",
+                }}
+                onMouseEnter={() => setHoveredNode(index)}
+                onMouseLeave={() => setHoveredNode(null)}
+              >
+                <div style={{ fontSize: 30, marginBottom: 8 }}>{node.icon}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: node.color, marginBottom: 4, fontFamily: "var(--font-display)" }}>{node.label}</div>
+                <div style={{ fontSize: 12, color: "rgba(52,211,153,0.45)", fontFamily: "var(--font-body)" }}>{node.desc}</div>
+              </div>
+              
+              {/* Mobile downward arrow between nodes */}
+              {index < ARCH_NODES.length - 1 && (
+                <div className="mobile-arrow flex w-full justify-center py-1 opacity-60">
+                  <svg 
+                    width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                    stroke={node.color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                    className="animate-bounce"
+                    style={{ margin: "0 auto" }}
+                  >
+                    <path d="M12 4v16" />
+                    <path d="M18 13l-6 7-6-7" />
+                  </svg>
+                </div>
+              )}
+            </Fragment>
+            );
+          })}
+
+          {/* Center cross-pill concept */}
+          <div
+            className="pointer-events-none hidden md:grid"
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%,-50%)",
+              width: 156,
+              height: 156,
+              zIndex: 5,
+              placeItems: "center",
+            }}
+          >
+            <svg width="148" height="148" viewBox="0 0 132 132" aria-hidden>
+              <defs>
+                <filter id="crossPillGlow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              {/* Thick rounded clover connector (target style) */}
+              <g fill="#d98de3" stroke="none" filter="url(#crossPillGlow)">
+                <circle cx="40" cy="40" r="24" />
+                <circle cx="92" cy="40" r="24" />
+                <circle cx="40" cy="92" r="24" />
+                <circle cx="92" cy="92" r="24" />
+                <rect x="40" y="52" width="52" height="28" rx="14" />
+                <rect x="52" y="40" width="28" height="52" rx="14" />
+              </g>
+
+              {/* 4 arrow-circles: stacked at center, then shoot out one-by-one */}
+              {[
+                { dx: -26, dy: -26, a: "\u2196" },
+                { dx: 26, dy: -26, a: "\u2197" },
+                { dx: -26, dy: 26, a: "\u2199" },
+                { dx: 26, dy: 26, a: "\u2198" },
+              ].map((arrow, i) => (
+                <g
+                  key={`shot-${i}`}
+                  style={{
+                    transform: pillExpanded ? `translate(${arrow.dx}px, ${arrow.dy}px)` : "translate(0px, 0px)",
+                    transformOrigin: "66px 66px",
+                    transition: `transform 780ms cubic-bezier(.18,.8,.25,1) ${260 + i * 230}ms`,
+                  }}
+                >
+                  <circle cx="66" cy="66" r="15" fill="#090c12" stroke="rgba(255,255,255,0.28)" strokeWidth="1.3" />
+                  <text
+                    x="66"
+                    y="71"
+                    textAnchor="middle"
+                    fill="#ffffff"
+                    fontSize="15"
+                    fontWeight="700"
+                    fontFamily="var(--font-display)"
+                  >
+                    {arrow.a}
+                  </text>
+                </g>
+              ))}
+            </svg>
+          </div>
         </div>
       </div>
 
@@ -907,7 +972,7 @@ const QNA_ITEMS = [
 ];
 
 const QnASection = memo(function QnASection({ visible }: { visible: boolean }) {
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const [openItems, setOpenItems] = useState<Record<number, boolean>>({});
 
   return (
     <section className="space-y-10">
@@ -934,7 +999,7 @@ const QnASection = memo(function QnASection({ visible }: { visible: boolean }) {
 
       <div className="flex flex-col gap-3">
         {QNA_ITEMS.map((item, idx) => {
-          const isOpen = openIdx === idx;
+          const isOpen = !!openItems[idx];
           return (
             <div
               key={idx}
@@ -959,7 +1024,9 @@ const QnASection = memo(function QnASection({ visible }: { visible: boolean }) {
 
               {/* Question row — clickable */}
               <button
-                onClick={() => setOpenIdx(isOpen ? null : idx)}
+                onClick={() => {
+                  setOpenItems((prev) => ({ ...prev, [idx]: !prev[idx] }));
+                }}
                 className="w-full text-left flex items-center justify-between gap-4 p-5 sm:p-6"
                 style={{ background: "transparent", border: "none", cursor: "pointer" }}
               >
@@ -1022,23 +1089,321 @@ const QnASection = memo(function QnASection({ visible }: { visible: boolean }) {
    Static data
 ───────────────────────────────────────── */
 const buildFor = [
-  { label: "Founders going 0→1", sub: "Your MVP deserves more than a Fiverr gig.", icon: "🚀", color: "from-amber-500/15 to-orange-500/5", border: "hover:border-amber-500/40", accent: "#f59e0b" },
-  { label: "Universities & Research Labs", sub: "Prototypes that actually survive the real world.", icon: "🔬", color: "from-violet-500/15 to-purple-500/5", border: "hover:border-violet-500/40", accent: "#a78bfa" },
-  { label: "Factory & Industrial Ops", sub: "Monitoring that doesn't crash at 3am.", icon: "🏭", color: "from-sky-500/15 to-blue-500/5", border: "hover:border-sky-500/40", accent: "#38bdf8" },
-  { label: "IoT & Hardware Startups", sub: "Full-stack embedded, from sensor to dashboard.", icon: "📡", color: "from-emerald-500/15 to-teal-500/5", border: "hover:border-emerald-500/40", accent: "#34d399" },
-  { label: "SaaS & Web Builders", sub: "Ship fast. Scale clean. No spaghetti.", icon: "🖥️", color: "from-cyan-500/15 to-sky-500/5", border: "hover:border-cyan-500/40", accent: "#22d3ee" },
-  { label: "Anyone with a real problem", sub: "If it's worth solving, we're in. seriously.", icon: "💡", color: "from-rose-500/15 to-pink-500/5", border: "hover:border-rose-500/40", accent: "#fb7185" },
+  {
+    label: "Founders going 0→1",
+    sub: "Your MVP deserves more than a Fiverr gig.",
+    icon: "🚀",
+    color: "from-amber-500/15 to-orange-500/5",
+    border: "hover:border-amber-500/40",
+    accent: "#f59e0b",
+    image: "/images/photo-1521737604893-d14cc237f11d.jpg",
+  },
+  {
+    label: "Universities & Research Labs",
+    sub: "Prototypes that actually survive the real world.",
+    icon: "🔬",
+    color: "from-violet-500/15 to-purple-500/5",
+    border: "hover:border-violet-500/40",
+    accent: "#a78bfa",
+    image: "/images/photo-1562774053-701939374585.jpg",
+  },
+  {
+    label: "Factory & Industrial Ops",
+    sub: "Monitoring that doesn't crash at 3am.",
+    icon: "🏭",
+    color: "from-sky-500/15 to-blue-500/5",
+    border: "hover:border-sky-500/40",
+    accent: "#38bdf8",
+    image: "/images/photo-1581092918056-0c4c3acd3789.jpg",
+  },
+  {
+    label: "IoT & Hardware Startups",
+    sub: "Full-stack embedded, from sensor to dashboard.",
+    icon: "📡",
+    color: "from-emerald-500/15 to-teal-500/5",
+    border: "hover:border-emerald-500/40",
+    accent: "#34d399",
+    image: "/images/photo-1581092160607-ee22621dd758.jpg",
+  },
+  {
+    label: "SaaS & Web Builders",
+    sub: "Ship fast. Scale clean. No spaghetti.",
+    icon: "🖥️",
+    color: "from-cyan-500/15 to-sky-500/5",
+    border: "hover:border-cyan-500/40",
+    accent: "#22d3ee",
+    image: "/images/photo-1517048676732-d65bc937f952.jpg",
+  },
+  {
+    label: "Anyone with a real problem",
+    sub: "If it's worth solving, we're in. seriously.",
+    icon: "💡",
+    color: "from-rose-500/15 to-pink-500/5",
+    border: "hover:border-rose-500/40",
+    accent: "#fb7185",
+    image: "/images/photo-1531297484001-80022131f5a1.jpg",
+  },
 ] as const;
+
+const WorkWithScrollShowcase = memo(function WorkWithScrollShowcase({
+  items,
+  visible,
+}: {
+  items: typeof buildFor;
+  visible: boolean;
+}) {
+  const [active, setActive] = useState(0);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
+  const [rightYOffset, setRightYOffset] = useState(0);
+  const [imgErrored, setImgErrored] = useState(false);
+  const activeRef = useRef(0);
+
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+
+    let raf = 0;
+    const lastIdx = Math.max(0, items.length - 1);
+
+    // Dead-zone based range switching to avoid flicker/glitch around boundaries.
+    const updateActiveFromScroll = () => {
+      const rect = wrap.getBoundingClientRect();
+      const viewportCenter = window.innerHeight * 0.5;
+      const sectionTop = rect.top;
+      const sectionHeight = Math.max(rect.height, 1);
+      const p = Math.max(0, Math.min(1, (viewportCenter - sectionTop) / sectionHeight));
+      const raw = p * lastIdx;
+
+      let next = activeRef.current;
+      const step = 0.62; // must cross this far into next/prev range before switching
+
+      if (next < lastIdx && raw >= next + step) {
+        next = Math.min(lastIdx, next + 1);
+      } else if (next > 0 && raw <= next - step) {
+        next = Math.max(0, next - 1);
+      }
+
+      if (next !== activeRef.current) {
+        activeRef.current = next;
+        setActive(next);
+      }
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(updateActiveFromScroll);
+    };
+
+    updateActiveFromScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [items.length]);
+
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
+
+  // Keep right image aligned with active text block.
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      const wrap = wrapRef.current;
+      const right = rightRef.current;
+      const el = itemRefs.current[active];
+      if (!wrap || !right || !el) return;
+
+      const wrapRect = wrap.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      const rightRect = right.getBoundingClientRect();
+
+      // Align right panel center to active block center, clamped within wrapper.
+      const targetCenterY = (elRect.top - wrapRect.top) + elRect.height * 0.5;
+      const panelH = rightRect.height || 520;
+      const y = Math.max(0, Math.min(wrapRect.height - panelH, targetCenterY - panelH * 0.5));
+      setRightYOffset(y);
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [active]);
+
+  const a = items[active];
+
+  return (
+    <div
+      ref={wrapRef}
+      className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(28px)",
+        transition: "opacity 700ms ease, transform 700ms ease",
+      }}
+    >
+      {/* Left: big scroll text */}
+      <div className="space-y-8">
+        {items.map((it, idx) => {
+          const isActive = idx === active;
+          return (
+            <div
+              key={it.label}
+              ref={(el) => {
+                itemRefs.current[idx] = el;
+              }}
+              className="py-10 sm:py-14"
+              style={{ minHeight: "38vh" }}
+            >
+              <div className="flex items-center gap-3">
+                <span
+                  className="text-[11px] font-semibold uppercase tracking-widest"
+                  style={{ color: isActive ? it.accent : "rgba(255,255,255,0.35)", fontFamily: "var(--font-display)" }}
+                >
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+              </div>
+
+              <h3
+                className="mt-4 font-extrabold tracking-tight"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(2.2rem,5.2vw,4.2rem)",
+                  lineHeight: 1.02,
+                  color: isActive ? "#ffffff" : "rgba(255,255,255,0.26)",
+                  transition: "color 260ms ease",
+                }}
+              >
+                {it.label}
+              </h3>
+
+              <p
+                className="mt-3 max-w-xl text-sm sm:text-base"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  color: isActive ? "rgba(244,244,245,0.82)" : "rgba(244,244,245,0.42)",
+                  transition: "color 260ms ease",
+                }}
+              >
+                {it.sub}
+              </p>
+
+              {/* Mobile Inline Image Accordion */}
+              <div
+                className="mt-6 lg:hidden overflow-hidden rounded-2xl bg-zinc-900 transition-all duration-700 ease-[cubic-bezier(.16,1,.3,1)]"
+                style={{
+                  maxHeight: isActive ? 280 : 0,
+                  opacity: isActive ? 1 : 0,
+                  transform: isActive ? "scale(1)" : "scale(0.96)",
+                  boxShadow: isActive ? `0 10px 40px ${it.accent}25` : "none",
+                  border: `1px solid ${isActive ? it.accent + '40' : 'transparent'}`,
+                }}
+              >
+                <img 
+                  src={it.image} 
+                  alt={it.label} 
+                  className="w-full h-[220px] sm:h-[280px] object-cover" 
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Right: aligned image panel */}
+      <div className="relative hidden lg:block">
+        <div
+          ref={rightRef}
+          className="relative overflow-visible"
+          style={{
+            boxShadow: `0 0 70px ${a.accent}18`,
+            transform: `translateY(${rightYOffset}px)`,
+            transition: "transform 260ms cubic-bezier(.2,.8,.2,1)",
+          }}
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-0 right-0 z-20 h-[84px] w-[84px] translate-x-1/2 -translate-y-1/2 rounded-full border border-[#b7a57b] bg-[#efe2bf] text-[#3b2f1f]"
+            style={{ fontFamily: "var(--font-display)", boxShadow: "0 12px 30px rgba(0,0,0,0.35)" }}
+          >
+            <span className="absolute inset-0 grid place-items-center text-center text-[11px] font-semibold uppercase tracking-[0.08em] leading-none">
+              Best Fit
+            </span>
+          </div>
+          <div className="relative overflow-hidden rounded-[24px] border border-[#d9c89e]/25 bg-zinc-900/60 backdrop-blur-sm">
+            <div className="relative aspect-[16/10] w-full">
+            <img
+              key={a.image}
+              src={a.image}
+              alt={a.label}
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ filter: "saturate(1.05) contrast(1.02)" }}
+              loading="eager"
+              referrerPolicy="no-referrer"
+              onError={() => setImgErrored(true)}
+              onLoad={() => setImgErrored(false)}
+            />
+            {imgErrored && (
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: `radial-gradient(circle at 30% 20%, ${a.accent}25 0%, transparent 55%), linear-gradient(135deg, rgba(24,24,27,0.9), rgba(9,9,11,0.95))`,
+                }}
+              />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
 
 /* ─────────────────────────────────────────
    Page
 ───────────────────────────────────────── */
 const SPLASH_DURATION = 2800;
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+// Module-level variable survives internal Next.js navigation but resets on hard browser refresh
+let hasSeenSplashThisSession = false;
 
 export default function HomePageClient() {
   const [splashDone, setSplashDone] = useState(false);
   const [heroReady, setHeroReady] = useState(false);
-  useEffect(() => { const t = setTimeout(() => setHeroReady(true), 80); return () => clearTimeout(t); }, []);
+
+  // Use layout effect to synchronously check global variable before browser paints
+  useIsomorphicLayoutEffect(() => {
+    if (hasSeenSplashThisSession) {
+      setSplashDone(true);
+      setHeroReady(true);
+    } else {
+      const t = setTimeout(() => setHeroReady(true), 80);
+      return () => clearTimeout(t);
+    }
+  }, []);
+
+  const handleSplashComplete = () => {
+    hasSeenSplashThisSession = true;
+    setSplashDone(true);
+  };
 
   const qnaRef = useInView();
   const whyRef = useInView();
@@ -1048,7 +1413,7 @@ export default function HomePageClient() {
 
   return (
     <>
-      {!splashDone && <SplashScreen onComplete={() => setSplashDone(true)} minDuration={SPLASH_DURATION} />}
+      {!splashDone && <SplashScreen onComplete={handleSplashComplete} minDuration={SPLASH_DURATION} />}
 
       <div className="flex flex-col overflow-x-hidden">
 
@@ -1059,9 +1424,21 @@ export default function HomePageClient() {
         <div className="mx-auto w-full max-w-screen-xl space-y-28 px-4 pt-20 pb-24 sm:px-6 lg:px-10 xl:px-16">
 
           {/* WHY ECOBRIDGES */}
-          <div ref={whyRef.ref}>
-            <WhySection visible={whyRef.visible} />
-          </div>
+          <section
+            ref={whyRef.ref}
+            style={{
+              position: "relative",
+              left: "50%",
+              right: "50%",
+              marginLeft: "-50vw",
+              marginRight: "-50vw",
+              width: "100vw",
+            }}
+          >
+            <div className="mx-auto w-full max-w-screen-xl px-4 sm:px-6 lg:px-10 xl:px-16">
+              <WhySection visible={whyRef.visible} />
+            </div>
+          </section>
 
           {/* EXPERTISE */}
           <section>
@@ -1093,33 +1470,7 @@ export default function HomePageClient() {
               </div>
             </div>
 
-            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {buildFor.map((type, idx) => (
-                <div
-                  key={type.label}
-                  className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/60 p-6 backdrop-blur-sm transition-all duration-500 ${type.border} hover:-translate-y-2 hover:shadow-xl`}
-                  style={{
-                    opacity: clientRef.visible ? 1 : 0,
-                    transform: clientRef.visible ? "translateY(0)" : "translateY(32px)",
-                    transitionDelay: `${idx * 80}ms`, transitionDuration: "600ms", willChange: "transform,opacity",
-                  }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 50px -10px ${type.accent}25`; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${type.color} opacity-0 transition-opacity duration-300 group-hover:opacity-100`} />
-                  <div className="absolute top-0 left-0 right-0 h-px scale-x-0 bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-500 group-hover:scale-x-100" />
-                  <div className="relative space-y-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-2xl ring-1 ring-white/10 transition-all duration-300 group-hover:scale-110 group-hover:ring-white/20 group-hover:rotate-6">
-                      {type.icon}
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-white" style={{ fontFamily: "var(--font-display)" }}>{type.label}</div>
-                      <div className="mt-1 text-xs text-zinc-500 leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>{type.sub}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <WorkWithScrollShowcase items={buildFor} visible={clientRef.visible} />
           </section>
           <div ref={qnaRef.ref}>
             <QnASection visible={qnaRef.visible} />
@@ -1141,7 +1492,6 @@ export default function HomePageClient() {
             </div>
 
             <div className="relative space-y-6 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/10 text-2xl" aria-hidden="true">🛠️</div>
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-3" style={{ fontFamily: "var(--font-display)" }}>ready when you are</p>
                 <h2 className="text-balance font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(1.75rem,5vw,3rem)", fontFamily: "var(--font-display)" }}>
@@ -1152,16 +1502,16 @@ export default function HomePageClient() {
                 doesn't matter if it's rough. bring the napkin sketch, the half-baked idea, the "is this even possible" question.{" "}
                 <span className="font-bold text-emerald-400">we'll figure it out together.</span>
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+              <div className="mx-auto flex w-fit flex-wrap items-center justify-center gap-x-3 gap-y-1 pt-1">
                 {["IoT & Embedded", "Web Platforms", "Mobile Apps", "Cloud & DevOps", "Custom Hardware", "AI Integration"].map((tag) => (
-                  <span key={tag} className="rounded-full border border-emerald-500/20 bg-emerald-500/8 px-3 py-1 text-xs font-medium text-emerald-400 transition-all duration-300 hover:border-emerald-500/50 hover:bg-emerald-500/15 hover:scale-105" style={{ fontFamily: "var(--font-display)" }}>
+                  <span key={tag} className="rounded-full border border-emerald-500/20 bg-emerald-500/8 px-2 py-[2px] text-[11px] font-medium text-emerald-400 transition-all duration-300 hover:border-emerald-500/50 hover:bg-emerald-500/15 hover:scale-105" style={{ fontFamily: "var(--font-display)" }}>
                     {tag}
                   </span>
                 ))}
               </div>
-              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <div className="mx-auto flex w-fit flex-col items-center justify-center gap-3 pt-4 sm:flex-row sm:gap-4">
                 <Link href="/contact"
-                  className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.05] hover:shadow-xl hover:shadow-emerald-500/45"
+                  className="group relative inline-flex min-w-[240px] items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.05] hover:shadow-xl hover:shadow-emerald-500/45"
                   style={{ fontFamily: "var(--font-display)" }}
                   aria-label="Contact EcoBridgers to start your project"
                 >
@@ -1169,7 +1519,7 @@ export default function HomePageClient() {
                   start a conversation →
                 </Link>
                 <Link href="/works"
-                  className="group inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:scale-[1.04] hover:bg-white/10 hover:border-emerald-500/40"
+                  className="group inline-flex min-w-[240px] items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:scale-[1.04] hover:bg-white/10 hover:border-emerald-500/40"
                   style={{ fontFamily: "var(--font-display)" }}
                   aria-label="View EcoBridgers portfolio and past work"
                 >

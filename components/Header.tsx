@@ -4,8 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { Cpu, Globe, Smartphone, Brain } from "lucide-react";
 import { navLinks } from "@/lib/navLinks";
-import { FooterBrand } from "@/components/Footerbrand";
 
 export function Header() {
   const [isScrolled, setIsScrolled]     = useState(false);
@@ -100,72 +100,72 @@ export function Header() {
             if ("children" in link && link.children) {
               const isParentActive = pathname === link.href || link.children.some((child) => pathname === child.href);
               return (
-                <div key={link.href} className="relative" ref={dropdownRef}>
-                  <button
-                    onClick={() => setDropdownOpen((o) => !o)}
+                <div key={link.href} className="relative group" ref={dropdownRef}>
+                  <Link
+                    href={link.href}
                     className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-medium transition-all hover:bg-white/[0.08] hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 md:text-base ${
                       isParentActive ? "bg-emerald-500/15 text-emerald-300" : "text-zinc-300"
                     }`}
                   >
                     {link.label}
                     <svg
-                      className={`h-3.5 w-3.5 text-zinc-400 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
+                      className="h-3.5 w-3.5 text-zinc-400 transition-transform duration-200 group-hover:rotate-180"
                       fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
-                  </button>
+                  </Link>
 
-                  {/* Dropdown panel */}
-                  {dropdownOpen && (
-                    <div className="absolute left-1/2 top-full mt-3 w-64 -translate-x-1/2 overflow-hidden rounded-2xl border border-emerald-500/20 bg-zinc-900/95 shadow-2xl shadow-black/50 backdrop-blur-xl">
-                      {/* Arrow tip */}
-                      <div className="absolute -top-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-l border-t border-emerald-500/20 bg-zinc-900" />
-
-                      <div className="p-2">
-                        {/* View all link */}
-                        <Link
-                          href="/services"
-                          onClick={() => setDropdownOpen(false)}
-                          className="mb-1 flex items-center justify-between rounded-xl px-3 py-2.5 text-xs font-bold uppercase tracking-wider text-emerald-400 transition-all hover:bg-emerald-500/10"
-                        >
-                          All Services
-                          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                          </svg>
+                  {/* Mega Menu Dropdown */}
+                  <div className="absolute left-1/2 top-[calc(100%+8px)] w-[880px] -translate-x-1/2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 translate-y-2 group-hover:translate-y-0 z-50">
+                    <div className="rounded-2xl border border-white/10 bg-[#0e0e11]/95 p-3 shadow-2xl backdrop-blur-xl">
+                      <div className="mb-3 flex items-center justify-between px-2 pt-1">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500" style={{ fontFamily: "var(--font-display)" }}>All Services</span>
+                        <Link href="/services" className="group/link flex items-center gap-1 text-[13px] font-bold text-emerald-500 hover:text-emerald-400 transition-colors">
+                          View Everything
+                          <svg className="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
                         </Link>
-
-                        {/* Divider */}
-                        <div className="mx-3 mb-2 h-px bg-white/10" />
-
-                        {/* Service items */}
-                        {link.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            onClick={() => setDropdownOpen(false)}
-                            className={`group/item flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all hover:bg-white/[0.07] ${
-                              pathname === child.href ? "bg-emerald-500/10" : ""
-                            }`}
-                          >
-                            <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border bg-white/5 text-lg transition-all group-hover/item:border-emerald-500/30 group-hover/item:bg-emerald-500/10 ${
-                              pathname === child.href ? "border-emerald-500/30" : "border-white/10"
-                            }`}>
-                              {child.icon}
-                            </span>
-                            <span className={`text-sm font-medium transition-colors group-hover/item:text-white ${
-                              pathname === child.href ? "text-emerald-300" : "text-zinc-300"
-                            }`}>
-                              {child.label}
-                            </span>
-                          </Link>
-                        ))}
                       </div>
-
-                      {/* Bottom gradient */}
-                      <div className="h-0.5 bg-gradient-to-r from-emerald-500/0 via-emerald-500/50 to-emerald-500/0" />
+                      <div className="grid grid-cols-4 gap-3">
+                        {link.children.map((child) => {
+                          const getStyles = (href: string) => {
+                            if (href.includes("iot")) return { bg: "bg-[#94e48b]", text: "text-[#0d1f10]", desc: "Hardware & edge tracking" };
+                            if (href.includes("web")) return { bg: "bg-[#22d3ee]", text: "text-[#083344]", desc: "Dashboards & scalable SaaS" };
+                            if (href.includes("mobile")) return { bg: "bg-[#6c78fb]", text: "text-white", desc: "iOS & Android solutions" };
+                            if (href.includes("ai")) return { bg: "bg-[#ff6fb5]", text: "text-[#2e091b]", desc: "Machine Learning & predictive" };
+                            return { bg: "bg-zinc-800", text: "text-white", desc: "Explore our offerings" };
+                          };
+                          const s = getStyles(child.href);
+                          return (
+                            <Link href={child.href} key={child.href} className={`group/card relative flex h-[160px] flex-col justify-between overflow-hidden rounded-xl p-4 transition-all hover:scale-[1.02] hover:shadow-lg ${s.bg}`}>
+                              <div className="space-y-1">
+                                <h3 className={`text-lg font-semibold leading-tight tracking-tight ${s.text}`} style={{ fontFamily: "var(--font-display)" }}>
+                                  {child.label}
+                                </h3>
+                                <p className={`text-[11px] opacity-75 font-medium ${s.text} max-w-[90%] leading-relaxed`}>
+                                  {s.desc}
+                                </p>
+                              </div>
+                              
+                              <div className="flex w-full items-end justify-between">
+                                <div className="text-[#1a1a1a] opacity-90">
+                                  {child.href.includes("iot") && <Cpu size={28} strokeWidth={1.5} />}
+                                  {child.href.includes("web") && <Globe size={28} strokeWidth={1.5} />}
+                                  {child.href.includes("mobile") && <Smartphone size={28} strokeWidth={1.5} />}
+                                  {child.href.includes("ai") && <Brain size={28} strokeWidth={1.5} />}
+                                </div>
+                                <div className={`flex h-8 w-8 items-center justify-center rounded-lg border opacity-40 transition-all group-hover/card:opacity-100 border-current ${s.text}`}>
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover/card:-rotate-45">
+                                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                                  </svg>
+                                </div>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               );
             }
@@ -243,7 +243,12 @@ export function Header() {
                               pathname === child.href ? "bg-emerald-500/10 text-emerald-300" : "text-zinc-400"
                             }`}
                           >
-                            <span className="text-base">{child.icon}</span>
+                            <span className="flex items-center text-zinc-300">
+                              {child.href.includes("iot") && <Cpu size={18} strokeWidth={2} />}
+                              {child.href.includes("web") && <Globe size={18} strokeWidth={2} />}
+                              {child.href.includes("mobile") && <Smartphone size={18} strokeWidth={2} />}
+                              {child.href.includes("ai") && <Brain size={18} strokeWidth={2} />}
+                            </span>
                             {child.label}
                           </Link>
                         ))}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, memo } from "react";
+import { createPortal } from "react-dom";
 
 /* ─────────────────────────────────────────
    useInView — scroll-triggered reveal
@@ -437,6 +438,10 @@ export function CreationProcessTimeline({
   accentColor: string;
 }) {
   const [active, setActive] = useState<number | null>(null);
+  const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [dialogPos, setDialogPos] = useState<{ left: number; top: number; arrowOffset: number } | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const streamGradients = [
     "linear-gradient(90deg,#7bb6f8 0%,#9fd2ff 100%)",
     "linear-gradient(90deg,#6fa9f3 0%,#7ed6f7 100%)",
@@ -446,21 +451,107 @@ export function CreationProcessTimeline({
     "linear-gradient(90deg,#d7e37f 0%,#ff9061 100%)",
   ];
 
-  return (
-    <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-950/50 p-6 sm:p-8 backdrop-blur-sm">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.9) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.9) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-        }}
-      />
+  useEffect(() => {
+    if (active === null) {
+      setDialogPos(null);
+      return;
+    }
 
-      <div className="relative" onMouseLeave={() => setActive(null)}>
-        {/* No horizontal scroll: all steps visible like reference */}
+    const update = () => {
+      const btn = buttonsRef.current[active];
+      if (!btn) return;
+
+      const rect = btn.getBoundingClientRect();
+      const btnCenter = rect.left + rect.width / 2;
+      const top = rect.bottom + 12;
+
+      // Keep dialog within screen bounds
+      const screenW = window.innerWidth;
+      const maxDialogW = Math.min(340, screenW * 0.92);
+      const minLeft = (maxDialogW / 2) + 12;
+      const maxLeft = screenW - (maxDialogW / 2) - 12;
+
+      let dialogLeft = btnCenter;
+      if (dialogLeft < minLeft) dialogLeft = minLeft;
+      if (dialogLeft > maxLeft) dialogLeft = maxLeft;
+
+      // Shift the arrow so it still points to the button
+      const arrowOffset = btnCenter - dialogLeft;
+
+      setDialogPos({ left: dialogLeft, top, arrowOffset });
+    };
+
+    update();
+    window.addEventListener("resize", update, { passive: true });
+    window.addEventListener("scroll", update, { passive: true });
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update);
+    };
+  }, [active, steps.length]);
+
+  // Click outside to dismiss dialog
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
+      if (active === null) return;
+      const target = e.target as HTMLElement;
+      
+      // If click is inside the timeline container or the dialog itself, do nothing
+      if (scrollContainerRef.current?.contains(target)) return;
+      if (target.closest('.timeline-dialog')) return;
+      
+      setActive(null);
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("touchstart", handleOutsideClick, { passive: true });
+    
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("touchstart", handleOutsideClick);
+    };
+  }, [active]);
+
+  const handleScroll = () => {
+    const el = scrollContainerRef.current;
+    if (!el || window.innerWidth >= 768) return; // Only auto-open on mobile
+
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    if (maxScroll <= 0) return;
+
+    const progress = el.scrollLeft / maxScroll;
+    setScrollProgress(progress);
+
+    // Find the item closest to the center of the scroll view
+    const center = el.scrollLeft + el.clientWidth / 2;
+    let closestIdx = 0;
+    let minDistance = Infinity;
+
+    buttonsRef.current.forEach((btn, idx) => {
+      if (!btn) return;
+      const btnCenter = btn.offsetLeft + btn.offsetWidth / 2;
+      const distance = Math.abs(btnCenter - center);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIdx = idx;
+      }
+    });
+
+    setActive(closestIdx);
+  };
+
+  return (
+    <div className="relative w-full py-1">
+      <div 
+        ref={scrollContainerRef}
+        className="relative overflow-x-auto pb-6 -mb-6 hide-scrollbar" 
+        onScroll={handleScroll}
+        onMouseLeave={() => {
+          if (window.innerWidth >= 768) setActive(null);
+        }}
+      >
         <div
-          className="relative grid divide-x divide-white/30"
+          className="relative flex md:grid w-max md:w-full"
           style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}
         >
           <div className="pointer-events-none absolute left-0 top-[-14px] bottom-[-14px] w-px bg-white/35" aria-hidden />
@@ -470,16 +561,15 @@ export function CreationProcessTimeline({
             return (
               <button
                 key={s.step}
+                ref={(el) => { buttonsRef.current[idx] = el; }}
                 type="button"
                 onMouseEnter={() => setActive(idx)}
                 onFocus={() => setActive(idx)}
                 onClick={() => setActive(idx)}
-                className="relative min-h-[190px] px-3 py-2 text-left outline-none sm:px-4"
+                className="relative min-h-[186px] w-[180px] shrink-0 md:w-auto px-3 py-1.5 text-left outline-none sm:px-4"
               >
-                {idx < steps.length - 1 ? (
-                  <div className="pointer-events-none absolute right-0 top-[-14px] bottom-[-14px] w-px bg-white/35" aria-hidden />
-                ) : null}
-                <div className={isUpperRow ? "pt-0" : "pt-8"}>
+                <div className="pointer-events-none absolute right-0 top-[-14px] bottom-[-14px] w-px bg-white/35" aria-hidden />
+                  <div className={isUpperRow ? "pt-0" : "pt-7"}>
                   <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/55">
                     STEP #{s.step}
                   </div>
@@ -491,7 +581,7 @@ export function CreationProcessTimeline({
                     {s.title}
                   </div>
 
-                <div className="mt-4 -mx-3 sm:-mx-4">
+                <div className="mt-3.5 -mx-3 sm:-mx-4">
                     <div
                       className="relative h-6 w-full rounded-full"
                       style={{
@@ -528,28 +618,45 @@ export function CreationProcessTimeline({
             );
           })}
         </div>
-
-        {/* Hover detail dialog */}
-        {active !== null ? (
-          <div className="relative mt-4 h-64">
-            <div
-              className="absolute top-0 w-[min(340px,88%)] min-h-[250px] -translate-x-1/2 rounded-[26px] border border-black/10 bg-zinc-100 px-7 py-9 text-center shadow-[0_20px_55px_rgba(0,0,0,0.25)]"
-              style={{ left: `${((active + 0.5) / steps.length) * 100}%` }}
-            >
-              <div className="absolute -top-3 left-1/2 h-0 w-0 -translate-x-1/2 border-l-[10px] border-r-[10px] border-b-[12px] border-l-transparent border-r-transparent border-b-zinc-100" />
-              <p className="text-[33px] font-bold leading-none text-zinc-900" style={{ fontFamily: "var(--font-display)" }}>
-                {steps[active].step}
-              </p>
-              <p className="mt-3 text-lg font-bold text-zinc-900" style={{ fontFamily: "var(--font-display)" }}>
-                {steps[active].title}
-              </p>
-              <p className="mt-3 text-base leading-relaxed text-zinc-600" style={{ fontFamily: "var(--font-body)" }}>
-                {steps[active].desc}
-              </p>
-            </div>
-          </div>
-        ) : null}
       </div>
+
+      {/* Custom Scroll Progress Bar (mobile only) */}
+      <div className="mt-10 md:hidden h-[2px] w-full max-w-[160px] mx-auto rounded-full bg-white/15 relative overflow-hidden">
+        <div 
+          className="absolute top-0 bottom-0 left-0 rounded-full bg-white transition-all duration-75"
+          style={{ 
+            width: `${Math.max(25, (1 / steps.length) * 100)}%`, 
+            left: `${scrollProgress * (100 - Math.max(25, (1 / steps.length) * 100))}%` 
+          }}
+        />
+      </div>
+
+      {/* Hover detail dialog via portal (always on top) */}
+      {active !== null && dialogPos && typeof document !== "undefined"
+        ? createPortal(
+            <div
+              className="timeline-dialog pointer-events-auto fixed z-[9999]"
+              style={{ left: dialogPos.left, top: dialogPos.top, transform: "translateX(-50%)" }}
+            >
+              <div 
+                className="absolute -top-3 h-0 w-0 -translate-x-1/2 border-l-[10px] border-r-[10px] border-b-[12px] border-l-transparent border-r-transparent border-b-zinc-100 transition-all duration-200 pointer-events-none" 
+                style={{ left: `calc(50% + ${dialogPos.arrowOffset}px)` }}
+              />
+              <div className="w-[min(340px,92vw)] min-h-[160px] sm:min-h-[250px] rounded-[22px] sm:rounded-[26px] border border-black/10 bg-zinc-100 px-5 py-6 sm:px-7 sm:py-9 text-center shadow-[0_20px_55px_rgba(0,0,0,0.25)]">
+                <p className="text-[28px] sm:text-[33px] font-bold leading-none text-zinc-900" style={{ fontFamily: "var(--font-display)" }}>
+                  {steps[active].step}
+                </p>
+                <p className="mt-2 sm:mt-3 text-base sm:text-lg font-bold text-zinc-900" style={{ fontFamily: "var(--font-display)" }}>
+                  {steps[active].title}
+                </p>
+                <p className="mt-2 sm:mt-3 text-sm sm:text-base leading-relaxed text-zinc-600" style={{ fontFamily: "var(--font-body)" }}>
+                  {steps[active].desc}
+                </p>
+              </div>
+            </div>,
+            document.body
+          )
+        : null}
     </div>
   );
 }
@@ -562,11 +669,19 @@ export function UseCaseCard({
 }: {
   icon: string; label: string; accentColor: string;
 }) {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <div
       className="group relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-950/55 p-5 sm:p-6 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:bg-zinc-900/80"
-      onMouseEnter={e => (e.currentTarget.style.borderColor = `${accentColor}45`)}
-      onMouseLeave={e => (e.currentTarget.style.borderColor = "")}
+      onMouseEnter={e => {
+        setIsHovered(true);
+        (e.currentTarget.style.borderColor = `${accentColor}45`);
+      }}
+      onMouseLeave={e => {
+        setIsHovered(false);
+        (e.currentTarget.style.borderColor = "");
+      }}
       style={{ minHeight: "210px" }}
     >
       <div className="pointer-events-none absolute left-0 right-0 top-0 h-px scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
@@ -574,7 +689,7 @@ export function UseCaseCard({
       <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{ background: `radial-gradient(circle at 22% 15%, ${accentColor}24 0%, transparent 55%)` }} />
 
-      <div className="relative mx-auto mb-6 h-[60px] w-[92px] -rotate-[36deg] rounded-full border"
+      <div className="relative mx-auto mb-6 h-[112px] w-[62px] rotate-[36deg] rounded-full border"
         style={{
           background: `linear-gradient(155deg, ${accentColor}, ${accentColor}cc)`,
           borderColor: `${accentColor}66`,
@@ -582,7 +697,12 @@ export function UseCaseCard({
         }}
       >
         <div
-          className="absolute left-1/2 top-[9px] flex h-11.5 w-11.5 -translate-x-1/2 items-center justify-center rounded-full border border-white/15 bg-[#0c0c12] text-white shadow-[0_8px_20px_rgba(0,0,0,0.55)] transition-all duration-500 group-hover:top-[2px]"
+          className="absolute bottom-[6px] left-1/2 flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-[#0c0c12] text-white shadow-[0_8px_20px_rgba(0,0,0,0.55)] transition-transform duration-500"
+          style={{
+            transform: isHovered
+              ? "translate3d(-50%, -50px, 0)"
+              : "translate3d(-50%, 0, 0)",
+          }}
         >
           <svg
             width="20"
@@ -593,7 +713,8 @@ export function UseCaseCard({
             strokeWidth="1.8"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="rotate-[18deg] transition-transform duration-500 group-hover:scale-105"
+            className="transition-transform duration-500 group-hover:scale-105"
+            style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -46%) rotate(-45deg)" }}
           >
             <path d="M7 17L17 7" />
             <path d="M8 7h9v9" />
@@ -661,14 +782,14 @@ export function PlatformBenefitsGrid({
             />
 
             <div
-              className="relative mb-8 h-[60px] w-[92px] -rotate-[36deg] rounded-full border"
+              className="relative mx-auto mb-8 h-[92px] w-[60px] rotate-[36deg] rounded-full border"
               style={{
                 background: `linear-gradient(155deg, ${accentColor}, ${accentColor}cc)`,
                 borderColor: `${accentColor}66`,
                 boxShadow: `inset 0 4px 10px rgba(255,255,255,0.12), 0 0 22px ${accentColor}45`,
               }}
             >
-              <div className="absolute left-1/2 top-[9px] flex h-11.5 w-11.5 -translate-x-1/2 items-center justify-center rounded-full border border-white/15 bg-[#0c0c12] text-white shadow-[0_8px_20px_rgba(0,0,0,0.55)] transition-all duration-500 group-hover:top-[2px]">
+              <div className="absolute left-1/2 bottom-[8px] flex h-[44px] w-[44px] -translate-x-1/2 items-center justify-center rounded-full border border-white/15 bg-[#0c0c12] text-white shadow-[0_8px_20px_rgba(0,0,0,0.55)] transition-all duration-500 group-hover:-translate-y-[32px]">
                 <svg
                   width="20"
                   height="20"
@@ -678,7 +799,8 @@ export function PlatformBenefitsGrid({
                   strokeWidth="1.8"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="rotate-[18deg] transition-transform duration-500 group-hover:scale-105"
+                  className="transition-transform duration-500 group-hover:scale-105"
+                  style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -46%) rotate(-45deg)" }}
                 >
                   <path d="M7 17L17 7" />
                   <path d="M8 7h9v9" />
@@ -686,15 +808,15 @@ export function PlatformBenefitsGrid({
               </div>
             </div>
 
-            <div className="relative space-y-2">
+            <div className="relative space-y-3 text-center">
               <h3
-                className="text-[clamp(1.35rem,2.6vw,1.9rem)] font-medium leading-[1.05] tracking-tight text-white"
+                className="text-[clamp(1.35rem,2.6vw,1.9rem)] font-medium leading-[1.05] tracking-tight text-white mx-auto"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {it.title}
               </h3>
               {it.desc ? (
-                <p className="text-sm leading-relaxed text-zinc-400" style={{ fontFamily: "var(--font-body)" }}>
+                <p className="text-[14px] leading-relaxed text-zinc-300 mx-auto max-w-[280px]" style={{ fontFamily: "var(--font-body)" }}>
                   {it.desc}
                 </p>
               ) : null}
@@ -712,7 +834,7 @@ export function PlatformBenefitsGrid({
 export function TechBadge({ label, accentColor }: { label: string; accentColor: string }) {
   return (
     <span
-      className="inline-flex items-center rounded-xl border px-4 py-2 text-sm font-semibold backdrop-blur-sm transition-all duration-200 hover:scale-105"
+      className="inline-flex shrink-0 items-center whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold backdrop-blur-sm transition-all duration-200 hover:scale-105"
       style={{
         borderColor: `${accentColor}30`,
         background:  `${accentColor}08`,
@@ -724,6 +846,61 @@ export function TechBadge({ label, accentColor }: { label: string; accentColor: 
     >
       {label}
     </span>
+  );
+}
+
+/* ─────────────────────────────────────────
+   TechMarquee (Slash-like)
+───────────────────────────────────────── */
+export function TechMarquee({
+  items,
+  accentColor,
+  speedSeconds = 22,
+}: {
+  items: string[];
+  accentColor: string;
+  speedSeconds?: number;
+}) {
+  return (
+    <div
+      className="relative overflow-hidden"
+      style={{
+        maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+      }}
+    >
+      <style>{`
+        @keyframes tech-marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .tech-marquee-track { animation: none !important; transform: none !important; }
+        }
+      `}</style>
+
+      <div
+        className="tech-marquee-track flex w-max items-center will-change-transform"
+        style={{ animation: `tech-marquee ${speedSeconds}s linear infinite` }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.animationPlayState = "paused";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.animationPlayState = "running";
+        }}
+      >
+        <div className="flex items-center gap-3 pr-3">
+          {items.map((t, i) => (
+            <TechBadge key={`${t}-${i}`} label={t} accentColor={accentColor} />
+          ))}
+        </div>
+        <div className="flex items-center gap-3 pr-3" aria-hidden>
+          {items.map((t, i) => (
+            <TechBadge key={`${t}-${i}-b`} label={t} accentColor={accentColor} />
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -837,29 +1014,15 @@ export function InquiryForm({
    FormCard
 ───────────────────────────────────────── */
 export function FormCard({
-  title = "got a project in mind?",
-  subtitle = "rough idea or full spec — drop it here. we'll respond within 24 hours.",
   accentColor,
   children,
 }: {
-  title?: string;
-  subtitle?: string;
   accentColor: string;
   children: React.ReactNode;
 }) {
   return (
-    <div
-      className="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/70 p-8 backdrop-blur-xl"
-      style={{ boxShadow:`0 0 60px ${accentColor}18` }}
-    >
-      <div className="pointer-events-none absolute -top-10 -right-10 h-40 w-40 rounded-full blur-3xl"
-        style={{ background:`${accentColor}20` }} />
-      <div className="pointer-events-none absolute -bottom-10 -left-10 h-32 w-32 rounded-full blur-3xl"
-        style={{ background:`${accentColor}12` }} />
-
-      <div className="relative">
-        <h2 className="text-xl font-bold text-white" style={{ fontFamily:"var(--font-display)" }}>{title}</h2>
-        <p className="mt-1 mb-6 text-sm text-zinc-400" style={{ fontFamily:"var(--font-body)" }}>{subtitle}</p>
+    <div className="w-full">
+      <div>
         {children}
       </div>
     </div>
@@ -872,6 +1035,7 @@ export function FormCard({
 export function ServiceCTA({
   accentGradient,
   accentColor,
+  badgeColor = "violet",
   title,
   subtitle,
   ctaText = "start a conversation →",
@@ -879,6 +1043,7 @@ export function ServiceCTA({
 }: {
   accentGradient: string;
   accentColor: string;
+  badgeColor?: "emerald" | "cyan" | "violet" | "pink" | "amber" | "teal" | "blue" | "rose";
   title: string;
   subtitle: string;
   ctaText?: string;
@@ -888,66 +1053,101 @@ export function ServiceCTA({
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden rounded-3xl border border-white/10 p-8 text-center sm:p-16 transition-all duration-700"
+      className="w-full pb-6 pt-10 sm:pb-8 sm:pt-12 transition-all duration-700"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(40px)",
-        background:"linear-gradient(135deg,#050709 0%,#080e0b 50%,#040810 100%)",
-        animation: visible ? "glow-pulse 4s ease-in-out infinite" : "none",
-        boxShadow: visible ? `0 0 80px ${accentColor}18` : "none",
       }}
     >
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-32 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full blur-[120px]"
-          style={{ background:`${accentColor}14` }} />
-        <div className="absolute -right-32 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full blur-[120px]"
-          style={{ background:`${accentColor}0e` }} />
-        <div className="absolute inset-0 opacity-[0.025]"
-          style={{ backgroundImage:`linear-gradient(to right,${accentColor}80 1px,transparent 1px),linear-gradient(to bottom,${accentColor}80 1px,transparent 1px)`, backgroundSize:"56px 56px" }} />
-        <div className="absolute top-5 right-5 h-20 w-20 rounded-full border opacity-30"
-          style={{ borderColor:`${accentColor}30`, animation:"rotate-slow 18s linear infinite" }} />
-      </div>
+      <div>
+        <SectionBadge color={badgeColor}>connect</SectionBadge>
+        <h2 className="mt-4 text-white" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.9rem,4.8vw,3.4rem)", lineHeight: 1.08 }}>
+          Hello,
+        </h2>
 
-      <div className="relative space-y-6">
-        <div
-          className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border text-2xl"
+        <div className="mt-6 space-y-4 text-zinc-300" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.35rem,3.4vw,2.45rem)", lineHeight: 1.2 }}>
+          <div className="flex flex-wrap items-center gap-3">
+            <span>My name is</span>
+            <input
+              aria-label="Full name"
+              placeholder=""
+              className="h-12 w-full min-w-0 max-w-full rounded-xl border border-white/10 bg-white/10 px-4 text-[clamp(1.1rem,2.5vw,1.9rem)] text-white outline-none placeholder:text-zinc-500 sm:min-w-[220px] sm:flex-1"
+            />
+            <span>. I work for</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <span>a/an</span>
+            <select
+              aria-label="Project type"
+              className="h-12 w-full min-w-0 max-w-full rounded-xl border border-white/10 bg-white/10 px-4 text-[clamp(1.1rem,2.5vw,1.9rem)] text-white outline-none sm:min-w-[250px] sm:w-auto"
+              style={{ backgroundColor: "#171717", color: "#ffffff" }}
+              defaultValue="corporation"
+            >
+              <option value="corporation" style={{ backgroundColor: "#171717", color: "#ffffff" }}>corporation</option>
+              <option value="start-up" style={{ backgroundColor: "#171717", color: "#ffffff" }}>start-up</option>
+              <option value="innovation-lab" style={{ backgroundColor: "#171717", color: "#ffffff" }}>innovation lab</option>
+            </select>
+            <span>&amp; need help with</span>
+            <input
+              aria-label="Project summary"
+              placeholder=""
+              className="h-12 w-full min-w-0 max-w-full rounded-xl border border-white/10 bg-white/10 px-4 text-[clamp(1.1rem,2.5vw,1.9rem)] text-white outline-none placeholder:text-zinc-500 sm:min-w-[250px] sm:flex-1"
+            />
+            <span>.</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <span>You can email me at</span>
+            <input
+              aria-label="Email address"
+              placeholder=""
+              className="h-12 w-full min-w-0 max-w-full rounded-xl border border-white/10 bg-white/10 px-4 text-[clamp(1.1rem,2.5vw,1.9rem)] text-white outline-none placeholder:text-zinc-500 sm:min-w-[280px] sm:flex-1"
+            />
+            <div className="flex w-full items-center gap-3 sm:w-auto">
+              <span>or call</span>
+              <input
+                aria-label="Contact number"
+                placeholder=""
+                className="h-12 min-w-0 flex-1 rounded-xl border border-white/10 bg-white/10 px-4 text-[clamp(1.1rem,2.5vw,1.9rem)] text-white outline-none placeholder:text-zinc-500 sm:min-w-[220px] sm:w-auto sm:flex-none"
+              />
+              <span className="leading-none">.</span>
+            </div>
+          </div>
+        </div>
+
+        <p
+          className="mt-6 text-zinc-300"
           style={{
-            borderColor:`${accentColor}30`,
-            background:`${accentColor}12`,
-            filter:`drop-shadow(0 0 16px ${accentColor}44)`,
-            animation:"bob 4s ease-in-out infinite",
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(1.1rem,2.5vw,1.9rem)",
+            lineHeight: 1.2,
           }}
         >
-          🛠️
-        </div>
-        <div>
-          <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accentColor, fontFamily:"var(--font-display)" }}>
-            ready when you are
-          </p>
-          <h2 className="text-balance font-extrabold tracking-tight text-white"
-            style={{ fontSize:"clamp(1.75rem,4.5vw,2.75rem)", fontFamily:"var(--font-display)" }}>
-            {title}
-          </h2>
-        </div>
-        <p className="mx-auto max-w-2xl text-base leading-relaxed text-zinc-300 sm:text-lg"
-          style={{ fontFamily:"var(--font-body)" }}>
-          {subtitle}
+          Give us a brief description.
         </p>
-        {/* Trust line */}
-        <p className="text-xs text-zinc-600" style={{ fontFamily:"var(--font-body)" }}>
-          no retainer required · project-based · you own everything we build
-        </p>
-        <div className="pt-2">
-          <a
-            href={href}
-            className={`group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r ${accentGradient} px-8 py-4 text-base font-semibold text-white shadow-lg transition-all hover:scale-[1.05] hover:shadow-xl`}
-            style={{ fontFamily:"var(--font-display)", boxShadow:`0 8px 32px ${accentColor}44` }}
+
+        <div className="mt-3">
+          <textarea
+            rows={4}
+            aria-label="Project description"
+            placeholder=""
+            className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-zinc-200 outline-none placeholder:text-zinc-500"
+            style={{ fontFamily: "var(--font-body)" }}
+          />
+        </div>
+
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          <button
+            className={`group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r ${accentGradient} px-8 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:scale-[1.03]`}
+            style={{ fontFamily:"var(--font-display)", boxShadow:`0 8px 28px ${accentColor}44` }}
+            type="button"
           >
             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
             {ctaText}
-            <svg className="h-5 w-5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
+          </button>
+          <a href={href} className="text-xs text-zinc-500 underline-offset-4 hover:text-zinc-300 hover:underline">
+            Prefer classic contact page
           </a>
         </div>
       </div>
