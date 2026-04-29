@@ -7,6 +7,6 @@ export default function robots() {
       },
     ],
     sitemap: 'https://ecobridgers.site/sitemap.xml',
-    host: 'https://ecobridgers.site',
+    host: 'https://ecobridgers.com',
   };
 }
