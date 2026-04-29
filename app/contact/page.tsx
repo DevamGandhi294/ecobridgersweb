@@ -4,7 +4,7 @@ import { Mail, Smartphone, Globe } from "lucide-react";
 
 export const metadata: Metadata = {
     alternates: {
-        canonical: 'https://www.ecobridgers.site/contact',
+        canonical: 'https://www.ecobridgers.com/contact',
     },
     title: 'Contact EcoBridgers — Start Your Project',
     description: 'Tell us what you\'re building. We respond within 24 hours. IoT, web, mobile, and cloud development from Surat, India.',
