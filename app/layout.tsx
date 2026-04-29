@@ -9,9 +9,9 @@ import { CustomCursor } from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
   alternates: {
-    canonical: 'https://www.ecobridgers.site',
+    canonical: 'https://www.ecobridgers.com',
   },
-  metadataBase: new URL('https://www.ecobridgers.site'),
+  metadataBase: new URL('https://www.ecobridgers.com'),
   title: {
     default: 'EcoBridgers | IoT & Embedded Systems Development, Surat',
     template: '%s | EcoBridgers',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://www.ecobridgers.site',
+    url: 'https://www.ecobridgers.com',
     siteName: 'EcoBridgers',
     title: 'EcoBridgers | IoT & Embedded Systems Development',
     description: 'End-to-end IoT, cloud, and mobile development. Sensor to dashboard.',
