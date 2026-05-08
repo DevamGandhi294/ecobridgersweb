@@ -9,60 +9,49 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 ───────────────────────────────────────── */
 const highlights = [
   {
-    icon: "🔌",
-    title: "IoT & Embedded Systems",
-    desc: "sensors, microcontrollers, edge devices — built to survive the real world, not just your lab bench.",
-    longDesc: "we build connected hardware for where things actually get rough: dust, vibration, -20°C to +60°C, internet that ghosts for hours. edge logic handles decisions locally so your system keeps running no matter what. data only moves when it matters. alerts fire when they should. zero cloud round-trips, zero excuses.",
-    accent: ["#10b981", "#14b8a6"],
-    tag: "Hardware",
-    href: "/services#iot",
-    pattern: "circuit",
-    number: "01",
-  },
-  {
-    icon: "🌐",
-    title: "Web & Cloud Platforms",
-    desc: "dashboards, APIs, real-time streams — the software layer your hardware actually deserves.",
-    longDesc: "next.js frontends, node/python backends, websocket streams, REST & graphql APIs. wired to your IoT stack or built standalone — either way it feels like it was always supposed to be there. fast to ship, clean to scale, no spaghetti left behind.",
-    accent: ["#06b6d4", "#3b82f6"],
-    tag: "Cloud",
-    href: "/services#web",
-    pattern: "grid",
-    number: "02",
-  },
-  {
-    icon: "📱",
-    title: "Mobile Applications",
-    desc: "cross-platform apps that put your whole system in a pocket. live data, remote control, zero lag.",
-    longDesc: "flutter apps that connect users directly to hardware or platforms. push notifications that don't cry wolf. live charts that don't freeze at the worst moment. remote control that actually responds. one codebase, iOS and android, polished enough that it doesn't embarrass the rest of what you built.",
-    accent: ["#8b5cf6", "#a855f7"],
-    tag: "Mobile",
-    href: "/services#mobile",
-    pattern: "dots",
-    number: "03",
-  },
-  {
-    icon: "🧠",
-    title: "AI-Assisted Solutions",
-    desc: "anomaly detection, predictive maintenance, edge vision — ML that earns its place, not just its title.",
-    longDesc: "we use AI where it actually moves the needle: catching failures before they cost money, spotting patterns humans miss, running computer vision at the edge without melting a raspberry pi. practical ML, zero buzzword fluff. if it doesn't make the product measurably better, we don't ship it. full stop.",
-    accent: ["#ec4899", "#f43f5e"],
-    tag: "AI / ML",
-    href: "/services#ai",
-    pattern: "wave",
-    number: "04",
-  },
-  {
-    icon: "🔒",
-    title: "Security & DevOps",
-    desc: "CI/CD, containers, TLS everywhere — ships fast, stays secure, doesn't become a headline.",
-    longDesc: "docker, github actions, MQTT over TLS, VPN-tunnelled device fleets. security isn't a checkbox we bolt on at the end — it's baked in from commit one. auto-deploying pipelines, reproducible infra, devices that can't be trivially owned. you get ship speed and sleep quality. both. not one or the other.",
-    accent: ["#f59e0b", "#f97316"],
-    tag: "DevOps",
-    href: "/services#devops",
-    pattern: "hex",
-    number: "05",
-  },
+  icon: "⚡",
+  title: "Software as a Service (SaaS)",
+  desc: "We build industry-specific SaaS products for businesses that enterprise software has always ignored. Mobile-first, affordable, and designed around how your team actually works — not how a product manager in Bangalore imagined they do.",
+  longDesc: "multi-tenant architecture with shared database and custom frontend per client. subscription or one-time pricing depending on what the market needs. flutter on mobile, next.js on web, postgres underneath. built to onboard in hours, not weeks. if your team needs a manual to use it, we built it wrong.",
+  accent: ["#10b981", "#14b8a6"],
+  tag: "SaaS",
+  href: "/services#saas",
+  pattern: "circuit",
+  number: "01",
+},
+{
+  icon: "🔌",
+  title: "IoT & Embedded Systems",
+  desc: "We connect physical machines and environments to the digital world. From sensor networks and industrial monitoring to smart devices and predictive maintenance — we handle the full stack: firmware, hardware integration, cloud connectivity and the mobile app that controls it all.",
+  longDesc: "we build connected hardware for where things actually get rough: dust, vibration, -20°C to +60°C, internet that ghosts for hours. edge logic handles decisions locally so your system keeps running no matter what. data only moves when it matters. alerts fire when they should. zero cloud round-trips, zero excuses.",
+  accent: ["#06b6d4", "#3b82f6"],
+  tag: "IoT / Embedded",
+  href: "/services#iot",
+  pattern: "grid",
+  number: "02",
+},
+{
+  icon: "📱",
+  title: "Mobile Applications",
+  desc: "Android and iOS apps built for real users. We design the UX, write the code, integrate your backend and handle Play Store and App Store submission. Whether it is an IoT companion app, a B2B operations tool, or a consumer-facing product — we deliver apps that work and feel right.",
+  longDesc: "flutter apps that connect users directly to hardware or platforms. push notifications that don't cry wolf. live charts that don't freeze at the worst moment. remote control that actually responds. one codebase, iOS and android, polished enough that it doesn't embarrass the rest of what you built.",
+  accent: ["#8b5cf6", "#a855f7"],
+  tag: "Mobile",
+  href: "/services#mobile",
+  pattern: "dots",
+  number: "03",
+},
+{
+  icon: "🌐",
+  title: "Web & Database",
+  desc: "Fast, clean web platforms and the data architecture that makes them reliable. We build SaaS dashboards, admin panels, business websites and full-stack web apps — and we design the database schemas, queries and pipelines that keep everything running at scale.",
+  longDesc: "next.js on the frontend, node or python on the backend, postgres or mongo depending on what the data actually looks like. schemas designed right the first time so you don't rewrite in six months. queries that don't crawl when the table hits a million rows. dashboards that update in real time without hammering the server.",
+  accent: ["#ec4899", "#f43f5e"],
+  tag: "Web / Database",
+  href: "/services#web",
+  pattern: "wave",
+  number: "04",
+},
 ] as const;
 
 /* ─────────────────────────────────────────
@@ -480,9 +469,9 @@ export function ExpertiseCards() {
         className="space-y-3 transition-all duration-700"
         style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(28px)" }}
       >
-        <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/25 bg-cyan-500/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-cyan-400">
+        {/* <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/25 bg-cyan-500/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-cyan-400">
           Core Expertise
-        </div>
+        </div> */}
         <h2
           className="font-extrabold tracking-tight text-white"
           style={{ fontSize: "clamp(2rem,5vw,3.25rem)" }}
@@ -490,7 +479,7 @@ export function ExpertiseCards() {
           What We Build
         </h2>
         <p className="max-w-2xl text-sm text-zinc-500 sm:text-base">
-          End-to-end capability across hardware, software, mobile, AI, and infrastructure.
+          We are not a generic IT company. Every service we offer is something our team has deep expertise in — not something we outsource or figure out as we go.
         </p>
       </div>
 

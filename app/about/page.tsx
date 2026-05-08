@@ -7,10 +7,10 @@ import { ValuesDiagram } from "./ValuesDiagram";
 
 export const metadata: Metadata = {
     alternates: {
-        canonical: 'https://www.ecobridgers.com/services',
+        canonical: 'https://www.ecobridgers.com/about',
     },
-    title: 'About Us — Engineering Team in Surat, India',
-    description: 'Meet the EcoBridgers team — multi-disciplinary engineers specialising in IoT, cloud, and full-stack development. Based in Surat, Gujarat.',
+    title: 'About EcoBridgers — IoT & Software Agency in Surat, Gujarat',
+    description: 'Meet the EcoBridgers team — a group of engineers and designers from Surat building IoT systems, mobile apps and software for startups and businesses across India.',
 }
 
 export default function AboutPage() {
@@ -69,9 +69,9 @@ export default function AboutPage() {
                     <div className="relative flex flex-col lg:flex-row items-center gap-12 p-8 sm:p-12">
                         {/* LEFT — Title & description */}
                         <div className="flex-1 space-y-5">
-                            <div className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+                            {/* <div className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
                                 The Team
-                            </div>
+                            </div> */}
                             <h1 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl">
                                 A Collaborative,{" "}
                                 <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
@@ -87,17 +87,16 @@ export default function AboutPage() {
                         </div>
 
                         {/* RIGHT — Big pill with two portrait circles */}
-                        <div className="flex-shrink-0 flex justify-end">
+                        {/* <div className="flex-shrink-0 flex justify-end">
                             <div
                                 className="relative inline-flex items-center gap-4 sm:gap-6 rounded-[140px] border p-5 sm:p-8 shadow-2xl shadow-black/50"
                                 style={{ background: "#89e78f", borderColor: "#7fd186" }}
                             >
                                 <div className="absolute inset-0 rounded-[140px] bg-gradient-to-br from-white/20 via-transparent to-emerald-600/20 pointer-events-none" />
 
-                                {/* Person 1 */}
+                                
                                 <div className="relative">
                                     <div className="h-32 w-32 sm:h-44 sm:w-44 md:h-52 md:w-52 rounded-full overflow-hidden ring-4 ring-white shadow-2xl bg-white">
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img
                                             src="/images/IMG-20260118-WA0020(1).jpg.jpeg"
                                             alt="Team member"
@@ -110,10 +109,8 @@ export default function AboutPage() {
                                     </div>
                                 </div>
 
-                                {/* Person 2 */}
                                 <div className="relative">
                                     <div className="h-32 w-32 sm:h-44 sm:w-44 md:h-52 md:w-52 rounded-full overflow-hidden ring-4 ring-white shadow-2xl bg-white">
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img
                                             src="/images/motion_photo_2805121201872873388.jpg.jpeg"
                                             alt="Team member"
@@ -126,7 +123,7 @@ export default function AboutPage() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </section>
 

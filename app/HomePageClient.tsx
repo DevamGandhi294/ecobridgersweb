@@ -167,49 +167,47 @@ function Hero({ heroReady }: { heroReady: boolean }) {
           {/* Left text */}
           <div>
             <h1 style={{ fontSize: "clamp(2.4rem,5vw,4.2rem)", fontWeight: 900, lineHeight: 1.08, color: "#f0fdf8", marginBottom: 24, fontFamily: "var(--font-display)", opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)" }}>
-              Where Ideas Cross the Bridge to{" "}
+              Your Market. Our Tech.<br></br> Let's Grow{" "}
               <GradientHeroWord>
-                Innovation
+                Together.
               </GradientHeroWord>
             </h1>
 
             {/* Badge */}
             <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                background: "rgba(52,211,153,0.08)",
-                border: "1px solid rgba(52,211,153,0.3)",
-                borderRadius: 999,
-                padding: "6px 16px",
-                marginBottom: 28,
-                fontSize: 12,
-                fontWeight: 700,
-                letterSpacing: "0.1em",
-                color: "#34d399",
-                textTransform: "uppercase" as const,
-                backdropFilter: "blur(8px)",
-                opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.1s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s",
-              }}
+              // style={{
+              //   display: "inline-flex",
+              //   alignItems: "center",
+              //   gap: 8,
+              //   background: "rgba(52,211,153,0.08)",
+              //   border: "1px solid rgba(52,211,153,0.3)",
+              //   borderRadius: 999,
+              //   padding: "6px 16px",
+              //   marginBottom: 28,
+              //   fontSize: 12,
+              //   fontWeight: 700,
+              //   letterSpacing: "0.1em",
+              //   color: "#34d399",
+              //   textTransform: "uppercase" as const,
+              //   backdropFilter: "blur(8px)",
+              //   opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.1s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s",
+              // }}
             >
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#34d399", boxShadow: "0 0 8px rgba(52,211,153,0.9)", animation: "archPulse 2s ease-in-out infinite", display: "inline-block" }} />
-              Between ideas and innovation, there&apos;s always a bridge.
+              {/* <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#34d399", boxShadow: "0 0 8px rgba(52,211,153,0.9)", animation: "archPulse 2s ease-in-out infinite", display: "inline-block" }} />
+              Between ideas and innovation, there&apos;s always a bridge. */}
             </div>
             
 
             {/* Sub */}
             <p style={{ fontSize: 17, color: "rgba(240,253,248,0.7)", lineHeight: 1.7, marginBottom: 16, maxWidth: 480, fontFamily: "var(--font-body)", opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.2s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s" }}>
-              your idea is the starting point. we&apos;re the engine that turns it into something real —
-              hardware that talks, software that scales, systems that don&apos;t quit.
+              EcoBridgers builds practical SaaS products and IoT systems designed for the businesses most enterprise software ignores — textile units, factories, cafes, sports venues and local service businesses across India.
             </p>
             <p style={{ fontSize: 14, color: "rgba(240,253,248,0.45)", lineHeight: 1.6, marginBottom: 36, maxWidth: 440, fontFamily: "var(--font-body)", opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.3s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s" }}>
-              from sensor to dashboard. from prototype to production.<br />
-              no fluff. no gatekeeping. just engineering that works.
+              We are not a generic IT agency. We build industry-specific software products from within the industries we serve — affordable, mobile-first and ready to deploy. Our products are already 50–70% built and in active development. You do not have to wait for us to figure it out.
             </p>
 
             {/* CTAs */}
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 44, opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.4s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s" }}>
+            {/* <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 44, opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.4s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s" }}>
               <Link
                 href="/contact"
                 style={{
@@ -260,10 +258,10 @@ function Hero({ heroReady }: { heroReady: boolean }) {
                 see what we do
                 <svg style={{ width: 14, height: 14 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
               </Link>
-            </div>
+            </div> */}
 
             {/* Chips */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.5s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s" }}>
+            {/* <div style={{ display: "flex", flexWrap: "wrap", gap: 10, opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.5s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s" }}>
               {["End-to-end delivery", "IoT → Cloud", "Ships on Time", "No Over-Engineering"].map((chip) => (
                 <span key={chip} style={{
                   background: "rgba(52,211,153,0.07)",
@@ -283,7 +281,7 @@ function Hero({ heroReady }: { heroReady: boolean }) {
                   {chip}
                 </span>
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/* Right: Orb (from reference, recolored) */}
@@ -336,11 +334,11 @@ function Hero({ heroReady }: { heroReady: boolean }) {
               />
               {/* Float chips */}
               {[
-                { label: "AWS", x: 10, y: 20, color: "#34d399" },
+                { label: "SaaS", x: 10, y: 20, color: "#34d399" },
                 { label: "React", x: 280, y: 40, color: "#22d3ee" },
                 { label: "IoT", x: 300, y: 280, color: "#10b981" },
-                { label: "AI/ML", x: 20, y: 300, color: "#34d399" },
-                { label: "K8s", x: 160, y: 10, color: "#22d3ee" },
+                { label: "Flutter", x: 20, y: 300, color: "#34d399" },
+                { label: "AWS", x: 160, y: 10, color: "#22d3ee" },
               ].map((chip, i) => (
                 <div
                   key={chip.label}
@@ -411,16 +409,16 @@ const WhySection = memo(function WhySection({ visible }: { visible: boolean }) {
   return (
     <section className="space-y-8">
       <div className="space-y-4 transition-all duration-700" style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(32px)" }}>
-        <SectionBadge color="emerald">Why Choose Us</SectionBadge>
+        {/* <SectionBadge color="emerald">Why Choose Us</SectionBadge> */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <h2 className="text-balance font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(2rem,5vw,3.25rem)", fontFamily: "var(--font-display)", lineHeight: 1.05 }}>
             Why{" "}
             <span style={{ background: "linear-gradient(90deg,#34d399,#22d3ee)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              EcoBridges?
+              EcoBridgers?
             </span>
           </h2>
           <p className="text-sm text-zinc-500 sm:text-right max-w-xs" style={{ fontFamily: "var(--font-body)" }}>
-            real projects. real delivery.
+            {/* real projects. real delivery. */}
           </p>
         </div>
       </div>
@@ -455,16 +453,16 @@ const WhySection = memo(function WhySection({ visible }: { visible: boolean }) {
             </div>
             <div className="p-6 md:w-[56%] md:p-8 lg:p-9">
               <div className="flex items-start justify-between gap-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">the hard truth</p>
+                {/* <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">the hard truth</p> */}
               </div>
               <h3
                 className="mt-4 break-words font-extrabold leading-[0.95] [hyphens:none]"
                 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.48rem,2.9vw,2.2rem)", overflowWrap: "anywhere" }}
               >
-                Most tech projects die in spreadsheet
+                We are specialists, not generalists
               </h3>
               <p className="mt-6 max-w-[30ch] text-[1.08rem] leading-snug" style={{ fontFamily: "var(--font-body)" }}>
-                Practical scope. Clean execution. Shipped systems that actually survive the real world.
+                Our team has deep expertise in both app development and IoT—expertise that most agencies in Surat do not offer together.
               </p>
             </div>
           </div>
@@ -492,14 +490,14 @@ const WhySection = memo(function WhySection({ visible }: { visible: boolean }) {
           </div>
           <div className="space-y-3 p-5 pt-4">
             <div className="flex items-center justify-between gap-3">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">the approach</p>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">impact</p>
+              {/* <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">the approach</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">impact</p> */}
             </div>
             <h3 className="font-extrabold leading-tight" style={{ fontFamily: "var(--font-display)", fontSize: "1.6rem" }}>
-              Hardware. Software. Cloud.
+              We write clean, documented code
             </h3>
             <p className="text-sm leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
-              One clean architecture — devices, APIs, and dashboards all talking fluently.
+              so your product is maintainable and you are never locked to us
             </p>
             <p className="text-sm leading-relaxed opacity-90" style={{ fontFamily: "var(--font-body)" }}>
               Designed right, you spend less time firefighting — typically ~90% less maintenance overhead.
@@ -520,12 +518,12 @@ const WhySection = memo(function WhySection({ visible }: { visible: boolean }) {
           }}
         >
           <div className="p-6 pb-4">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">real world only</p>
+            {/* <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">real world only</p> */}
             <h3 className="mt-3 font-extrabold leading-tight" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.25rem,2.6vw,1.85rem)" }}>
-              Built for factories, farms, cities, offices.
+              We communicate clearly
             </h3>
             <p className="mt-3 text-sm leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
-              Not demo-day ready. Field-ready under messy, high-load conditions.
+              you will always know what stage your project is at, what decisions need to be made, and what to expect next
             </p>
           </div>
 
@@ -552,14 +550,14 @@ const WhySection = memo(function WhySection({ visible }: { visible: boolean }) {
           }}
         >
           <div className="flex items-start justify-between gap-3">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">the process</p>
-            <span className="text-[11px] font-semibold opacity-70">fixed scope</span>
+            {/* <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">the process</p>
+            <span className="text-[11px] font-semibold opacity-70">fixed scope</span> */}
           </div>
           <h3 className="mt-3 font-extrabold leading-tight" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.2rem,2.4vw,1.8rem)" }}>
-            Scope locked. Timeline real. No surprises.
+            We work with your budget
           </h3>
           <p className="mt-3 text-sm leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
-            No scope creep, no mystery invoices, no "one more sprint" trap.
+            whether you are a startup or an established business, we scope projects honestly 
           </p>
         </article>
 
@@ -670,13 +668,13 @@ function Terminal() {
 ───────────────────────────────────────── */
 const ARCH_NODES = [
   { id: "iot", label: "IoT Devices", icon: "📡", desc: "Sensors & Edge", color: "#34d399" },
-  { id: "api", label: "API Layer", icon: "⚡", desc: "REST / MQTT / gRPC", color: "#22d3ee" },
-  { id: "cloud", label: "Cloud", icon: "☁️", desc: "AWS / GCP / K8s", color: "#10b981" },
+  { id: "api", label: "API Layer", icon: "⚡", desc: "REST / MQTT / FastAPI", color: "#22d3ee" },
+  { id: "cloud", label: "Cloud", icon: "☁️", desc: "AWS / GCP / Azure", color: "#10b981" },
   { id: "apps", label: "Apps", icon: "📱", desc: "Mobile & Web", color: "#34d399" },
 ];
 
 function ArchitectureSection({ visible }: { visible: boolean }) {
-  const techTags = ["MQTT", "Node.js", "Go", "PostgreSQL", "Redis", "Docker", "Kubernetes", "AWS", "React Native", "Flutter", "TensorFlow", "Kafka"];
+  const techTags = ["MQTT", "Node.js", "Firebase", "PostgreSQL", "Redis", "Docker", "Supabase", "AWS", "React Native", "Flutter", "TensorFlow", "Python"];
   const [pillExpanded, setPillExpanded] = useState(false);
   const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [activeNode, setActiveNode] = useState<number | null>(null);
@@ -741,7 +739,7 @@ function ArchitectureSection({ visible }: { visible: boolean }) {
         className="space-y-3 text-left transition-all duration-700"
         style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(32px)" }}
       >
-        <SectionBadge color="cyan">System Architecture</SectionBadge>
+        {/* <SectionBadge color="cyan">System Architecture</SectionBadge> */}
         <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(2rem,5vw,3.25rem)", fontFamily: "var(--font-display)" }}>
           How Our{" "}
           <span style={{ background: "linear-gradient(90deg,#34d399,#22d3ee)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
@@ -841,7 +839,7 @@ function ArchitectureSection({ visible }: { visible: boolean }) {
               </defs>
 
               {/* Thick rounded clover connector (target style) */}
-              <g fill="#d98de3" stroke="none" filter="url(#crossPillGlow)">
+              <g fill="rgb(52, 211, 153)" stroke="none" filter="url(#crossPillGlow)">
                 <circle cx="40" cy="40" r="24" />
                 <circle cx="92" cy="40" r="24" />
                 <circle cx="40" cy="92" r="24" />
@@ -980,7 +978,7 @@ const QnASection = memo(function QnASection({ visible }: { visible: boolean }) {
         className="space-y-4 transition-all duration-700"
         style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(32px)" }}
       >
-        <SectionBadge color="orange">Quick Q&amp;A</SectionBadge>
+        {/* <SectionBadge color="orange">Quick Q&amp;A</SectionBadge> */}
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <h2
             className="text-balance font-extrabold tracking-tight text-white"
@@ -991,9 +989,9 @@ const QnASection = memo(function QnASection({ visible }: { visible: boolean }) {
               actually ask.
             </span>
           </h2>
-          <p className="text-sm text-zinc-500 max-w-xs sm:text-right" style={{ fontFamily: "var(--font-body)" }}>
+          {/* <p className="text-sm text-zinc-500 max-w-xs sm:text-right" style={{ fontFamily: "var(--font-body)" }}>
             no fluff. straight answers.
-          </p>
+          </p> */}
         </div>
       </div>
 
@@ -1456,17 +1454,17 @@ export default function HomePageClient() {
               className="space-y-4 transition-all duration-700"
               style={{ opacity: clientRef.visible ? 1 : 0, transform: clientRef.visible ? "translateY(0)" : "translateY(32px)" }}
             >
-              <SectionBadge color="violet">who we build for</SectionBadge>
+              {/* <SectionBadge color="violet">who we build for</SectionBadge> */}
               <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                 <h2 className="text-balance font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(2rem,5vw,3.25rem)", fontFamily: "var(--font-display)" }}>
-                  we work with{" "}
+                  We work with{" "}
                   <span style={{ background: "linear-gradient(90deg,#a78bfa,#22d3ee)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                     builders.
                   </span>
                 </h2>
-                <p className="text-sm text-zinc-500 max-w-xs sm:text-right" style={{ fontFamily: "var(--font-body)" }}>
+                {/* <p className="text-sm text-zinc-500 max-w-xs sm:text-right" style={{ fontFamily: "var(--font-body)" }}>
                   if you're making something real, we're in.
-                </p>
+                </p> */}
               </div>
             </div>
 

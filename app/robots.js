@@ -6,7 +6,7 @@ export default function robots() {
         allow: '/',
       },
     ],
-    sitemap: 'https://ecobridgers.site/sitemap.xml',
+    sitemap: 'https://ecobridgers.com/sitemap.xml',
     host: 'https://ecobridgers.com',
   };
 }

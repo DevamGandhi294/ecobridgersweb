@@ -187,7 +187,7 @@ export function Header() {
             );
           })}
 
-          <Link
+          {/* <Link
             href="/contact"
             className="ml-2 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition-all hover:shadow-xl hover:shadow-emerald-500/30 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 md:text-base"
           >
@@ -195,7 +195,7 @@ export function Header() {
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
-          </Link>
+          </Link> */}
         </nav>
 
         {/* ── Mobile Navigation ── */}
