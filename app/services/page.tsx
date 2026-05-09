@@ -11,36 +11,36 @@ const GRID_COLOR = "rgba(214,221,87,0.68)";
 
 const services = [
   {
-    href: "/services/iot",
-    badge: "IoT & Embedded",
+    href: "/services/Saaa",
+    badge: "SaaS Products",
     color: "#34d399",
-    title: "Build connected products that survive the real world",
-    who: "Founders and teams shipping hardware, sensors, or field devices.",
-    bullets: ["Firmware + edge logic", "Connectivity + OTA pipelines", "Hardware-cloud integration"],
+    title: "Ready-built SaaS for your industry. Deployable in weeks, not months.",
+    who: "Every Gap is Custom: We build custom SaaS solutions tailored to your unique business needs, ensuring a perfect fit for your operations.",
+    bullets: ["TextileBridge and Machine Maintenance", "CafeBridge and TurfBridge"],
   },
   {
-    href: "/services/web",
-    badge: "Web & Cloud",
-    color: "#22d3ee",
-    title: "Turn raw data into useful software people actually use",
-    who: "Teams needing dashboards, admin tools, APIs, and scalable backend.",
-    bullets: ["Admin and operator dashboards", "Clean API architecture", "Secure cloud deployment"],
+    href: "/services/iot",
+    badge: "IoT & Embedded",
+    color: "#10b981",
+    title: "Sensors, firmware and alerts. The full stack — not just the hardware.",
+    who: "Factories and industrial units that need to know what their machines are doing before something breaks.",
+    bullets: ["Sensor hardware installed on any machine", "Real-time alerts via WhatsApp or app ", "Cloud connectivity via MQTT, WiFi, BLE"],
   },
   {
     href: "/services/mobile",
     badge: "Mobile Apps",
     color: "#a78bfa",
-    title: "Launch mobile experiences tightly synced with your platform",
-    who: "Products that need a polished user app plus reliable backend sync.",
-    bullets: ["Cross-platform delivery", "Realtime updates + push", "Store-ready release pipeline"],
+    title: "Android and iOS. One codebase, both platforms, no compromise.",
+    who: "Businesses that need a mobile-first product their team or customers actually use every day.",
+    bullets: ["Built with Flutter", "Real-time data sync", "cross-platform from a single codebase"],
   },
   {
-    href: "/services/ai",
-    badge: "AI-Assisted Solutions",
-    color: "#fb7185",
-    title: "Automate repetitive ops and unlock decisions from your data",
-    who: "Teams ready to embed intelligence into existing product workflows.",
-    bullets: ["Prediction and anomaly workflows", "Ops automation copilots", "AI integrated into your stack"],
+    href: "/services/web",
+    badge: "Web & Database",
+    color: "#22d3ee",
+    title: "SaaS dashboards, admin panels and the data architecture underneath.",
+    who: "Businesses that need a web platform, an operator dashboard or a clean backend built to last.",
+    bullets: ["fast, SEO-ready, mobile-responsive", "Multi-tenant SaaS architecture ", "MySQL, PostgreSQL, MongoDB "],
   },
 ] as const;
 
@@ -243,18 +243,18 @@ export default function ServicesOverviewPage() {
         pretitle1="Service navigator"
         title1={
           <>
-            choose your
+            Pick the
             <br />
-            build lane
+            Service
           </>
         }
-        subtitle1="pick the service that matches your current bottleneck. no fluff, no overlap, just the lane you need right now."
+        subtitle1="No generic packages. No overlap. Each service is something our team has deep expertise in — built around the real problems."
         pretitle2="One team, connected layers"
         title2={
           <>
-            from device
+            Your bussiness
             <br />
-            to product
+            Actually needs 
           </>
         }
         subtitle2="start with one lane and expand across IoT, cloud, web, mobile, and AI when your product is ready for the next step."
@@ -263,9 +263,9 @@ export default function ServicesOverviewPage() {
       <div className="mx-auto w-full max-w-screen-xl space-y-24 px-4 pt-20 pb-24 sm:px-6 lg:px-10 xl:px-16">
         <section ref={listRef.ref} className="space-y-8">
           <div className="space-y-3" style={{ opacity: listRef.visible ? 1 : 0, transform: listRef.visible ? "translateY(0)" : "translateY(28px)", transition: "all 600ms ease" }}>
-            <SectionBadge color="amber">service navigator</SectionBadge>
+            {/* <SectionBadge color="amber">service navigator</SectionBadge> */}
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(1.9rem,4.5vw,3rem)", fontFamily: "var(--font-display)" }}>
-              what each service owns.
+              What we build
             </h2>
             <p className="max-w-2xl text-base text-zinc-400" style={{ fontFamily: "var(--font-body)" }}>
               short overview only. deep implementation details live inside each dedicated service page.
@@ -395,10 +395,13 @@ export default function ServicesOverviewPage() {
           style={{ opacity: mapRef.visible ? 1 : 0, transform: mapRef.visible ? "translateY(0)" : "translateY(28px)", transition: "all 650ms ease" }}
         >
           <div className="space-y-3">
-            <SectionBadge color="amber">how they connect</SectionBadge>
+            {/* <SectionBadge color="amber">how they connect</SectionBadge> */}
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(1.5rem,3.6vw,2.2rem)", fontFamily: "var(--font-display)" }}>
               one product, multiple layers.
             </h2>
+            <p className="text-lg text-zinc-300" style={{ fontFamily: "var(--font-body)" }}>
+              One team owns every layer. No handoff. No gaps.
+            </p>
           </div>
 
           <div className="mt-6">

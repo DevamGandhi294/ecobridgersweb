@@ -241,10 +241,10 @@ export function ScrollToggleHero({
             
             <div className="mt-8 flex flex-col sm:flex-row gap-8 border-t border-white/10 pt-8" style={{ fontFamily: "var(--font-body)" }}>
               <div className="flex-1 text-sm leading-relaxed text-zinc-400">
-                We support companies in their growth stages in order to shape their future prospects.
+                We offer IoT, mobile and web development as services because our own products demanded that depth. Everything we offer, we have already built for ourselves first.
               </div>
               <div className="flex-1 text-sm leading-relaxed text-zinc-400">
-                100% creative brand design agency: branding, strategy, website and web app, visual identities.
+                Start with a ready-built product if one fits your industry. Need something custom? We build that too — SaaS, IoT, mobile or web. One team, no handoffs.S
               </div>
             </div>
 
