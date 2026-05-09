@@ -11,7 +11,7 @@ const GRID_COLOR = "rgba(214,221,87,0.68)";
 
 const services = [
   {
-    href: "/services/Saaa",
+    href: "/services/saas",
     badge: "SaaS Products",
     color: "#34d399",
     title: "Ready-built SaaS for your industry. Deployable in weeks, not months.",
@@ -27,11 +27,11 @@ const services = [
     bullets: ["Sensor hardware installed on any machine", "Real-time alerts via WhatsApp or app ", "Cloud connectivity via MQTT, WiFi, BLE"],
   },
   {
-    href: "/services/mobile",
-    badge: "Mobile Apps",
+    href: "/services/app",
+    badge: "App Products",
     color: "#a78bfa",
     title: "Android and iOS. One codebase, both platforms, no compromise.",
-    who: "Businesses that need a mobile-first product their team or customers actually use every day.",
+    who: "Businesses that need a mobile and tablet product their team or customers actually use every day.",
     bullets: ["Built with Flutter", "Real-time data sync", "cross-platform from a single codebase"],
   },
   {
@@ -46,19 +46,19 @@ const services = [
 
 const chooseGuides = [
   {
-    label: "Choose IoT & Embedded if...",
-    points: ["You have devices, sensors, or hardware in the loop.", "Reliability in field conditions matters more than flashy UI."],
+    label: "Choose SaaS Products if...",
+    points: ["You run a textile unit, factory, cafe or sports venue", "You need affordable pricing built for an SME budget"],
   },
   {
-    label: "Choose Web & Cloud if...",
+    label: "Choose IoT & Embedded if...",
     points: ["You need dashboards, APIs, and role-based business workflows.", "Your core bottleneck is platform architecture and scale."],
   },
   {
-    label: "Choose Mobile Apps if...",
-    points: ["Your users primarily operate through iOS/Android apps.", "You need offline-ready flows and realtime user notifications."],
+    label: "Choose App Products if...",
+    points: ["Your users primarily operate through mobile and tablet apps.", "You need offline-ready flows and realtime user notifications."],
   },
   {
-    label: "Choose AI Solutions if...",
+    label: "Choose Web & Database if...",
     points: ["You already collect data and want smarter decisions/actions.", "You want automation outcomes, not just model demos."],
   },
 ] as const;
@@ -257,7 +257,7 @@ export default function ServicesOverviewPage() {
             Actually needs 
           </>
         }
-        subtitle2="start with one lane and expand across IoT, cloud, web, mobile, and AI when your product is ready for the next step."
+        subtitle2="start with one lane and expand across IoT, cloud, web, and app when your product is ready for the next step."
       />
 
       <div className="mx-auto w-full max-w-screen-xl space-y-24 px-4 pt-20 pb-24 sm:px-6 lg:px-10 xl:px-16">
@@ -415,10 +415,13 @@ export default function ServicesOverviewPage() {
 
         <section ref={chooseRef.ref} className="space-y-6">
           <div className="space-y-3" style={{ opacity: chooseRef.visible ? 1 : 0, transform: chooseRef.visible ? "translateY(0)" : "translateY(24px)", transition: "all 600ms ease" }}>
-            <SectionBadge color="amber">quick decision guide</SectionBadge>
+            {/* <SectionBadge color="amber">quick decision guide</SectionBadge> */}
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(1.5rem,3.6vw,2.2rem)", fontFamily: "var(--font-display)" }}>
-              not sure what to pick? start here.
+              not sure where to start?
             </h2>
+            <p className="text-lg text-zinc-300" style={{ fontFamily: "var(--font-body)" }}>
+              If your industry is on this list, we already have something built for you.
+            </p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">

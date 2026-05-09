@@ -7,13 +7,13 @@ import { useState, useEffect } from "react";
    ============================================================ */
 const showcaseProjects = [
   {
-    id: "ecommerce",
+    id: "Saas-dashboard",
     type: "web" as const,
-    category: "WEB & CLOUD PLATFORM",
-    title: "E-Commerce Platform",
+    category: "SaaS Product",
+    title: "Saas Dashboard",
     description:
-      "Digital transformation of online retail — Full-featured platform with payment integration and real-time inventory dashboard",
-    flag: "🛒",
+      "We build custom SaaS platforms for eco-conscious businesses, featuring intuitive dashboards, real-time analytics, and seamless integrations to drive sustainability and operational efficiency.",
+    // flag: "🛒",
   },
   {
     id: "iot-app",
@@ -22,7 +22,7 @@ const showcaseProjects = [
     title: "IoT Control App",
     description:
       "Smart device management — Cross-platform app for monitoring and controlling IoT devices with live analytics",
-    flag: "📱",
+    // flag: "📱",
   },
 ];
 
@@ -448,7 +448,7 @@ export default function FeaturedWorkShowcase() {
           <div className="relative z-10 flex flex-wrap items-end justify-between gap-4 mt-auto pt-10">
             <div className="flex items-baseline gap-3">
               <span className="text-4xl sm:text-5xl font-black tracking-tight text-amber-200/90">
-                500+
+                10+
               </span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 leading-tight font-semibold">
                 PROJECTS
@@ -546,13 +546,13 @@ export default function FeaturedWorkShowcase() {
             </h3>
 
             {/* Category + Flag */}
-            <div className="flex items-center gap-2 pt-1.5">
+            {/* <div className="flex items-center gap-2 pt-1.5">
               <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
                 {currentProject.category}
               </span>
               <span className="text-xs text-zinc-300">|</span>
               <span className="text-sm">{currentProject.flag}</span>
-            </div>
+            </div> */}
 
             {/* Description */}
             <p className="pt-1.5 text-[13px] sm:text-sm text-zinc-600 leading-relaxed max-w-lg">

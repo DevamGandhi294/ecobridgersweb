@@ -210,10 +210,10 @@ export default function RootLayout({
                       Services
                     </h3>
                     <ul className="space-y-1.5 text-sm text-zinc-400">
+                      <li className="hover:text-emerald-400 transition-colors cursor-default">Saas Product</li>
                       <li className="hover:text-emerald-400 transition-colors cursor-default">IoT &amp; Embedded Systems</li>
-                      <li className="hover:text-emerald-400 transition-colors cursor-default">Web &amp; Cloud Platforms</li>
                       <li className="hover:text-emerald-400 transition-colors cursor-default">Mobile Applications</li>
-                      <li className="hover:text-emerald-400 transition-colors cursor-default">AI-Assisted Solutions</li>
+                      <li className="hover:text-emerald-400 transition-colors cursor-default">Web &amp; Cloud Platforms</li>
                     </ul>
                   </div>
                 </div>

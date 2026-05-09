@@ -88,7 +88,7 @@ export function Header() {
               EcoBridgers
             </div>
             <div className="text-[11px] font-medium text-zinc-400 sm:text-xs md:text-sm">
-              IoT • Web • Mobile • Cloud
+              Saas • IoT • App • Web
             </div>
           </div>
         </Link>
@@ -129,10 +129,10 @@ export function Header() {
                       <div className="grid grid-cols-4 gap-3">
                         {link.children.map((child) => {
                           const getStyles = (href: string) => {
-                            if (href.includes("iot")) return { bg: "bg-[#94e48b]", text: "text-[#0d1f10]", desc: "Hardware & edge tracking" };
-                            if (href.includes("web")) return { bg: "bg-[#22d3ee]", text: "text-[#083344]", desc: "Dashboards & scalable SaaS" };
-                            if (href.includes("mobile")) return { bg: "bg-[#6c78fb]", text: "text-white", desc: "iOS & Android solutions" };
-                            if (href.includes("ai")) return { bg: "bg-[#ff6fb5]", text: "text-[#2e091b]", desc: "Machine Learning & predictive" };
+                            if (href.includes("saas")) return { bg: "bg-[#94e48b]", text: "text-[#0d1f10]", desc: "Software products built for your work" };
+                            if (href.includes("iot")) return { bg: "bg-[#22d3ee]", text: "text-[#083344]", desc: "Dashboards & scalable SaaS" };
+                            if (href.includes("app")) return { bg: "bg-[#6c78fb]", text: "text-white", desc: "Native & cross-platform apps" };
+                            if (href.includes("web")) return { bg: "bg-[#ff6fb5]", text: "text-[#2e091b]", desc: "Machine Learning & predictive" };
                             return { bg: "bg-zinc-800", text: "text-white", desc: "Explore our offerings" };
                           };
                           const s = getStyles(child.href);
@@ -149,10 +149,10 @@ export function Header() {
                               
                               <div className="flex w-full items-end justify-between">
                                 <div className="text-[#1a1a1a] opacity-90">
-                                  {child.href.includes("iot") && <Cpu size={28} strokeWidth={1.5} />}
-                                  {child.href.includes("web") && <Globe size={28} strokeWidth={1.5} />}
-                                  {child.href.includes("mobile") && <Smartphone size={28} strokeWidth={1.5} />}
-                                  {child.href.includes("ai") && <Brain size={28} strokeWidth={1.5} />}
+                                  {child.href.includes("saas") && <Cpu size={28} strokeWidth={1.5} />}
+                                  {child.href.includes("iot") && <Globe size={28} strokeWidth={1.5} />}
+                                  {child.href.includes("app") && <Smartphone size={28} strokeWidth={1.5} />}
+                                  {child.href.includes("web") && <Brain size={28} strokeWidth={1.5} />}
                                 </div>
                                 <div className={`flex h-8 w-8 items-center justify-center rounded-lg border opacity-40 transition-all group-hover/card:opacity-100 border-current ${s.text}`}>
                                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover/card:-rotate-45">
@@ -244,10 +244,10 @@ export function Header() {
                             }`}
                           >
                             <span className="flex items-center text-zinc-300">
-                              {child.href.includes("iot") && <Cpu size={18} strokeWidth={2} />}
-                              {child.href.includes("web") && <Globe size={18} strokeWidth={2} />}
+                              {child.href.includes("saas") && <Cpu size={18} strokeWidth={2} />}
+                              {child.href.includes("iot") && <Globe size={18} strokeWidth={2} />}
                               {child.href.includes("mobile") && <Smartphone size={18} strokeWidth={2} />}
-                              {child.href.includes("ai") && <Brain size={18} strokeWidth={2} />}
+                              {child.href.includes("Web") && <Brain size={18} strokeWidth={2} />}
                             </span>
                             {child.label}
                           </Link>

@@ -971,10 +971,10 @@ export function InquiryForm({
         onBlur={e  => { e.target.style.borderColor="rgba(255,255,255,0.1)"; e.target.style.boxShadow="none"; }}
       >
         <option value="" disabled>what are you building? *</option>
+        <option>Saas Product</option>
         <option>IoT &amp; Embedded Systems</option>
-        <option>Web &amp; Cloud Platforms</option>
         <option>Mobile Applications</option>
-        <option>AI-Assisted Solutions</option>
+        <option>Web &amp; Cloud Platforms</option>     
         <option>Prototyping &amp; POC</option>
         <option>Industrial &amp; Custom Solutions</option>
       </select>
@@ -1060,7 +1060,7 @@ export function ServiceCTA({
       }}
     >
       <div>
-        <SectionBadge color={badgeColor}>connect</SectionBadge>
+        {/* <SectionBadge color={badgeColor}>connect</SectionBadge> */}
         <h2 className="mt-4 text-white" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.9rem,4.8vw,3.4rem)", lineHeight: 1.08 }}>
           Hello,
         </h2>

@@ -15,7 +15,7 @@ export function OrganizationSchema() {
                     "addressRegion": "Gujarat",
                     "addressCountry": "IN"
                 },
-                "description": "IoT, embedded systems, web, mobile and cloud development company based in Surat, India.",
+                "description": "Saas,IoT, embedded systems, web, mobile and cloud development company based in Surat, India.",
                 "areaServed": "Worldwide",
                 "openingHours": "Mo-Sa 10:00-19:00",
                 "sameAs": [
