@@ -300,7 +300,7 @@ export const SplashScreen = memo(function SplashScreen({
 
           {/* Brand */}
           <div className="splash-brand">EcoBridges</div>
-          <div className="splash-tagline">IoT · Web · Mobile · Cloud</div>
+          <div className="splash-tagline">Saas · IoT · Mobile · Web</div>
 
           {/* Progress */}
           <div className="splash-bar-track">

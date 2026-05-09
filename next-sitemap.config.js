@@ -6,11 +6,7 @@ module.exports = {
     policies: [
       { userAgent: '*', allow: '/' }
     ],
-    additionalSitemaps: [
-      'https://ecobridgers.com/sitemap.xml',
-    ],
   },
   changefreq: 'weekly',
   priority: 0.7,
-  sitemapSize: 5000,
 }
