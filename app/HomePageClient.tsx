@@ -200,10 +200,10 @@ function Hero({ heroReady }: { heroReady: boolean }) {
 
             {/* Sub */}
             <p style={{ fontSize: 17, color: "rgba(240,253,248,0.7)", lineHeight: 1.7, marginBottom: 16, maxWidth: 480, fontFamily: "var(--font-body)", opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.2s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s" }}>
-              EcoBridgers builds practical SaaS products and IoT systems designed for the businesses most enterprise software ignores — textile units, factories, cafes, sports venues and local service businesses across India.
+              EcoBridgers builds domain-specific SaaS products, custom software, IoT systems and IT services for businesses of every size — from a single shop in Surat to a multi-branch enterprise across India.
             </p>
             <p style={{ fontSize: 14, color: "rgba(240,253,248,0.45)", lineHeight: 1.6, marginBottom: 36, maxWidth: 440, fontFamily: "var(--font-body)", opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease 0.3s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s" }}>
-              We are not a generic IT agency. We build industry-specific software products from within the industries we serve — affordable, mobile-first and ready to deploy. Our products are already 50–70% built and in active development. You do not have to wait for us to figure it out.
+              EcoBridgers was founded to close that gap. We identify the exact operational gap in your business and fill it — with a SaaS product, a custom-built system, an IoT solution or a combination of all three. Every product we build is specific to your domain, built to your scale and priced for the real world.
             </p>
 
             {/* CTAs */}
@@ -459,10 +459,10 @@ const WhySection = memo(function WhySection({ visible }: { visible: boolean }) {
                 className="mt-4 break-words font-extrabold leading-[0.95] [hyphens:none]"
                 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.48rem,2.9vw,2.2rem)", overflowWrap: "anywhere" }}
               >
-                We are specialists, not generalists
+                One team, Full stack, Software, Hardware
               </h3>
               <p className="mt-6 max-w-[30ch] text-[1.08rem] leading-snug" style={{ fontFamily: "var(--font-body)" }}>
-                Our team has deep expertise in both app development and IoT—expertise that most agencies in Surat do not offer together.
+                all built in-house by the same team. You do not manage multiple vendors or deal with handoff problems between a design agency, a development company and a hardware supplier.
               </p>
             </div>
           </div>
@@ -494,14 +494,11 @@ const WhySection = memo(function WhySection({ visible }: { visible: boolean }) {
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">impact</p> */}
             </div>
             <h3 className="font-extrabold leading-tight" style={{ fontFamily: "var(--font-display)", fontSize: "1.6rem" }}>
-              We write clean, documented code
+              Domain-specific, not generic
             </h3>
             <p className="text-sm leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
-              so your product is maintainable and you are never locked to us
-            </p>
-            <p className="text-sm leading-relaxed opacity-90" style={{ fontFamily: "var(--font-body)" }}>
-              Designed right, you spend less time firefighting — typically ~90% less maintenance overhead.
-            </p>
+            Every system we build is designed around how your specific industry actually operates. The terminology, the workflow, the reports, the access levels — all built for your domain.
+            </p>        
           </div>
         </article>
 
@@ -520,10 +517,10 @@ const WhySection = memo(function WhySection({ visible }: { visible: boolean }) {
           <div className="p-6 pb-4">
             {/* <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">real world only</p> */}
             <h3 className="mt-3 font-extrabold leading-tight" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.25rem,2.6vw,1.85rem)" }}>
-              We communicate clearly
+              Designed for every scale
             </h3>
             <p className="mt-3 text-sm leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
-              you will always know what stage your project is at, what decisions need to be made, and what to expect next
+              We serve local businesses in Surat and Gujarat, mid-size companies across India. The same quality of engineering, scoped to your size and budget.
             </p>
           </div>
 
@@ -554,10 +551,10 @@ const WhySection = memo(function WhySection({ visible }: { visible: boolean }) {
             <span className="text-[11px] font-semibold opacity-70">fixed scope</span> */}
           </div>
           <h3 className="mt-3 font-extrabold leading-tight" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.2rem,2.4vw,1.8rem)" }}>
-            We work with your budget
+            Customisation is standard
           </h3>
           <p className="mt-3 text-sm leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
-            whether you are a startup or an established business, we scope projects honestly 
+            Your branding, your pricing structure, your specific workflow requirements — we configure the system around your business, not the other way around.
           </p>
         </article>
 
