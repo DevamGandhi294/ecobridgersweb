@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { SectionBadge, ServiceCTA, useInView } from "@/components/ServicePageShell";
+import { ServiceCTA, useInView } from "@/components/ServicePageShell";
 import { ScrollToggleHero } from "@/components/ScrollToggleHero";
 
 const OVERVIEW_ACCENT = "#d6dd57";
@@ -46,20 +46,20 @@ const services = [
 
 const chooseGuides = [
   {
-    label: "Choose SaaS Products if...",
-    points: ["You run a textile unit, factory, cafe or sports venue", "You need affordable pricing built for an SME budget"],
+    title: "SME-friendly custom products",
+    points: ["You need affordable pricing built for an SME budget", "You need customisation without enterprise-level cost", "You want something deployable in weeks not months"],
   },
   {
-    label: "Choose IoT & Embedded if...",
-    points: ["You need dashboards, APIs, and role-based business workflows.", "Your core bottleneck is platform architecture and scale."],
+    title: "Shop-floor and field visibility",
+    points: ["You need real-time visibility into physical operations", "Existing IoT solutions are priced out of your budget", "You are losing money to unplanned downtime or breakdowns"],
   },
   {
-    label: "Choose App Products if...",
-    points: ["Your users primarily operate through mobile and tablet apps.", "You need offline-ready flows and realtime user notifications."],
+    title: "Mobile-first experiences",
+    points: ["Your team or customers primarily work on mobile", "You need one app that works on both Android and iOS", "You want easly manageable your system from anywhere"],
   },
   {
-    label: "Choose Web & Database if...",
-    points: ["You already collect data and want smarter decisions/actions.", "You want automation outcomes, not just model demos."],
+    title: "Platforms, data, and automation",
+    points: ["You need a dashboard, admin panel or business website", "You are building a SaaS platform and need the web layer", "You already collect data and need a clean interface for it"],
   },
 ] as const;
 
@@ -226,9 +226,9 @@ function ArchitectureFlow() {
 }
 
 export default function ServicesOverviewPage() {
-  const listRef = useInView();
-  const mapRef = useInView();
-  const chooseRef = useInView();
+  const listSection = useInView();
+  const mapSection = useInView();
+  const chooseSection = useInView();
   const [activeService, setActiveService] = useState<number | null>(null);
 
   return (
@@ -252,17 +252,17 @@ export default function ServicesOverviewPage() {
         pretitle2="One team, connected layers"
         title2={
           <>
-            Your bussiness
+            Your business
             <br />
-            Actually needs 
+            Actually needs
           </>
         }
         subtitle2="start with one lane and expand across IoT, cloud, web, and app when your product is ready for the next step."
       />
 
       <div className="mx-auto w-full max-w-screen-xl space-y-24 px-4 pt-20 pb-24 sm:px-6 lg:px-10 xl:px-16">
-        <section ref={listRef.ref} className="space-y-8">
-          <div className="space-y-3" style={{ opacity: listRef.visible ? 1 : 0, transform: listRef.visible ? "translateY(0)" : "translateY(28px)", transition: "all 600ms ease" }}>
+        <section ref={listSection.targetRef} className="space-y-8">
+          <div className="space-y-3" style={{ opacity: listSection.visible ? 1 : 0, transform: listSection.visible ? "translateY(0)" : "translateY(28px)", transition: "all 600ms ease" }}>
             {/* <SectionBadge color="amber">service navigator</SectionBadge> */}
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(1.9rem,4.5vw,3rem)", fontFamily: "var(--font-display)" }}>
               What we build
@@ -275,8 +275,8 @@ export default function ServicesOverviewPage() {
           <div
             className="relative hidden h-[560px] lg:block"
             style={{
-              opacity: listRef.visible ? 1 : 0,
-              transform: listRef.visible ? "translateY(0)" : "translateY(26px)",
+              opacity: listSection.visible ? 1 : 0,
+              transform: listSection.visible ? "translateY(0)" : "translateY(26px)",
               transition: "all 650ms ease",
             }}
           >
@@ -365,8 +365,8 @@ export default function ServicesOverviewPage() {
                 key={service.href}
                 className="rounded-2xl border border-white/10 bg-zinc-900/45 p-6 backdrop-blur-sm"
                 style={{
-                  opacity: listRef.visible ? 1 : 0,
-                  transform: listRef.visible ? "translateY(0)" : "translateY(22px)",
+                  opacity: listSection.visible ? 1 : 0,
+                  transform: listSection.visible ? "translateY(0)" : "translateY(22px)",
                   transition: "all 500ms ease",
                   transitionDelay: `${idx * 70}ms`,
                 }}
@@ -390,9 +390,9 @@ export default function ServicesOverviewPage() {
         </section>
 
         <section
-          ref={mapRef.ref}
+          ref={mapSection.targetRef}
           className="rounded-3xl border border-white/10 bg-zinc-900/35 p-7 sm:p-10"
-          style={{ opacity: mapRef.visible ? 1 : 0, transform: mapRef.visible ? "translateY(0)" : "translateY(28px)", transition: "all 650ms ease" }}
+          style={{ opacity: mapSection.visible ? 1 : 0, transform: mapSection.visible ? "translateY(0)" : "translateY(28px)", transition: "all 650ms ease" }}
         >
           <div className="space-y-3">
             {/* <SectionBadge color="amber">how they connect</SectionBadge> */}
@@ -413,11 +413,11 @@ export default function ServicesOverviewPage() {
           </p>
         </section>
 
-        <section ref={chooseRef.ref} className="space-y-6">
-          <div className="space-y-3" style={{ opacity: chooseRef.visible ? 1 : 0, transform: chooseRef.visible ? "translateY(0)" : "translateY(24px)", transition: "all 600ms ease" }}>
+        <section ref={chooseSection.targetRef} className="space-y-6">
+          <div className="space-y-3" style={{ opacity: chooseSection.visible ? 1 : 0, transform: chooseSection.visible ? "translateY(0)" : "translateY(24px)", transition: "all 600ms ease" }}>
             {/* <SectionBadge color="amber">quick decision guide</SectionBadge> */}
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(1.5rem,3.6vw,2.2rem)", fontFamily: "var(--font-display)" }}>
-              not sure where to start?
+              Which Service Fits
             </h2>
             <p className="text-lg text-zinc-300" style={{ fontFamily: "var(--font-body)" }}>
               If your industry is on this list, we already have something built for you.
@@ -427,26 +427,19 @@ export default function ServicesOverviewPage() {
           <div className="grid gap-4 md:grid-cols-2">
             {chooseGuides.map((guide, idx) => (
               <div
-                key={guide.label}
+                key={guide.title}
                 className="relative border border-black/5 bg-[#f3f4f6] p-6 sm:p-7"
                 style={{
-                  opacity: chooseRef.visible ? 1 : 0,
-                  transform: chooseRef.visible ? "translateY(0)" : "translateY(20px)",
+                  opacity: chooseSection.visible ? 1 : 0,
+                  transform: chooseSection.visible ? "translateY(0)" : "translateY(20px)",
                   transition: "all 500ms ease",
                   transitionDelay: `${idx * 70}ms`,
                   clipPath: "polygon(0 0, calc(100% - 62px) 0, calc(100% - 54px) 4px, calc(100% - 4px) 54px, 100% 62px, 100% 100%, 0 100%)",
                   borderRadius: "28px",
                 }}
               >
-                <span
-                  className="inline-flex rounded-full border border-[#d6d8dd] bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#b5445a]"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {guide.label}
-                </span>
-
-                <h3 className="mt-4 text-[clamp(1.35rem,2.4vw,1.95rem)] font-semibold leading-tight text-[#0f172a]" style={{ fontFamily: "var(--font-display)" }}>
-                  not sure what fits? choose this lane.
+                <h3 className="text-[clamp(1.35rem,2.4vw,1.95rem)] font-semibold leading-tight text-[#0f172a]" style={{ fontFamily: "var(--font-display)" }}>
+                  {guide.title}
                 </h3>
 
                 <ul className="mt-4 space-y-2 text-[15px] text-[#4b5563]" style={{ fontFamily: "var(--font-body)" }}>

@@ -19,22 +19,22 @@ const offerings = [
   { icon:"📱", title:"Web + App Experiences",        desc:"Web portals and companion apps designed to work together seamlessly." },
 ];
 const useCases = [
-  { icon:"🏢", label:"Operations Portals",           desc: "Internal SaaS tools for scheduling, inventory, and field team coordination." },
-  { icon:"🛒", label:"B2B Marketplaces",             desc: "Multi-tenant platforms for suppliers, customers, and invoices in one place." },
-  { icon:"📦", label:"Subscription Platforms",        desc: "Recurring revenue systems with trials, upgrades, and usage-based billing." },
-  { icon:"📈", label:"Customer Success Tools",       desc: "Analytics and alerts that help teams retain customers and cut churn." },
-  { icon:"🔧", label:"Service Automation",           desc: "Workflow engines that reduce manual handoffs and speed up approvals." },
-  { icon:"🗂️", label:"Custom SaaS Products",         desc: "Software built to fit your exact business process, not a generic template." },
+  { icon:"🏢", label:"Textile Production Management",           desc: "Metre-by-metre fabric tracking, worker accountability, production reporting — built for Surat's textile units." },
+  { icon:"🛒", label:"Factory & Industrial Monitoring",             desc: "Machine health monitoring with real-time alerts before breakdowns happen — not after they cost you money."},
+  { icon:"📦", label:"Sports Venue Management",        desc: "Slot booking, player listing, revenue tracking and a 'Need-a-Player' request system for box cricket venues." },
+  { icon:"📈", label:"Cafe & Cloud Kitchen Management",       desc: "Billing, QR ordering, daily reports and custom branding per outlet — one-time cost, zero monthly subscription." },
+  { icon:"🔧", label:"Custom Domain SaaS",           desc: "Your industry has a gap none of our existing products cover. We scope, design and build it from scratch." },
+  { icon:"🗂️", label:"Enterprise SaaS",         desc: "Multi-branch architecture, advanced access controls, API integrations with existing systems and custom reporting for larger organisations." },
 ];
 const process = [
-  { step:"01", title:"Discovery & Pricing",     desc:"Understand your customer, your unit economics, and what ‘done’ looks like." },
-  { step:"02", title:"Product Mapping",         desc:"Map workflows, user roles, and data flows before any UI is designed." },
-  { step:"03", title:"Architecture",           desc:"Build the multi-tenant backend, APIs, and data models for scale." },
-  { step:"04", title:"Frontend Development",   desc:"Deliver polished SaaS interfaces for dashboards, portals and admin tools." },
-  { step:"05", title:"QA & Launch",            desc:"Test with real users, tune every flow, and deploy with monitoring in place." },
-  { step:"06", title:"Operate & Iterate",      desc:"We hand over clean code and stay on for updates, analytics, and growth." },
+  { step:"01", title:"Discovery & Scoping",     desc:"We understand your industry, your workflow and your exact requirements before writing any code." },
+  { step:"02", title:"Product Mapping",         desc:"We map your requirements to an existing product or define the architecture for a custom build." },
+  { step:"03", title:"Architecture & Database Design",           desc:"Schemas, data flows and system architecture designed correctly from the start." },
+  { step:"04", title:"Development & Integration",   desc:"Full-stack development — mobile, web, backend, hardware integration if required." },
+  { step:"05", title:"QA & Launch",            desc:"Device testing, edge case testing, performance testing and deployment to production." },
+  { step:"06", title:"Support & Iteration",      desc:"Ongoing maintenance, feature updates and technical support. We stay available." },
 ];
-const techStack = ["Next.js","React","Node.js","Prisma","PostgreSQL","Stripe","Tailwind CSS","Docker","Vercel","TypeScript","GraphQL","Redis"];
+const techStack = ["Next.js","React","Node.js","Prisma","PostgreSQL","Flutter ","MongoDB","Docker","Vercel","TypeScript","Firebase","Supabase"];
 
 const platformBenefits = useCases.map((u) => ({ title: u.label, desc: u.desc }));
 
@@ -62,7 +62,7 @@ export default function SaaSServicePage() {
       />
 
       <div className="mx-auto w-full max-w-screen-xl space-y-24 px-4 pt-20 pb-24 sm:px-6 lg:px-10 xl:px-16">
-        <section ref={offerRef.ref} className="space-y-10">
+        <section ref={offerRef.targetRef} className="space-y-10">
           <div className="space-y-3 transition-all duration-700" style={{ opacity:offerRef.visible?1:0, transform:offerRef.visible?"translateY(0)":"translateY(32px)" }}>
             <SectionBadge color="emerald">What We Offer</SectionBadge>
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(1.9rem,4.5vw,3rem)", fontFamily:"var(--font-display)" }}>SaaS Products That Work</h2>
@@ -80,7 +80,7 @@ export default function SaaSServicePage() {
         </section>
 
         <section
-          ref={caseRef.ref}
+          ref={caseRef.targetRef}
           className="space-y-6 transition-all duration-700"
           style={{ opacity: caseRef.visible ? 1 : 0, transform: caseRef.visible ? "translateY(0)" : "translateY(32px)" }}
         >
@@ -92,7 +92,7 @@ export default function SaaSServicePage() {
           />
         </section>
 
-        <section ref={procRef.ref} className="relative space-y-8 transition-all duration-700"
+        <section ref={procRef.targetRef} className="relative space-y-8 transition-all duration-700"
           style={{ opacity:procRef.visible?1:0, transform:procRef.visible?"translateY(0)":"translateY(36px)" }}>
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -left-20 top-0 h-64 w-64 rounded-full blur-[100px]" style={{ background:`${ACCENT}14` }} />
@@ -107,7 +107,7 @@ export default function SaaSServicePage() {
           </div>
         </section>
 
-        <section ref={techRef.ref} className="space-y-6 transition-all duration-700" style={{ opacity:techRef.visible?1:0, transform:techRef.visible?"translateY(0)":"translateY(28px)" }}>
+        <section ref={techRef.targetRef} className="space-y-6 transition-all duration-700" style={{ opacity:techRef.visible?1:0, transform:techRef.visible?"translateY(0)":"translateY(28px)" }}>
           <SectionBadge color="emerald">Technologies</SectionBadge>
           <h2 className="font-bold text-white text-2xl" style={{ fontFamily:"var(--font-display)" }}>Technologies We Use</h2>
           <TechMarquee items={techStack} accentColor={ACCENT} />

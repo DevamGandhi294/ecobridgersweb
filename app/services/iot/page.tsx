@@ -143,17 +143,17 @@ export default function IoTServicePage() {
         icon="🔌"
         gridColor={GRID_COLOR}
         pretitle1="Hardware that survives"
-        title1={<>The real<br/>world</>}
-        subtitle1="we build connected hardware for where things actually get rough — dust, vibration, -20°C to +60°C, internet that ghosts for hours."
+        title1={<>Connect your<br/> machines.</>}
+        subtitle1="we build connected hardware for where things actually get rough — dust, vibration, -40°C to +80°C, internet that ghosts for hours."
         pretitle2="Edge intelligence"
-        title2={<>Smarter<br/>nodes</>}
+        title2={<>Before they <br/> cost you.</>}
         subtitle2="from a single sensor node to full industrial automation with offline capabilities, we build it to last."
       />
 
       <div className="mx-auto w-full max-w-screen-xl space-y-24 px-4 pb-24 sm:px-6 lg:px-10 xl:px-16">
 
         {/* OFFERINGS */}
-        <section ref={offerRef.ref} className="space-y-10">
+        <section ref={offerRef.targetRef} className="space-y-10">
           <div className="space-y-3 transition-all duration-700" style={{ opacity:offerRef.visible?1:0, transform:offerRef.visible?"translateY(0)":"translateY(32px)" }}>
             <SectionBadge color="emerald">what we build</SectionBadge>
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(1.9rem,4.5vw,3rem)", fontFamily:"var(--font-display)" }}>from chip to cloud.</h2>
@@ -171,7 +171,7 @@ export default function IoTServicePage() {
         </section>
 
         {/* LIVE DATA SHOWCASE */}
-        <section ref={showcaseRef.ref} className="space-y-8">
+        <section ref={showcaseRef.targetRef} className="space-y-8">
           <div className="space-y-3 transition-all duration-700" style={{ opacity:showcaseRef.visible?1:0, transform:showcaseRef.visible?"translateY(0)":"translateY(32px)" }}>
             <SectionBadge color="teal">real-world example</SectionBadge>
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(1.9rem,4.5vw,3rem)", fontFamily:"var(--font-display)" }}>
@@ -205,7 +205,7 @@ export default function IoTServicePage() {
 
         {/* WHERE WE APPLY IT (now 13g-style grid) */}
         <section
-          ref={caseRef.ref}
+          ref={caseRef.targetRef}
           className="space-y-6 transition-all duration-700"
           style={{ opacity: caseRef.visible ? 1 : 0, transform: caseRef.visible ? "translateY(0)" : "translateY(32px)" }}
         >
@@ -219,7 +219,7 @@ export default function IoTServicePage() {
         </section>
 
         {/* PROCESS */}
-        <section ref={procRef.ref} className="relative space-y-8 transition-all duration-700"
+        <section ref={procRef.targetRef} className="relative space-y-8 transition-all duration-700"
           style={{ opacity:procRef.visible?1:0, transform:procRef.visible?"translateY(0)":"translateY(36px)" }}>
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -left-20 top-0 h-64 w-64 rounded-full blur-[100px]" style={{ background:`${ACCENT}14` }} />
@@ -238,7 +238,7 @@ export default function IoTServicePage() {
         {/* (removed old duplicate benefits section) */}
 
         {/* TECH STACK */}
-        <section ref={techRef.ref} className="space-y-6 transition-all duration-700" style={{ opacity:techRef.visible?1:0, transform:techRef.visible?"translateY(0)":"translateY(28px)" }}>
+        <section ref={techRef.targetRef} className="space-y-6 transition-all duration-700" style={{ opacity:techRef.visible?1:0, transform:techRef.visible?"translateY(0)":"translateY(28px)" }}>
           <SectionBadge color="emerald">the stack</SectionBadge>
           <h2 className="font-bold text-white text-2xl" style={{ fontFamily:"var(--font-display)" }}>tools we actually know, not just list on a spec sheet.</h2>
           <TechMarquee items={techStack} accentColor={ACCENT} />

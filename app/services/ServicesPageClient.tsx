@@ -444,7 +444,7 @@ export default function WebServicePage() {
       <div className="mx-auto w-full max-w-screen-xl space-y-24 px-4 pt-20 pb-24 sm:px-6 lg:px-10 xl:px-16">
 
         {/* OFFERINGS */}
-        <section ref={offerRef.ref} className="space-y-10">
+        <section ref={offerRef.targetRef} className="space-y-10">
           <div className="space-y-3 transition-all duration-700" style={{ opacity: offerRef.visible ? 1 : 0, transform: offerRef.visible ? "translateY(0)" : "translateY(32px)" }}>
             <SectionBadge color="cyan">what we build</SectionBadge>
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(1.9rem,4.5vw,3rem)", fontFamily: "var(--font-display)" }}>
@@ -464,7 +464,7 @@ export default function WebServicePage() {
         </section>
 
         {/* USE CASES */}
-        <section ref={caseRef.ref} className="space-y-10">
+        <section ref={caseRef.targetRef} className="space-y-10">
           <div className="space-y-3 transition-all duration-700" style={{ opacity: caseRef.visible ? 1 : 0, transform: caseRef.visible ? "translateY(0)" : "translateY(32px)" }}>
             <SectionBadge color="blue">use cases</SectionBadge>
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(1.9rem,4.5vw,3rem)", fontFamily: "var(--font-display)" }}>
@@ -484,7 +484,7 @@ export default function WebServicePage() {
         </section>
 
         {/* PROCESS */}
-        <section ref={procRef.ref} className="relative overflow-hidden rounded-3xl border border-white/10 p-8 sm:p-12 transition-all duration-700"
+        <section ref={procRef.targetRef} className="relative overflow-hidden rounded-3xl border border-white/10 p-8 sm:p-12 transition-all duration-700"
           style={{ opacity: procRef.visible ? 1 : 0, transform: procRef.visible ? "translateY(0)" : "translateY(36px)", background: "linear-gradient(135deg,#050709,#060b10,#040810)" }}>
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -left-20 top-0 h-64 w-64 rounded-full blur-[100px]" style={{ background: `${ACCENT}14` }} />
@@ -510,7 +510,7 @@ export default function WebServicePage() {
 
         {/* ── TECH STACK (TABBED) ── */}
         <section
-          ref={techRef.ref}
+          ref={techRef.targetRef}
           className="space-y-8 transition-all duration-700"
           style={{ opacity: techRef.visible ? 1 : 0, transform: techRef.visible ? "translateY(0)" : "translateY(32px)" }}
         >
@@ -531,7 +531,7 @@ export default function WebServicePage() {
 
         {/* ── ARCHITECTURE / DATA FLOW ── */}
         <section
-          ref={archRef.ref}
+          ref={archRef.targetRef}
           className="relative overflow-hidden rounded-3xl border border-white/10 p-8 sm:p-12 space-y-8 transition-all duration-700"
           style={{
             opacity: archRef.visible ? 1 : 0,

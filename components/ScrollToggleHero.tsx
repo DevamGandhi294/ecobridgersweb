@@ -241,10 +241,10 @@ export function ScrollToggleHero({
             
             <div className="mt-8 flex flex-col sm:flex-row gap-8 border-t border-white/10 pt-8" style={{ fontFamily: "var(--font-body)" }}>
               <div className="flex-1 text-sm leading-relaxed text-zinc-400">
-                We offer IoT, mobile and web development as services because our own products demanded that depth. Everything we offer, we have already built for ourselves first.
+                We build industry-specific SaaS products that solve real operational problems — not generic admin panels with your logo swapped in.
               </div>
               <div className="flex-1 text-sm leading-relaxed text-zinc-400">
-                Start with a ready-built product if one fits your industry. Need something custom? We build that too — SaaS, IoT, mobile or web. One team, no handoffs.S
+                Launch faster with a product that already includes the workflows, roles and architecture your industry needs. Customise from there.
               </div>
             </div>
 

@@ -1,25 +1,27 @@
 "use client";
 
-import { useEffect, useRef, useState, memo } from "react";
+import { useCallback, useEffect, useRef, useState, memo } from "react";
 import { createPortal } from "react-dom";
 
 /* ─────────────────────────────────────────
    useInView — scroll-triggered reveal
 ───────────────────────────────────────── */
 export function useInView(threshold = 0.12) {
-  const ref = useRef<HTMLDivElement>(null);
+  const [element, setElement] = useState<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
+  const ref = useCallback((el: HTMLDivElement | null) => {
+    setElement(el);
+  }, []);
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    if (!element) return;
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
       { threshold }
     );
-    obs.observe(el);
+    obs.observe(element);
     return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, visible };
+  }, [element, threshold]);
+  return { targetRef: ref, visible };
 }
 
 /* ─────────────────────────────────────────
@@ -1049,10 +1051,10 @@ export function ServiceCTA({
   ctaText?: string;
   href?: string;
 }) {
-  const { ref, visible } = useInView();
+  const { targetRef, visible } = useInView();
   return (
     <section
-      ref={ref}
+      ref={targetRef}
       className="w-full pb-6 pt-10 sm:pb-8 sm:pt-12 transition-all duration-700"
       style={{
         opacity: visible ? 1 : 0,

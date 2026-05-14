@@ -63,7 +63,7 @@ export default function MobileServicePage() {
 
       <div className="mx-auto w-full max-w-screen-xl space-y-24 px-4 pt-20 pb-24 sm:px-6 lg:px-10 xl:px-16">
 
-        <section ref={offerRef.ref} className="space-y-10">
+        <section ref={offerRef.targetRef} className="space-y-10">
           <div className="space-y-3 transition-all duration-700" style={{ opacity:offerRef.visible?1:0, transform:offerRef.visible?"translateY(0)":"translateY(32px)" }}>
             <SectionBadge color="violet">What We Offer</SectionBadge>
             <h2 className="font-extrabold tracking-tight text-white" style={{ fontSize:"clamp(1.9rem,4.5vw,3rem)", fontFamily:"var(--font-display)" }}>Our Mobile Capabilities</h2>
@@ -82,7 +82,7 @@ export default function MobileServicePage() {
 
         {/* WHERE WE APPLY IT (now 13g-style grid) */}
         <section
-          ref={caseRef.ref}
+          ref={caseRef.targetRef}
           className="space-y-6 transition-all duration-700"
           style={{ opacity: caseRef.visible ? 1 : 0, transform: caseRef.visible ? "translateY(0)" : "translateY(32px)" }}
         >
@@ -94,7 +94,7 @@ export default function MobileServicePage() {
           />
         </section>
 
-        <section ref={procRef.ref} className="relative space-y-8 transition-all duration-700"
+        <section ref={procRef.targetRef} className="relative space-y-8 transition-all duration-700"
           style={{ opacity:procRef.visible?1:0, transform:procRef.visible?"translateY(0)":"translateY(36px)" }}>
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -left-20 top-0 h-64 w-64 rounded-full blur-[100px]" style={{ background:`${ACCENT}14` }} />
@@ -111,7 +111,7 @@ export default function MobileServicePage() {
 
         {/* (removed old duplicate benefits section) */}
 
-        <section ref={techRef.ref} className="space-y-6 transition-all duration-700" style={{ opacity:techRef.visible?1:0, transform:techRef.visible?"translateY(0)":"translateY(28px)" }}>
+        <section ref={techRef.targetRef} className="space-y-6 transition-all duration-700" style={{ opacity:techRef.visible?1:0, transform:techRef.visible?"translateY(0)":"translateY(28px)" }}>
           <SectionBadge color="violet">Technologies</SectionBadge>
           <h2 className="font-bold text-white text-2xl" style={{ fontFamily:"var(--font-display)" }}>Technologies We Use</h2>
           <TechMarquee items={techStack} accentColor={ACCENT} />

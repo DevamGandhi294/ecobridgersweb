@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState, ReactElement } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState, ReactElement } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -11,7 +11,7 @@ const highlights = [
   {
   icon: "⚡",
   title: "Software as a Service (SaaS)",
-  desc: "We build industry-specific SaaS products for businesses that enterprise software has always ignored. Mobile-first, affordable, and designed around how your team actually works — not how a product manager in Bangalore imagined they do.",
+  desc: "Domain-specific SaaS products and custom management systems — ready to deploy or built to your exact requirements.",
   longDesc: "multi-tenant architecture with shared database and custom frontend per client. subscription or one-time pricing depending on what the market needs. flutter on mobile, next.js on web, postgres underneath. built to onboard in hours, not weeks. if your team needs a manual to use it, we built it wrong.",
   accent: ["#10b981", "#14b8a6"],
   tag: "SaaS",
@@ -22,7 +22,7 @@ const highlights = [
 {
   icon: "🔌",
   title: "IoT & Embedded Systems",
-  desc: "We connect physical machines and environments to the digital world. From sensor networks and industrial monitoring to smart devices and predictive maintenance — we handle the full stack: firmware, hardware integration, cloud connectivity and the mobile app that controls it all.",
+  desc: "We connect physical machines and environments to digital systems — firmware, sensors, cloud connectivity and the dashboard your team uses to monitor everything.",
   longDesc: "we build connected hardware for where things actually get rough: dust, vibration, -20°C to +60°C, internet that ghosts for hours. edge logic handles decisions locally so your system keeps running no matter what. data only moves when it matters. alerts fire when they should. zero cloud round-trips, zero excuses.",
   accent: ["#06b6d4", "#3b82f6"],
   tag: "IoT / Embedded",
@@ -33,7 +33,7 @@ const highlights = [
 {
   icon: "📱",
   title: "Mobile Applications",
-  desc: "Android and iOS apps built for real users. We design the UX, write the code, integrate your backend and handle Play Store and App Store submission. Whether it is an IoT companion app, a B2B operations tool, or a consumer-facing product — we deliver apps that work and feel right.",
+  desc: "Android and iOS apps built for real users. We design the UX, write the code, integrate your backend and handle Play Store and App Store submission.",
   longDesc: "flutter apps that connect users directly to hardware or platforms. push notifications that don't cry wolf. live charts that don't freeze at the worst moment. remote control that actually responds. one codebase, iOS and android, polished enough that it doesn't embarrass the rest of what you built.",
   accent: ["#8b5cf6", "#a855f7"],
   tag: "Mobile",
@@ -44,7 +44,7 @@ const highlights = [
 {
   icon: "🌐",
   title: "Web & Database",
-  desc: "Fast, clean web platforms and the data architecture that makes them reliable. We build SaaS dashboards, admin panels, business websites and full-stack web apps — and we design the database schemas, queries and pipelines that keep everything running at scale.",
+  desc: "Fast web platforms and the data architecture underneath. SaaS dashboards, admin panels, business websites and full-stack web apps built to last.",
   longDesc: "next.js on the frontend, node or python on the backend, postgres or mongo depending on what the data actually looks like. schemas designed right the first time so you don't rewrite in six months. queries that don't crawl when the table hits a million rows. dashboards that update in real time without hammering the server.",
   accent: ["#ec4899", "#f43f5e"],
   tag: "Web / Database",
@@ -134,19 +134,21 @@ const patterns: Record<string, (c: string) => ReactElement> = {
    useInView
 ───────────────────────────────────────── */
 function useInView(threshold = 0.1) {
-  const ref = useRef<HTMLDivElement>(null);
+  const [element, setElement] = useState<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
+  const targetRef = useCallback((el: HTMLDivElement | null) => {
+    setElement(el);
+  }, []);
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    if (!element) return;
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
       { threshold }
     );
-    obs.observe(el);
+    obs.observe(element);
     return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, visible };
+  }, [element, threshold]);
+  return { targetRef, visible };
 }
 
 /* ─────────────────────────────────────────
@@ -358,7 +360,7 @@ function ExpertiseCard({
    Main export
 ───────────────────────────────────────── */
 export function ExpertiseCards() {
-  const { ref, visible } = useInView(0.1);
+  const { targetRef, visible } = useInView(0.1);
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const cardWrapRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -456,7 +458,7 @@ export function ExpertiseCards() {
   }, [isDesktop, prefersReduced]);
 
   return (
-    <section ref={ref} className="relative space-y-10 overflow-x-clip pb-8 mb-10 border-b border-white/10">
+    <section ref={targetRef} className="relative space-y-10 overflow-x-clip pb-8 mb-10 border-b border-white/10">
       <style>{`
         @keyframes scanDown {
           0%   { top: -100%; }

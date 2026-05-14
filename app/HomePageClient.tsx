@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useRef, useState, memo, Fragment } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, memo, Fragment } from "react";
 import { ExpertiseCards } from "../components/Expertisecards";
 import { SplashScreen } from "@/components/SplashScreen";
 
@@ -10,14 +10,17 @@ import { SplashScreen } from "@/components/SplashScreen";
    useInView
 ───────────────────────────────────────── */
 function useInView(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
+  const [element, setElement] = useState<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
+  const targetRef = useCallback((el: HTMLDivElement | null) => {
+    setElement(el);
+  }, []);
   useEffect(() => {
-    const el = ref.current; if (!el) return;
+    if (!element) return;
     const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold });
-    obs.observe(el); return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, visible };
+    obs.observe(element); return () => obs.disconnect();
+  }, [element, threshold]);
+  return { targetRef, visible };
 }
 
 /* ─────────────────────────────────────────
@@ -459,10 +462,13 @@ const WhySection = memo(function WhySection({ visible }: { visible: boolean }) {
                 className="mt-4 break-words font-extrabold leading-[0.95] [hyphens:none]"
                 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.48rem,2.9vw,2.2rem)", overflowWrap: "anywhere" }}
               >
-                One team, Full stack, Software, Hardware
+                One Team. Full Stack.
               </h3>
               <p className="mt-6 max-w-[30ch] text-[1.08rem] leading-snug" style={{ fontFamily: "var(--font-body)" }}>
-                all built in-house by the same team. You do not manage multiple vendors or deal with handoff problems between a design agency, a development company and a hardware supplier.
+              Hardware, firmware, SaaS, mobile apps, web platforms
+       and databases — all built in-house. You do not manage
+       multiple vendors or deal with handoff problems between
+       a design agency, a dev company and a hardware supplier.
               </p>
             </div>
           </div>
@@ -1220,7 +1226,7 @@ export default function HomePageClient() {
 
           {/* WHY ECOBRIDGES */}
           <section
-            ref={whyRef.ref}
+            ref={whyRef.targetRef}
             style={{
               position: "relative",
               left: "50%",
@@ -1241,12 +1247,12 @@ export default function HomePageClient() {
           </section>
 
           {/* ARCHITECTURE */}
-          {/* <div ref={archRef.ref}>
+          {/* <div ref={archRef.targetRef}>
             <ArchitectureSection visible={archRef.visible} />
           </div> */}
 
           {/* WHO WE BUILD FOR */}
-          <section ref={clientRef.ref} className="space-y-12">
+          <section ref={clientRef.targetRef} className="space-y-12">
             <div
               className="space-y-4 transition-all duration-700"
               style={{ opacity: clientRef.visible ? 1 : 0, transform: clientRef.visible ? "translateY(0)" : "translateY(32px)" }}
@@ -1267,12 +1273,12 @@ export default function HomePageClient() {
 
             <WorkWithScrollShowcase items={buildFor} visible={clientRef.visible} />
           </section>
-          <div ref={qnaRef.ref}>
+          <div ref={qnaRef.targetRef}>
             <QnASection visible={qnaRef.visible} />
           </div>
           {/* FINAL CTA */}
           <section
-            ref={ctaRef.ref}
+            ref={ctaRef.targetRef}
             className="relative overflow-hidden rounded-3xl border border-white/10 p-8 sm:p-14 lg:p-20 transition-all duration-700"
             style={{
               opacity: ctaRef.visible ? 1 : 0,
