@@ -741,34 +741,49 @@ function ArchitectureSection({ visible }: { visible: boolean }) {
 ───────────────────────────────────────── */
 const QNA_ITEMS = [
   {
-    q: "Do you work with early-stage ideas or only funded projects?",
-    a: "Both. If you've got a napkin sketch and a real problem, we're in. We've helped founders go from zero to working prototype — no deck required.",
+    q: "Do you only build custom software or do you have ready-made products we can use immediately?",
+    a: "Both — and this is actually what makes us different. We have our own SaaS products already built and deployable: TextileBridge for textile units, BIoTSense for factory monitoring, TurfBridge for sports venues and CafeBridge for cafes. You can start using them within days. If none of them fit your exact requirements — we build from scratch or customise an existing product around your workflow. Ready-built or fully custom. Your call.",
     accent: "#34d399",
   },
   {
-    q: "How long does a typical project take?",
-    a: "Depends on scope, but we move fast. Simple MVPs: 4–8 weeks. Full embedded + cloud systems: 3–6 months. We give you a real timeline upfront — no vague 'it depends' answers.",
+    q: "We are a small business in Surat. Is this affordable for us or is it only for big companies?",
+    a: "It is specifically built for you. Our SaaS products start at ₹500/month — deliberately priced for SMEs, not enterprise budgets. CafeBridge is a one-time ₹20,000 with zero monthly fees after that. BIoTSense costs under ₹2,500 to install and under ₹300 per machine per month to run. Enterprise software charges ₹10,000–15,000 per device for the same thing. We are not enterprise software. We are built for businesses like yours.",
     accent: "#22d3ee",
   },
   {
-    q: "Do you do hardware AND software, or just one?",
-    a: "Both — that's the whole point. We handle the full stack: embedded firmware, IoT connectivity, backend APIs, cloud infra, and frontend apps. One team, no handoff chaos.",
+    q: "Do you work with early-stage ideas or only funded projects?",
+    a: "Both. If you have a problem and a market, we are in. We have helped businesses go from zero to a working SaaS product or IoT prototype — no deck required, no funding needed, no formal brief necessary. A WhatsApp message describing your problem is enough to start a conversation.",
     accent: "#a78bfa",
   },
   {
-    q: "Who owns the code and hardware designs?",
-    a: "You do. Always. Everything we build is yours — source code, schematics, CAD files, cloud configs. No vendor lock-in, no licensing gotchas.",
+    q: "How long does a typical project take?",
+    a: "We move fast. SaaS MVPs take 4–8 weeks. Full IoT systems with hardware, cloud and a mobile app take 3–6 months. Custom SaaS built from scratch sits between those two depending on complexity. We give you a real timeline in the first meeting — no vague \"it depends\" answers and no timelines that stretch silently after the project starts.",
     accent: "#fb923c",
   },
   {
-    q: "What if my project doesn't fit neatly into a category?",
-    a: "Good. The weird ones are usually the most interesting. Reach out anyway — we'll tell you honestly if we can help, and if we can't, we'll point you somewhere that can.",
+    q: "Do you do hardware AND software, or just one?",
+    a: "Both — that is the whole point of EcoBridgers. SaaS products, IoT hardware, embedded firmware, cloud backend, mobile apps and web platforms. One team handles all of it. You never explain your project to a second company because there is no second company involved.",
     accent: "#f472b6",
   },
   {
-    q: "Do you offer ongoing support after launch?",
-    a: "Yes. We can stay on for maintenance, monitoring, and iteration — or hand off clean docs and a fully working system if you want to take it in-house. Your call.",
+    q: "What happens after the project launches? Do you disappear?",
+    a: "No. We offer ongoing maintenance, monitoring and technical support after every deployment. If you want to take the system in-house — we hand off complete documentation and a fully working codebase that your own team can manage. If you want us to stay involved — we stay involved. We also look for gaps in your operation proactively. If we see something technology can fix, we tell you. That is what a partner does, not a vendor.",
     accent: "#34d399",
+  },
+  {
+    q: "Who owns the code, the hardware designs and the data?",
+    a: "You do. Always. Source code, database, schematics, CAD files, cloud configuration — everything we build is yours from the moment it is delivered. No vendor lock-in. No licensing restrictions. No situation where we hold your own system hostage. You can take it to any other team tomorrow and they can work on it without us.",
+    accent: "#22d3ee",
+  },
+  {
+    q: "What if our project does not fit neatly into a service category?",
+    a: "Even better. The projects that do not fit a standard category are usually the most interesting ones and the ones where we can add the most value. Reach out anyway and describe the problem. We will tell you honestly if we can help — and if we cannot, we will point you to someone who can.",
+    accent: "#a78bfa",
+  },
+  {
+    q: "Can you work as our long-term technology partner rather than just a one-time vendor?",
+    a: "Yes — and this is actually how we prefer to work. We identify gaps, suggest improvements, scale systems as your business grows and stay available for ongoing development. Some of our best work has come from clients who came to us for one thing and stayed because we kept finding ways to make their operations better. If you want a technology partner and not just a development shop — we are the right fit.",
+    accent: "#fb923c",
   },
 ];
 
@@ -892,7 +907,7 @@ const QnASection = memo(function QnASection({ visible }: { visible: boolean }) {
 const buildFor = [
   {
     label: "Founders going 0→1",
-    sub: "Your MVP deserves more than a Fiverr gig.",
+    sub: "You have the idea. We have the full stack. No handoffs, no Fiverr gamble, no wasted months.",
     icon: "🚀",
     color: "from-amber-500/15 to-orange-500/5",
     border: "hover:border-amber-500/40",
@@ -900,9 +915,9 @@ const buildFor = [
     image: "/images/photo-1521737604893-d14cc237f11d.jpg",
   },
   {
-    label: "Universities & Research Labs",
-    sub: "Prototypes that actually survive the real world.",
-    icon: "🔬",
+    label: "Local & Growing Businesses",
+    sub: "Textile units, cafes, factories, sports venues — we know Surat's industries because we work in them.",
+    icon: "🏪",
     color: "from-violet-500/15 to-purple-500/5",
     border: "hover:border-violet-500/40",
     accent: "#a78bfa",
@@ -910,7 +925,7 @@ const buildFor = [
   },
   {
     label: "Factory & Industrial Ops",
-    sub: "Monitoring that doesn't crash at 3am.",
+    sub: "Real-time machine monitoring that does not crash at 3am when your shift supervisor calls.",
     icon: "🏭",
     color: "from-sky-500/15 to-blue-500/5",
     border: "hover:border-sky-500/40",
@@ -919,7 +934,7 @@ const buildFor = [
   },
   {
     label: "IoT & Hardware Startups",
-    sub: "Full-stack embedded, from sensor to dashboard.",
+    sub: "Full-stack embedded — firmware to dashboard, hardware to app. One team, zero handoff chaos.",
     icon: "📡",
     color: "from-emerald-500/15 to-teal-500/5",
     border: "hover:border-emerald-500/40",
@@ -927,9 +942,9 @@ const buildFor = [
     image: "/images/photo-1581092160607-ee22621dd758.jpg",
   },
   {
-    label: "SaaS & Web Builders",
-    sub: "Ship fast. Scale clean. No spaghetti.",
-    icon: "🖥️",
+    label: "Enterprises & Multi-Branch Ops",
+    sub: "Multi-location systems, role-based access, API integrations. Built to scale with you.",
+    icon: "🏢",
     color: "from-cyan-500/15 to-sky-500/5",
     border: "hover:border-cyan-500/40",
     accent: "#22d3ee",
@@ -937,7 +952,7 @@ const buildFor = [
   },
   {
     label: "Anyone with a real problem",
-    sub: "If it's worth solving, we're in. seriously.",
+    sub: "If it is worth solving, we are in. Reach out — seriously.",
     icon: "💡",
     color: "from-rose-500/15 to-pink-500/5",
     border: "hover:border-rose-500/40",

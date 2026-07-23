@@ -11,30 +11,29 @@ const ACCENT_GRAD = "from-cyan-500 to-blue-600";
 const GRID_COLOR  = "rgba(6,182,212,0.7)";
 
 const offerings = [
-  { icon:"📊", title:"Admin Dashboards",          desc:"Custom control panels for managing devices, users, and live data in real time." },
-  { icon:"📈", title:"Real-Time Visualization",   desc:"Live charts, graphs, and data feeds powered by WebSockets and streaming APIs." },
-  { icon:"☁️", title:"Cloud Backend Architecture",desc:"Scalable, secure server infrastructure using Firebase, Node.js, and SQL databases." },
-  { icon:"🔗", title:"REST & Realtime APIs",      desc:"Clean API design for integrating with IoT devices, mobile apps, and third parties." },
-  { icon:"🗄️", title:"Database Design",           desc:"Optimized schema design for Firebase, PostgreSQL, MySQL and time-series data." },
-  { icon:"🔐", title:"Auth & Role Management",    desc:"Secure login, multi-role access control, and session management built in." },
+  { icon:"🌐", title:"Business Websites", desc:"Professional, fast, mobile-responsive websites built with Next.js — SEO-ready from the first line of code, not added as an afterthought when rankings do not come." },
+  { icon:"📊", title:"SaaS Dashboards & Admin Panels", desc:"Operator dashboards, management portals and admin interfaces for SaaS products — real-time data, clean UI and role-based access that keeps each user seeing exactly what they should." },
+  { icon:"🚀", title:"Full-Stack Web Applications", desc:"Complete web platforms with frontend, backend, database and API layer — scoped, built and deployed as one integrated project by one team." },
+  { icon:"🗄️", title:"Database Architecture & Design", desc:"Schemas designed for the queries your system actually runs. Correctly structured from the start so you avoid the expensive rewrite when your data grows past what the original design can handle." },
+  { icon:"⚡", title:"Database Optimisation", desc:"Slow queries, missing indexes, poor schema design — we audit your existing database, find the bottlenecks and fix them. Most systems see significant performance improvement after a proper optimisation pass." },
+  { icon:"🔗", title:"API Development", desc:"REST APIs built with Node.js — documented, versioned and tested. For connecting your web platform to mobile apps, IoT devices or any third-party service that your business uses." },
 ];
 const useCases = [
-  { icon:"📡", label:"IoT Monitoring Dashboards",   desc: "Unify hundreds of edge device streams into a sleek, real-time command center." },
-  { icon:"📋", label:"Data Logging & Reporting",    desc: "Export automated pdf/csv compliance reports mapped directly from raw databases." },
-  { icon:"🖥️", label:"Admin Control Panels",        desc: "Granular UI panels for configuring fleets, remote updates, and alarm limits." },
-  { icon:"🗂️", label:"Management Portals",          desc: "Secure internal apps handling deep hierarchical business and operational structures." },
-  { icon:"🏢", label:"Multi-Tenant SaaS Platforms", desc: "Partition architecture securely so clients only access their own slice of the network." },
-  { icon:"⚙️", label:"API-First Backends",          desc: "Headless servers designed aggressively for raw low-latency data consumption." },
+  { icon:"💻", label:"SaaS Product Web Layer", desc: "The web frontend and backend for your SaaS product — multi-tenant architecture, Razorpay subscription management and role-based access built in from the start." },
+  { icon:"📡", label:"IoT Monitoring Dashboards", desc: "Real-time dashboards showing live sensor data, device status, alert history and machine logs — built for factory managers and operations teams who need clarity, not complexity." },
+  { icon:"🛒", label:"E-Commerce Platforms", desc: "Online stores with Razorpay payment integration, inventory management, order tracking and a custom admin panel your team can use without training." },
+  { icon:"🏪", label:"Business & Service Websites", desc: "Professional websites for local businesses and service companies — fast, SEO-optimised and built to turn visitors into enquiries." },
+  { icon:"⚙️", label:"Admin & Operations Portals", desc: "Internal web tools for managing teams, inventory, bookings, reports and operations — role-based, database-driven and built for people who use it every single day." },
 ];
 const process = [
-  { step:"01", title:"Discovery & Scoping",   desc:"Define user roles, data flows, and platform requirements." },
-  { step:"02", title:"Architecture Design",   desc:"Plan the tech stack, database schema, and API structure." },
-  { step:"03", title:"Backend Development",   desc:"Build APIs, business logic, authentication and database layer." },
-  { step:"04", title:"Frontend Development",  desc:"Build responsive dashboards and UI with Next.js / React." },
-  { step:"05", title:"Integration & Testing", desc:"Connect all parts — IoT feeds, mobile apps, third-party services." },
-  { step:"06", title:"Deployment & Handover", desc:"Deploy to cloud, set up monitoring, document everything." },
+  { step:"01", title:"Discovery & Scoping", desc:"Requirements, user flows and technical architecture defined before development starts." },
+  { step:"02", title:"Database Design", desc:"Schema and data architecture designed first — because everything else depends on it being right from the beginning." },
+  { step:"03", title:"Backend Development", desc:"API development, authentication, business logic and database integration." },
+  { step:"04", title:"Frontend Development", desc:"Next.js UI built against the API — fast, clean and responsive on every screen size." },
+  { step:"05", title:"QA & Performance Testing", desc:"Load testing, query performance, cross-browser testing and security review before deployment." },
+  { step:"06", title:"Deployment & Support", desc:"Production deployment, monitoring setup and ongoing maintenance after launch." },
 ];
-const techStack = ["Next.js","React","Node.js","Firebase","PostgreSQL","MySQL","REST API","WebSockets","Tailwind CSS","Vercel","Docker","TypeScript"];
+const techStack = ["Next.js", "React", "TypeScript", "Tailwind CSS", "Node.js", "PostgreSQL", "MongoDB", "Prisma", "Redis", "Docker", "Vercel", "AWS", "Razorpay", "REST APIs"];
 
 const platformBenefits = useCases.map((u) => ({ title: u.label, desc: u.desc }));
 
@@ -49,16 +48,16 @@ export default function WebServicePage() {
       <ScrollToggleHero
         accentGradient={ACCENT_GRAD}
         accentColor={ACCENT}
-        badge="Web & Cloud Platforms"
+        badge="Web & Database"
         badgeColor="cyan"
         icon="🌐"
         gridColor={GRID_COLOR}
-        pretitle1="Control your devices"
-        title1={<>Scalable<br/>Platforms</>}
-        subtitle1="We build secure and scalable web platforms that act as the control center for IoT systems and applications."
-        pretitle2="Actionable insights"
-        title2={<>Control &<br/>Analytics</>}
-        subtitle2="From real-time custom dashboards to full cloud backends, completely integrated."
+        pretitle1="Web & Database"
+        title1={<>Reliable<br/>Platforms</>}
+        subtitle1="Fast web platforms and the data architecture that makes them reliable — built to handle real load without expensive rewrites six months after you launch."
+        pretitle2="Clean frontend."
+        title2={<>Solid backend.</>}
+        subtitle2="SaaS dashboards, admin panels, business websites and full-stack web apps — with databases designed correctly from day one."
       />
 
       <div className="mx-auto w-full max-w-screen-xl space-y-24 px-4 pt-20 pb-24 sm:px-6 lg:px-10 xl:px-16">

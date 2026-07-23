@@ -4,33 +4,33 @@ import { useEffect, useRef, useState } from "react";
 
 const differentiators = [
     {
-        title: "System Design Focus",
-        desc: "Strong emphasis on architecture and planning before development begins — ensuring every solution is built on solid ground.",
+        title: "System Design First",
+        desc: "Architecture and planning happen before development begins. Every solution is built on a foundation that can hold the weight of what you will need two years from now.",
         number: "01",
     },
     {
-        title: "Optimized Tech Stack",
-        desc: "One proven, battle-tested stack for faster delivery and more stable, maintainable systems over the long term.",
+        title: "One Proven Stack",
+        desc: "One battle-tested technology stack across all projects — faster delivery, more stable systems and easier long-term maintenance for you.",
         number: "02",
     },
     {
-        title: "Parallel Development",
-        desc: "Hardware and software built simultaneously — cutting timelines without sacrificing quality or coordination.",
+        title: "Hardware & Software Together",
+        desc: "Both built simultaneously by the same team — no coordination gap between a hardware supplier and a software agency. We are both.",
         number: "03",
     },
     {
-        title: "Transparent Communication",
-        desc: "Clear documentation, structured updates, and no surprises — you're always in the loop at every stage.",
+        title: "Transparent at Every Stage",
+        desc: "Clear documentation, structured updates and no surprises. You always know exactly where your project stands and what is coming next.",
         number: "04",
     },
     {
-        title: "Budget-Conscious",
-        desc: "Smart planning and efficient execution that consistently delivers quality solutions within your budget constraints.",
+        title: "Budget-Conscious by Design",
+        desc: "Smart planning and efficient execution that consistently delivers within your budget. We scope honestly — we do not give you a low quote and expand it mid-project.",
         number: "05",
     },
     {
-        title: "Working Systems",
-        desc: "We deliver complete, functional solutions ready for real-world use — not just code that needs further assembly.",
+        title: "Working Systems — Not Just Code",
+        desc: "We deliver complete, functional solutions ready for real-world use. Not code that needs further assembly, not prototypes that cannot handle production load.",
         number: "06",
     },
 ] as const;
@@ -57,10 +57,9 @@ export function HowWeDifferSection() {
             {/* Left-aligned header */}
             <div>
                 <div className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-4">
-                    Our Edge
+                    How We Differ
                 </div>
                 <h2 className="text-3xl font-bold text-white sm:text-4xl">How We Differ</h2>
-                <p className="mt-2 text-lg text-zinc-400">What Sets Us Apart</p>
             </div>
 
             {/* Cards grid */}

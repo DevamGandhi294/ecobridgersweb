@@ -11,30 +11,29 @@ const ACCENT_GRAD = "from-violet-500 to-purple-600";
 const GRID_COLOR  = "rgba(139,92,246,0.7)";
 
 const offerings = [
-  { icon:"📱", title:"Cross-Platform Apps",       desc:"Single codebase for Android & iOS using Flutter — native performance, half the time." },
-  { icon:"🎛️", title:"Real-Time Device Control",  desc:"Control IoT hardware and systems directly from your mobile device, anywhere." },
-  { icon:"📊", title:"Live Data Monitoring",      desc:"Real-time dashboards, live charts, and push notifications for critical alerts." },
-  { icon:"🔐", title:"Secure Authentication",     desc:"Email, Google, OTP-based login with role-based access control built in." },
-  { icon:"🔗", title:"IoT & Cloud Integration",   desc:"Seamless connection to your cloud backend, MQTT brokers, and REST APIs." },
-  { icon:"🎨", title:"Clean UI/UX Design",        desc:"Intuitive, beautiful interfaces that are easy to use for any type of user." },
+  { icon:"📱", title:"Flutter Cross-Platform Apps", desc:"One codebase that runs natively on both Android and iOS. Same performance, same UI, half the development time compared to building two separate native apps." },
+  { icon:"🔌", title:"IoT Companion Apps", desc:"Mobile apps that connect directly to your IoT hardware. Real-time sensor data, device controls, alert management and live charts that do not freeze when you need them most." },
+  { icon:"💼", title:"B2B Operations Tools", desc:"Internal apps for field teams, supervisors and operations staff. Offline-ready, role-based access and real-time sync with your backend — built for daily use in demanding environments." },
+  { icon:"🛒", title:"Customer-Facing Apps", desc:"Consumer products, ordering apps, booking platforms and service apps — designed for users who have no patience for slow or confusing interfaces. UX-first, always." },
+  { icon:"🚀", title:"App Store & Play Store Submission", desc:"We handle the complete submission process for both stores — assets, descriptions, compliance review and resubmissions if required. You focus on your business, not the paperwork." },
+  { icon:"🔗", title:"Backend Integration", desc:"We integrate your app with any backend — REST APIs, Firebase, custom Node.js servers or your existing systems. The app always has the data it needs, when it needs it." },
 ];
 const useCases = [
-  { icon:"🔌", label:"IoT Control Apps",           desc: "Take full remote control over connected hardware interfaces from your phone." },
-  { icon:"🔔", label:"Monitoring & Alert Systems", desc: "Receive mission-critical push notifications immediately when thresholds breach." },
-  { icon:"🏭", label:"Industrial Companion Apps",  desc: "Empower factory workers with intuitive tablets directly tracking machine health." },
-  { icon:"💼", label:"Custom Business Apps",       desc: "Internal workflow applications optimizing specific operational bottlenecks seamlessly." },
-  { icon:"🗺️", label:"Field Operations Apps",      desc: "Equip off-site teams with live geo-tracked routing and offline sync capabilities." },
-  { icon:"📋", label:"Data Collection Apps",       desc: "Digitize complex pen-and-paper surveys into lightning-fast native mobile forms." },
+  { icon:"🔌", label:"IoT Control & Monitoring Apps", desc: "Control and monitor connected devices remotely — real-time data, device alerts and full management from any Android or iOS device." },
+  { icon:"🎟️", label:"Booking & Slot Management", desc: "Player-facing and owner-facing apps for sports venues, service businesses and any operation that takes time-based bookings from real users." },
+  { icon:"🏭", label:"Production & Inventory Apps", desc: "Mobile tools for factory floors and warehouse teams — real-time data entry, role-based access and offline capability for areas with poor or no connectivity." },
+  { icon:"☕", label:"Customer Ordering Apps", desc: "QR-based or standalone ordering apps for cafes, cloud kitchens and retail — browse, order and pay from the customer's own phone." },
+  { icon:"📍", label:"Field Operations Apps", desc: "Mobile tools for teams working outside the office — job assignments, status updates, location tracking and photo documentation from anywhere." },
 ];
 const process = [
-  { step:"01", title:"UX Planning",         desc:"Map user journeys, screens, and interaction flows before writing code." },
-  { step:"02", title:"UI Design",           desc:"Design pixel-perfect screens with your brand identity and color system." },
-  { step:"03", title:"App Development",     desc:"Build with Flutter — clean code, reusable components, and state management." },
-  { step:"04", title:"Backend Integration", desc:"Connect to your cloud, IoT backend, or existing APIs." },
-  { step:"05", title:"Testing",             desc:"Test on real devices for both Android and iOS before any release." },
-  { step:"06", title:"Deployment & Support",desc:"Publish to Play Store / App Store and hand over with full documentation." },
+  { step:"01", title:"UX Design & Wireframes", desc:"Every screen and user flow mapped before any code is written. UX signed off first." },
+  { step:"02", title:"UI Design", desc:"Visual design that matches your brand and feels native on both Android and iOS." },
+  { step:"03", title:"Development", desc:"Flutter development — clean, modular code with Git version control throughout." },
+  { step:"04", title:"Backend Integration", desc:"API integration, real-time data sync and authentication configured and tested." },
+  { step:"05", title:"Testing", desc:"Device testing across Android and iOS, edge case handling and performance testing before submission." },
+  { step:"06", title:"Launch & Support", desc:"Store submission, launch support and ongoing maintenance and feature updates after launch." },
 ];
-const techStack = ["Flutter","Dart","Firebase","REST API","MQTT","Provider","Riverpod","GetX","Google Play","App Store","FCM","BLE"];
+const techStack = ["Flutter", "Dart", "Firebase", "REST APIs", "WebSocket", "Node.js", "PostgreSQL", "MongoDB", "BLE", "MQTT", "Google Play", "App Store", "Figma"];
 
 const platformBenefits = useCases.map((u) => ({ title: u.label, desc: u.desc }));
 
@@ -53,12 +52,12 @@ export default function MobileServicePage() {
         badgeColor="violet"
         icon="📱"
         gridColor={GRID_COLOR}
-        pretitle1="Pocket intelligence"
-        title1={<>Smart<br/>Apps</>}
-        subtitle1="We develop cross-platform mobile applications that allow users to monitor, control, and analyze systems in real time."
-        pretitle2="Seamless experiences"
-        title2={<>Users to<br/>Systems</>}
-        subtitle2="Tightly integrated with IoT and cloud backends to deliver native performance and beautiful interfaces."
+        pretitle1="Mobile Applications"
+        title1={<>Android &amp; iOS</>}
+        subtitle1="Android and iOS apps built for real users — not demos that look good in a pitch and break in production on day one."
+        pretitle2="One codebase."
+        title2={<>Both platforms.</>}
+        subtitle2="Flutter apps that connect your users to your hardware, your platform or your business — polished enough that it does not embarrass the rest of what you built."
       />
 
       <div className="mx-auto w-full max-w-screen-xl space-y-24 px-4 pt-20 pb-24 sm:px-6 lg:px-10 xl:px-16">

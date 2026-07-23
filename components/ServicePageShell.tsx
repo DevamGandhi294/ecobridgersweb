@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, memo } from "react";
+import { useCallback, useEffect, useRef, useState, memo, Fragment } from "react";
 import { createPortal } from "react-dom";
 
 /* ─────────────────────────────────────────
@@ -47,15 +47,15 @@ export const SectionBadge = memo(function SectionBadge({
   const s = map[color];
   return (
     <div
-      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-widest ${s.border} ${s.text}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-widest leading-none text-center select-none ${s.border} ${s.text}`}
       style={{ background: s.bg, fontFamily: "var(--font-display)" }}
     >
-      <span className="relative flex h-1.5 w-1.5">
+      <span className="relative inline-flex h-1.5 w-1.5 shrink-0 items-center justify-center">
         <span className="absolute inline-flex h-full w-full rounded-full opacity-75"
           style={{ background: "currentColor", animation: "ping-dot 1.5s cubic-bezier(0,0,0.2,1) infinite" }} />
         <span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ background: "currentColor" }} />
       </span>
-      {children}
+      <span className="inline-flex items-center justify-center leading-none">{children}</span>
     </div>
   );
 });
@@ -430,239 +430,164 @@ export function ProcessCard({
 }
 
 /* ─────────────────────────────────────────
-   CreationProcessTimeline (horizontal)
+   CreationProcessTimeline (animated)
 ───────────────────────────────────────── */
 export function CreationProcessTimeline({
   steps,
   accentColor,
 }: {
-  steps: Array<{ step: string; title: string; desc: string }>;
+  steps: Array<{ step: string; icon?: string; title: string; desc: string }>;
   accentColor: string;
 }) {
-  const [active, setActive] = useState<number | null>(null);
-  const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [dialogPos, setDialogPos] = useState<{ left: number; top: number; arrowOffset: number } | null>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const streamGradients = [
-    "linear-gradient(90deg,#7bb6f8 0%,#9fd2ff 100%)",
-    "linear-gradient(90deg,#6fa9f3 0%,#7ed6f7 100%)",
-    "linear-gradient(90deg,#6fc9ef 0%,#7fe7d5 100%)",
-    "linear-gradient(90deg,#7fdabf 0%,#9ae49f 100%)",
-    "linear-gradient(90deg,#9ee08f 0%,#d4e883 100%)",
-    "linear-gradient(90deg,#d7e37f 0%,#ff9061 100%)",
-  ];
-
-  useEffect(() => {
-    if (active === null) {
-      setDialogPos(null);
-      return;
-    }
-
-    const update = () => {
-      const btn = buttonsRef.current[active];
-      if (!btn) return;
-
-      const rect = btn.getBoundingClientRect();
-      const btnCenter = rect.left + rect.width / 2;
-      const top = rect.bottom + 12;
-
-      // Keep dialog within screen bounds
-      const screenW = window.innerWidth;
-      const maxDialogW = Math.min(340, screenW * 0.92);
-      const minLeft = (maxDialogW / 2) + 12;
-      const maxLeft = screenW - (maxDialogW / 2) - 12;
-
-      let dialogLeft = btnCenter;
-      if (dialogLeft < minLeft) dialogLeft = minLeft;
-      if (dialogLeft > maxLeft) dialogLeft = maxLeft;
-
-      // Shift the arrow so it still points to the button
-      const arrowOffset = btnCenter - dialogLeft;
-
-      setDialogPos({ left: dialogLeft, top, arrowOffset });
-    };
-
-    update();
-    window.addEventListener("resize", update, { passive: true });
-    window.addEventListener("scroll", update, { passive: true });
-    return () => {
-      window.removeEventListener("resize", update);
-      window.removeEventListener("scroll", update);
-    };
-  }, [active, steps.length]);
-
-  // Click outside to dismiss dialog
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
-      if (active === null) return;
-      const target = e.target as HTMLElement;
-      
-      // If click is inside the timeline container or the dialog itself, do nothing
-      if (scrollContainerRef.current?.contains(target)) return;
-      if (target.closest('.timeline-dialog')) return;
-      
-      setActive(null);
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    document.addEventListener("touchstart", handleOutsideClick, { passive: true });
-    
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-      document.removeEventListener("touchstart", handleOutsideClick);
-    };
-  }, [active]);
-
-  const handleScroll = () => {
-    const el = scrollContainerRef.current;
-    if (!el || window.innerWidth >= 768) return; // Only auto-open on mobile
-
-    const maxScroll = el.scrollWidth - el.clientWidth;
-    if (maxScroll <= 0) return;
-
-    const progress = el.scrollLeft / maxScroll;
-    setScrollProgress(progress);
-
-    // Find the item closest to the center of the scroll view
-    const center = el.scrollLeft + el.clientWidth / 2;
-    let closestIdx = 0;
-    let minDistance = Infinity;
-
-    buttonsRef.current.forEach((btn, idx) => {
-      if (!btn) return;
-      const btnCenter = btn.offsetLeft + btn.offsetWidth / 2;
-      const distance = Math.abs(btnCenter - center);
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestIdx = idx;
-      }
-    });
-
-    setActive(closestIdx);
-  };
+  const [active, setActive] = useState(0);
+  const s = steps[active];
+  const pct = Math.round((active / (steps.length - 1)) * 100);
 
   return (
-    <div className="relative w-full py-1">
-      <div 
-        ref={scrollContainerRef}
-        className="relative overflow-x-auto pb-6 -mb-6 hide-scrollbar" 
-        onScroll={handleScroll}
-        onMouseLeave={() => {
-          if (window.innerWidth >= 768) setActive(null);
-        }}
-      >
-        <div
-          className="relative flex md:grid w-max md:w-full"
-          style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}
-        >
-          <div className="pointer-events-none absolute left-0 top-[-14px] bottom-[-14px] w-px bg-white/35" aria-hidden />
-          {steps.map((s, idx) => {
-            const isActive = idx === active;
-            const isUpperRow = idx % 2 === 0;
-            return (
-              <button
-                key={s.step}
-                ref={(el) => { buttonsRef.current[idx] = el; }}
-                type="button"
-                onMouseEnter={() => setActive(idx)}
-                onFocus={() => setActive(idx)}
-                onClick={() => setActive(idx)}
-                className="relative min-h-[186px] w-[180px] shrink-0 md:w-auto px-3 py-1.5 text-left outline-none sm:px-4"
+    <div className="w-full space-y-6">
+      {/* Track */}
+      <div className="flex items-center">
+        {steps.map((item, i) => (
+          <Fragment key={item.step}>
+            <button
+              type="button"
+              onClick={() => setActive(i)}
+              className="relative flex shrink-0 flex-col items-center gap-2 outline-none"
+            >
+              {/* Pulse ring */}
+              {i === active && (
+                <span
+                  className="absolute inset-[-6px] rounded-full border-2 animate-ping"
+                  style={{ borderColor: accentColor, animationDuration: "1.4s" }}
+                />
+              )}
+              {/* Node */}
+              <div
+                className="grid place-items-center h-12 w-12 rounded-full border-2 text-[13px] font-semibold transition-all duration-300 leading-none text-center select-none"
+                style={
+                  i === active
+                    ? { background: accentColor, borderColor: accentColor, color: "#fff", transform: "scale(1.15)" }
+                    : i < active
+                    ? { background: accentColor, borderColor: accentColor, color: "#fff" }
+                    : { background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.14)", color: "rgba(255,255,255,0.4)" }
+                }
               >
-                <div className="pointer-events-none absolute right-0 top-[-14px] bottom-[-14px] w-px bg-white/35" aria-hidden />
-                  <div className={isUpperRow ? "pt-0" : "pt-7"}>
-                  <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/55">
-                    STEP #{s.step}
-                  </div>
+                <span className="inline-flex items-center justify-center leading-none text-center">
+                  {i < active ? "✓" : `0${i + 1}`}
+                </span>
+              </div>
+              {/* Label */}
+              <span
+                className="max-w-[72px] overflow-hidden text-ellipsis whitespace-nowrap text-[11px] transition-colors duration-300"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  color: i === active ? "#fff" : "rgba(255,255,255,0.38)",
+                  fontWeight: i === active ? 500 : 400,
+                }}
+              >
+                {item.title}
+              </span>
+            </button>
 
-                  <div
-                    className="text-sm font-semibold text-white/90"
-                    style={{ fontFamily: "var(--font-display)" }}
-                  >
-                    {s.title}
-                  </div>
+            {/* Connector */}
+            {i < steps.length - 1 && (
+              <div className="relative mx-[-1px] h-[3px] flex-1 overflow-hidden rounded-full bg-white/10">
+                <div
+                  className="h-full rounded-full transition-all duration-500"
+                  style={{
+                    background: accentColor,
+                    width: i < active ? "100%" : i === active ? "50%" : "0%",
+                  }}
+                />
+              </div>
+            )}
+          </Fragment>
+        ))}
+      </div>
 
-                <div className="mt-3.5 -mx-3 sm:-mx-4">
-                    <div
-                      className="relative h-6 w-full rounded-full"
-                      style={{
-                          background: streamGradients[idx % streamGradients.length],
-                        opacity: isActive ? 1 : 0.78,
-                        filter: isActive ? "saturate(1.1)" : "saturate(0.98)",
-                        transition: "opacity 250ms ease, filter 250ms ease",
-                      }}
-                    >
-                      <div
-                        className="absolute inset-0 rounded-full"
-                        style={{
-                          boxShadow: isActive ? `0 10px 26px -14px ${accentColor}aa` : "none",
-                          transition: "box-shadow 250ms ease",
-                        }}
-                      />
+      {/* Detail card */}
+      <div
+        key={active}
+        className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+        style={{ animation: "slideUp .35s ease both" }}
+      >
+        {/* Shimmer sweep */}
+        <div
+          className="pointer-events-none absolute inset-y-0 w-2/5"
+          style={{
+            background: `linear-gradient(90deg,transparent,${accentColor}12,transparent)`,
+            animation: "shimmer .7s ease .1s both",
+          }}
+        />
 
-                      {/* plus centered on the pill */}
-                      <div
-                        className="absolute inset-0 m-auto flex h-6 w-6 items-center justify-center rounded-full border border-black/15 bg-white text-black shadow-[0_8px_18px_rgba(0,0,0,0.22)]"
-                        aria-hidden
-                      >
-                        <span className="relative block h-[10px] w-[10px]">
-                          <span className="absolute left-1/2 top-1/2 h-[2px] w-[10px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-black/80" />
-                          {!isActive ? (
-                            <span className="absolute left-1/2 top-1/2 h-[10px] w-[2px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-black/80" />
-                          ) : null}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
+        <div className="flex items-center justify-between gap-3 mb-4">
+          <div
+            className="grid place-items-center h-10 w-10 shrink-0 rounded-full text-xl leading-none text-center select-none"
+            style={{
+              background: `${accentColor}20`,
+              border: `1px solid ${accentColor}40`,
+            }}
+          >
+            <span className="inline-flex items-center justify-center leading-none text-center">{s.icon ?? s.step}</span>
+          </div>
+          <div className="flex flex-col items-end text-right">
+            <p
+              className="text-[11px] uppercase tracking-widest"
+              style={{ color: accentColor, fontFamily: "var(--font-body)" }}
+            >
+              step {String(active + 1).padStart(2, "0")} of {steps.length}
+            </p>
+            <h3
+              className="text-[17px] font-bold text-white leading-snug"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              {s.title}
+            </h3>
+          </div>
+        </div>
+
+        <p className="relative text-sm leading-relaxed text-zinc-400" style={{ fontFamily: "var(--font-body)" }}>
+          {s.desc}
+        </p>
+
+        {/* Progress bar */}
+        <div className="relative mt-5 h-[3px] overflow-hidden rounded-full bg-white/10">
+          <div
+            className="h-full rounded-full transition-all duration-500"
+            style={{ width: `${pct}%`, background: accentColor }}
+          />
+        </div>
+
+        {/* Nav */}
+        <div className="mt-4 flex justify-end gap-2">
+          <button
+            type="button"
+            disabled={active === 0}
+            onClick={() => setActive(a => a - 1)}
+            className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            ← prev
+          </button>
+          <button
+            type="button"
+            disabled={active === steps.length - 1}
+            onClick={() => setActive(a => a + 1)}
+            className="rounded-xl px-4 py-2 text-xs font-semibold text-white transition-all hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ background: accentColor, fontFamily: "var(--font-display)" }}
+          >
+            next →
+          </button>
         </div>
       </div>
 
-      {/* Custom Scroll Progress Bar (mobile only) */}
-      <div className="mt-10 md:hidden h-[2px] w-full max-w-[160px] mx-auto rounded-full bg-white/15 relative overflow-hidden">
-        <div 
-          className="absolute top-0 bottom-0 left-0 rounded-full bg-white transition-all duration-75"
-          style={{ 
-            width: `${Math.max(25, (1 / steps.length) * 100)}%`, 
-            left: `${scrollProgress * (100 - Math.max(25, (1 / steps.length) * 100))}%` 
-          }}
-        />
-      </div>
-
-      {/* Hover detail dialog via portal (always on top) */}
-      {active !== null && dialogPos && typeof document !== "undefined"
-        ? createPortal(
-            <div
-              className="timeline-dialog pointer-events-auto fixed z-[9999]"
-              style={{ left: dialogPos.left, top: dialogPos.top, transform: "translateX(-50%)" }}
-            >
-              <div 
-                className="absolute -top-3 h-0 w-0 -translate-x-1/2 border-l-[10px] border-r-[10px] border-b-[12px] border-l-transparent border-r-transparent border-b-zinc-100 transition-all duration-200 pointer-events-none" 
-                style={{ left: `calc(50% + ${dialogPos.arrowOffset}px)` }}
-              />
-              <div className="w-[min(340px,92vw)] min-h-[160px] sm:min-h-[250px] rounded-[22px] sm:rounded-[26px] border border-black/10 bg-zinc-100 px-5 py-6 sm:px-7 sm:py-9 text-center shadow-[0_20px_55px_rgba(0,0,0,0.25)]">
-                <p className="text-[28px] sm:text-[33px] font-bold leading-none text-zinc-900" style={{ fontFamily: "var(--font-display)" }}>
-                  {steps[active].step}
-                </p>
-                <p className="mt-2 sm:mt-3 text-base sm:text-lg font-bold text-zinc-900" style={{ fontFamily: "var(--font-display)" }}>
-                  {steps[active].title}
-                </p>
-                <p className="mt-2 sm:mt-3 text-sm sm:text-base leading-relaxed text-zinc-600" style={{ fontFamily: "var(--font-body)" }}>
-                  {steps[active].desc}
-                </p>
-              </div>
-            </div>,
-            document.body
-          )
-        : null}
+      <style>{`
+        @keyframes slideUp { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:translateY(0) } }
+        @keyframes shimmer { 0% { left:-60% } 100% { left:120% } }
+      `}</style>
     </div>
   );
 }
-
 /* ─────────────────────────────────────────
    UseCaseCard
 ───────────────────────────────────────── */
@@ -716,7 +641,7 @@ export function UseCaseCard({
             strokeLinecap="round"
             strokeLinejoin="round"
             className="transition-transform duration-500 group-hover:scale-105"
-            style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -46%) rotate(-45deg)" }}
+            style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%) rotate(-45deg)" }}
           >
             <path d="M7 17L17 7" />
             <path d="M8 7h9v9" />
@@ -976,7 +901,7 @@ export function InquiryForm({
         <option>Saas Product</option>
         <option>IoT &amp; Embedded Systems</option>
         <option>Mobile Applications</option>
-        <option>Web &amp; Cloud Platforms</option>     
+        <option>Web &amp; Development</option>     
         <option>Prototyping &amp; POC</option>
         <option>Industrial &amp; Custom Solutions</option>
       </select>

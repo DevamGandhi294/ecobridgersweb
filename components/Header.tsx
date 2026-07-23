@@ -117,22 +117,29 @@ export function Header() {
                   </Link>
 
                   {/* Mega Menu Dropdown */}
-                  <div className="absolute left-1/2 top-[calc(100%+8px)] w-[880px] -translate-x-1/2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 translate-y-2 group-hover:translate-y-0 z-50">
+                  <div className="absolute left-1/2 top-[calc(100%+8px)] w-[550px] -translate-x-1/2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 translate-y-2 group-hover:translate-y-0 z-50">
                     <div className="rounded-2xl border border-white/10 bg-[#0e0e11]/95 p-3 shadow-2xl backdrop-blur-xl">
                       <div className="mb-3 flex items-center justify-between px-2 pt-1">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500" style={{ fontFamily: "var(--font-display)" }}>All Services</span>
-                        <Link href="/services" className="group/link flex items-center gap-1 text-[13px] font-bold text-emerald-500 hover:text-emerald-400 transition-colors">
-                          View Everything
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500" style={{ fontFamily: "var(--font-display)" }}>
+                          {link.href === "/services" ? "All Services" : "Our Products"}
+                        </span>
+                        <Link href={link.href} className="group/link flex items-center gap-1 text-[13px] font-bold text-emerald-500 hover:text-emerald-400 transition-colors">
+                          {link.href === "/services" ? "View Everything" : "View All Products"}
                           <svg className="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
                         </Link>
                       </div>
-                      <div className="grid grid-cols-4 gap-3">
+                      <div className={`grid gap-3 ${link.href === "/services" ? "grid-cols-4" : "grid-cols-3"}`}>
                         {link.children.map((child) => {
                           const getStyles = (href: string) => {
                             if (href.includes("saas")) return { bg: "bg-[#94e48b]", text: "text-[#0d1f10]", desc: "Software products built for your work" };
                             if (href.includes("iot")) return { bg: "bg-[#22d3ee]", text: "text-[#083344]", desc: "Dashboards & scalable SaaS" };
                             if (href.includes("app")) return { bg: "bg-[#6c78fb]", text: "text-white", desc: "Native & cross-platform apps" };
-                            if (href.includes("web")) return { bg: "bg-[#ff6fb5]", text: "text-[#2e091b]", desc: "Machine Learning & predictive" };
+                            if (href.includes("web")) return { bg: "bg-[#ff6fb5]", text: "text-[#2e091b]", desc: "Web development & AI/ML" };
+                            if (href.includes("textilebridge")) return { bg: "bg-[#34d399]", text: "text-[#0d1f10]", desc: "Textile manufacturing management" };
+                            if (href.includes("biotsense")) return { bg: "bg-[#22d3ee]", text: "text-[#083344]", desc: "Machine health & IoT monitoring" };
+                            if (href.includes("turfbridge")) return { bg: "bg-[#a78bfa]", text: "text-white", desc: "Sports venue booking & management" };
+                            if (href.includes("cafebridge")) return { bg: "bg-[#fbbf24]", text: "text-[#1f1f1f]", desc: "Cafe POS & order management" };
+                            if (href.includes("underground-rover")) return { bg: "bg-[#f87171]", text: "text-white", desc: "Underground surveillance rover" };
                             return { bg: "bg-zinc-800", text: "text-white", desc: "Explore our offerings" };
                           };
                           const s = getStyles(child.href);
@@ -149,10 +156,15 @@ export function Header() {
                               
                               <div className="flex w-full items-end justify-between">
                                 <div className="text-[#1a1a1a] opacity-90">
-                                  {child.href.includes("saas") && <Cpu size={28} strokeWidth={1.5} />}
-                                  {child.href.includes("iot") && <Globe size={28} strokeWidth={1.5} />}
+                                  {child.href.includes("saas") && <Globe size={28} strokeWidth={1.5}  />}
+                                  {child.href.includes("iot") && <Cpu size={28} strokeWidth={1.5} />}
                                   {child.href.includes("app") && <Smartphone size={28} strokeWidth={1.5} />}
                                   {child.href.includes("web") && <Brain size={28} strokeWidth={1.5} />}
+                                  {child.href.includes("textilebridge") && <span className="text-2xl">🧵</span>}
+                                  {child.href.includes("biotsense") && <Cpu size={28} strokeWidth={1.5} />}
+                                  {child.href.includes("turfbridge") && <span className="text-2xl">🏏</span>}
+                                  {child.href.includes("cafebridge") && <span className="text-2xl">☕</span>}
+                                  {child.href.includes("underground-rover") && <span className="text-2xl">🤖</span>}
                                 </div>
                                 <div className={`flex h-8 w-8 items-center justify-center rounded-lg border opacity-40 transition-all group-hover/card:opacity-100 border-current ${s.text}`}>
                                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover/card:-rotate-45">
@@ -247,7 +259,12 @@ export function Header() {
                               {child.href.includes("saas") && <Cpu size={18} strokeWidth={2} />}
                               {child.href.includes("iot") && <Globe size={18} strokeWidth={2} />}
                               {child.href.includes("mobile") && <Smartphone size={18} strokeWidth={2} />}
-                              {child.href.includes("Web") && <Brain size={18} strokeWidth={2} />}
+                              {child.href.includes("web") && <Brain size={18} strokeWidth={2} />}
+                              {child.href.includes("textilebridge") && <span className="text-lg">🧵</span>}
+                              {child.href.includes("biotsense") && <Cpu size={18} strokeWidth={2} />}
+                              {child.href.includes("turfbridge") && <span className="text-lg">🏏</span>}
+                              {child.href.includes("cafebridge") && <span className="text-lg">☕</span>}
+                              {child.href.includes("underground-rover") && <span className="text-lg">🤖</span>}
                             </span>
                             {child.label}
                           </Link>

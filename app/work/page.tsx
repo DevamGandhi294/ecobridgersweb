@@ -248,6 +248,17 @@ function ProductsSection() {
 
 // ─── Product detail card ──────────────────────────────────────────────────────
 function ProductDetailCard({ product }: { product: typeof ownProducts[0] }) {
+    // Map product titles to their dedicated page paths
+    const productPagePaths: Record<string, string> = {
+        "TextileBridge": "/work/textilebridge",
+        "BIoTSense": "/work/biotsense",
+        "TurfBridge": "/work/turfbridge",
+        "CafeBridge": "/work/cafebridge",
+        "Underground Rover": "/work/underground-rover",
+    };
+
+    const hasDedicatedPage = productPagePaths[product.title];
+
     return (
         <div className="rounded-2xl border border-white/10 bg-[#080c18] overflow-hidden flex flex-col">
             {/* Hero — large icon on gradient bg, matches FolderCard aesthetic */}
@@ -297,18 +308,31 @@ function ProductDetailCard({ product }: { product: typeof ownProducts[0] }) {
                     </div>
 
                     <div className="flex gap-3 flex-shrink-0">
+                        {hasDedicatedPage && (
+                            <Link href={hasDedicatedPage}
+                                className="flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-600 to-cyan-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg hover:shadow-emerald-500/30 transition-all">
+                                View Full Page
+                                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </Link>
+                        )}
                         {product.priceType !== "rd" ? (
                             <>
+                                {!hasDedicatedPage && (
+                                    <Link href="/contact"
+                                        className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:border-emerald-500/40 hover:bg-emerald-500/10">
+                                        Enquire
+                                    </Link>
+                                )}
                                 <Link href="/contact"
-                                    className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:border-emerald-500/40 hover:bg-emerald-500/10">
-                                    Enquire
-                                </Link>
-                                <Link href="/contact"
-                                    className="flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-600 to-cyan-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg hover:shadow-emerald-500/30 transition-all">
-                                    Get Started
-                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                    </svg>
+                                    className={`flex items-center gap-2 rounded-full ${hasDedicatedPage ? "border border-white/15 bg-white/5" : "bg-gradient-to-r from-emerald-600 to-cyan-600"} px-5 py-2.5 text-sm font-bold text-white shadow-lg hover:shadow-emerald-500/30 transition-all ${hasDedicatedPage ? "hover:border-emerald-500/40 hover:bg-emerald-500/10" : ""}`}>
+                                    {hasDedicatedPage ? "Enquire" : "Get Started"}
+                                    {!hasDedicatedPage && (
+                                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        </svg>
+                                    )}
                                 </Link>
                             </>
                         ) : (

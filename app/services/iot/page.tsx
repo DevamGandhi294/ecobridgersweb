@@ -11,33 +11,32 @@ const ACCENT_GRAD = "from-emerald-500 to-teal-500";
 const GRID_COLOR  = "rgba(52,211,153,0.7)";
 
 const offerings = [
-  { icon:"🌡️", title:"Sensor Integration",      desc:"temperature, vibration, energy, humidity, motion — wired or wireless, any protocol. if it measures something, we can read it." },
-  { icon:"🖥️", title:"Microcontroller Systems",  desc:"ESP32, ESP8266, Arduino, Raspberry Pi — firmware that handles OTA updates, low-power modes, and doesn't crash at 2am." },
-  { icon:"📡", title:"Wireless Communication",   desc:"Wi-Fi, GSM/4G, LoRa, MQTT, BLE — right protocol for your range, power budget, and bandwidth. not just whatever's default." },
-  { icon:"⚡", title:"Real-Time Monitoring",     desc:"live data acquisition, configurable alerts, automated control loops. your system reacts before you even notice something changed." },
-  { icon:"🧩", title:"Edge Processing",          desc:"local decision-making at device level — cuts latency, saves bandwidth, keeps running even when cloud goes dark." },
-  { icon:"☁️", title:"Cloud Connectivity",       desc:"encrypted pipelines from device to dashboard with retry logic and buffering. data arrives. always." },
+  { icon:"💾", title:"Embedded Firmware", desc:"C and C++ firmware for ESP32, STM32 and Arduino-class microcontrollers. Written for real-world conditions — dust, vibration, temperature extremes and unreliable connectivity. Stable, low-power and deployable in production." },
+  { icon:"🔌", title:"Sensor & Hardware Integration", desc:"Temperature, vibration, pressure, flow, power draw, motion — we integrate the sensors your operation needs and connect them reliably to your network using the right protocol for your environment." },
+  { icon:"☁️", title:"Cloud Connectivity", desc:"Device data connected via MQTT, WiFi, BLE and REST APIs. Real-time ingestion, cloud storage and querying — your data is always accessible from any browser or mobile device." },
+  { icon:"🔔", title:"Real-Time Alerts", desc:"Instant WhatsApp or app notifications when a machine shows signs of failure. Alerts that fire when they should — before the breakdown happens, not after it costs you." },
+  { icon:"📊", title:"IoT Dashboard", desc:"Live monitoring interfaces built with React and Next.js. Device status, sensor charts, alert history and machine logs — clean, fast and accessible from any browser or device." },
+  { icon:"🧠", title:"Edge Logic", desc:"Decisions made locally on the device when connectivity drops. Your system keeps running even when the internet does not. Data syncs automatically when the connection returns." },
 ];
 
 const useCases = [
-  { icon:"📊", label:"Smart Monitoring Systems", desc: "Live dashboards providing real-time oversight of key operational metrics and alerts." },
-  { icon:"⚙️", label:"Automation & Control", desc: "Self-regulating hardware that automatically triggers mechanical and logical actions." },
-  { icon:"🏭", label:"Industrial Equipment Monitoring", desc: "Predictive maintenance tracking to eliminate costly machine downtimes and faults." },
-  { icon:"🌿", label:"Environmental Monitoring", desc: "Precision sensor arrays tracking ambient temperatures, air quality maps, and humidity." },
-  { icon:"🏗️", label:"Infrastructure Sensing", desc: "Embeddable robust trackers monitoring physical stress and structural health logs." },
-  { icon:"🔬", label:"Research & Prototypes", desc: "Custom bespoke hardware iterations designed explicitly for rapid field validation." },
+  { icon:"🏭", label:"Predictive Machine Maintenance", desc: "Monitor any industrial machine, detect anomalies early and prevent unplanned downtime before it costs your factory lakhs. BIoTSense — under ₹2,500 to install, under ₹300/device/month." },
+  { icon:"🌡️", label:"Industrial Environment Monitoring", desc: "Temperature, humidity, air quality and other environmental parameters monitored in real time across your facility — with alerts when values go outside acceptable ranges." },
+  { icon:"📍", label:"Asset & Inventory Tracking", desc: "Track physical assets, vehicles or inventory using IoT sensors — know where everything is at all times without manual checks or registers." },
+  { icon:"⚙️", label:"Smart Automation", desc: "Automate physical processes — irrigation, access control, HVAC, lighting — based on sensor data and conditions you define. Reduce manual intervention in routine operations." },
+  { icon:"📱", label:"Connected Hardware Products", desc: "Building a product that connects to the internet? We handle firmware, cloud backend and mobile app — the complete stack from sensor to screen." },
 ];
 
 const process = [
-  { step:"01", title:"Requirement Gathering", desc:"understand the environment, sensors, data goals, and power constraints — before touching hardware." },
-  { step:"02", title:"System Architecture",   desc:"design the full hardware-to-cloud stack and communication protocol. no surprises later." },
-  { step:"03", title:"Hardware Prototyping",  desc:"build and test with real sensor data and real edge cases — not just happy-path lab conditions." },
-  { step:"04", title:"Firmware Development",  desc:"reliable embedded code with error handling, watchdog timers, and OTA update support baked in." },
-  { step:"05", title:"Cloud Integration",     desc:"connect device data to your dashboard, API, or storage. secure, tested, monitored." },
-  { step:"06", title:"Deployment & Handover", desc:"on-site deployment, full documentation, team training, live monitoring. you're not left figuring it out alone." },
+  { step:"01", title:"Requirements & Hardware Selection", desc:"We define your sensing needs and select the right hardware platform for your environment." },
+  { step:"02", title:"Firmware Development", desc:"Embedded C/C++ firmware written, tested and optimised for your specific microcontroller and deployment conditions." },
+  { step:"03", title:"Connectivity & Cloud Setup", desc:"MQTT broker, cloud backend and data pipeline configured for reliable real-time data flow." },
+  { step:"04", title:"Dashboard & App Development", desc:"Monitoring interface and mobile app built and connected to your live data stream." },
+  { step:"05", title:"On-Site Installation & Testing", desc:"Hardware installed and tested in your actual environment — not just a controlled lab." },
+  { step:"06", title:"Monitoring & Support", desc:"Ongoing system monitoring, firmware updates and full technical support after deployment." },
 ];
 
-const techStack = ["ESP32","ESP8266","Arduino","Raspberry Pi","MQTT","LoRa","Firebase","Node.js","Python","C/C++","FreeRTOS","WebSockets"];
+const techStack = ["ESP32", "STM32", "Arduino", "Raspberry Pi", "C / C++", "MQTT", "Node.js", "PostgreSQL", "MongoDB", "React", "Next.js", "Flutter", "BLE", "WiFi", "LoRa", "REST APIs"];
 
 const platformBenefits = useCases.map((u) => ({ title: u.label, desc: u.desc }));
 
@@ -142,12 +141,12 @@ export default function IoTServicePage() {
         badgeColor="emerald"
         icon="🔌"
         gridColor={GRID_COLOR}
-        pretitle1="Hardware that survives"
-        title1={<>Connect your<br/> machines.</>}
-        subtitle1="we build connected hardware for where things actually get rough — dust, vibration, -40°C to +80°C, internet that ghosts for hours."
-        pretitle2="Edge intelligence"
-        title2={<>Before they <br/> cost you.</>}
-        subtitle2="from a single sensor node to full industrial automation with offline capabilities, we build it to last."
+        pretitle1="IoT & Embedded"
+        title1={<>Systems</>}
+        subtitle1="Sensors, firmware, cloud connectivity and the dashboard your team uses to monitor everything — built by one team, end to end."
+        pretitle2="Connect your machines."
+        title2={<>Before they cost you.</>}
+        subtitle2="Real-time monitoring, predictive alerts and live dashboards for factories and industrial operations across Gujarat and India."
       />
 
       <div className="mx-auto w-full max-w-screen-xl space-y-24 px-4 pb-24 sm:px-6 lg:px-10 xl:px-16">

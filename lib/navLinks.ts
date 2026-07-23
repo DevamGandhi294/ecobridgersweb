@@ -10,7 +10,17 @@ export const navLinks = [
       { href: "/services/web",  label: "Web & Cloud Platforms",   icon: "🌐" },
     ],
   },
-  { href: "/work", label: "Work"  },
+  {
+    href: "/work",
+    label: "Products",
+    children: [
+      { href: "/work/textilebridge", label: "TextileBridge", icon: "🧵" },
+      { href: "/work/biotsense", label: "BIoTSense", icon: "⚙️" },
+      { href: "/work/turfbridge", label: "TurfBridge", icon: "🏏" },
+      { href: "/work/cafebridge", label: "CafeBridge", icon: "☕" },
+      { href: "/work/underground-rover", label: "Underground Rover", icon: "🤖" },
+    ],
+  },
   { href: "/about",   label: "About"    },
   { href: "/contact", label: "Contact"  },
 ] as const;

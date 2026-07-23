@@ -1,10 +1,10 @@
 "use client";
 
 const achievements = [
-    "Completed 5+ combined team projects",
-    "Delivered multiple solo and featured projects",
-    "Worked on real-world monitoring, automation, and software systems",
-    "Participated in hackathons, research, and innovation programs",
+    "5+ combined team projects completed",
+    "Multiple solo and featured projects delivered",
+    "Real-world monitoring, automation and software systems built and deployed",
+    "Hackathons, research programs and government-recognised R&D (Underground Rover — defence robotics, government granted)",
 ] as const;
 
 const config = [
@@ -68,7 +68,7 @@ const config = [
 
 export function ExperienceSection() {
     return (
-        <section className="space-y-6">
+        <section className="space-y-8">
             <div>
                 <div className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400">
                     Our Experience
@@ -76,7 +76,7 @@ export function ExperienceSection() {
                 <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
                     Learning by Building
                 </h2>
-                <p className="mt-2 text-zinc-400">Over the past year, our team has:</p>
+                <p className="mt-2 text-zinc-400">We are a team of engineers and builders who came together because we saw the same gap — between the technology that exists and the businesses across India that need it but cannot access it.</p>
             </div>
 
             <div className="space-y-3">
@@ -159,6 +159,12 @@ export function ExperienceSection() {
                         </div>
                     );
                 })}
+            </div>
+
+            <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6 text-center">
+                <p className="text-sm leading-relaxed text-zinc-300">
+                    Our products — TextileBridge, BIoTSense, TurfBridge and CafeBridge — are not side projects. They are production-ready SaaS tools and IoT systems built from real market research, tested against real businesses and priced for the Indian SME market.
+                </p>
             </div>
         </section>
     );

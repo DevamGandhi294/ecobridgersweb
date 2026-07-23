@@ -125,7 +125,7 @@ export function ScrollToggleHero({
 
   return (
     <div className="w-full relative">
-      <section ref={containerRef} className="relative flex min-h-screen w-full items-start md:items-center justify-center overflow-hidden border-b border-white/10 pt-24 md:pt-20" style={{ background:"#050709" }}>
+      <section ref={containerRef} className="relative flex min-h-screen w-full items-start md:items-center justify-center overflow-hidden border-b border-white/10 pt-2 md:pt-2" style={{ background:"#050709" }}>
       {/* Background from ServiceHero */}
       <div style={{ position:"absolute",inset:0,zIndex:0 }}>
         <div style={{
@@ -145,7 +145,7 @@ export function ScrollToggleHero({
         backgroundSize:"68px 68px"
       }} />
       <div className="hero-scan-line" style={{ "--scan-color": gridColor } as React.CSSProperties} />
-      <ParallaxOrbs color1={`${accentColor}28`} color2={`${accentColor}18`} color3={`${accentColor}10`} />
+      <ParallaxOrbs color1={`${accentColor}20`} color2={`${accentColor}18`} color3={`${accentColor}10`} />
 
       <div className="relative z-10 mx-auto w-full max-w-screen-xl px-4 sm:px-6 lg:px-10 xl:px-16" style={{ height: "100%" }}>
         {/* DESKTOP LAYOUT */}
