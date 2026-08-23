@@ -317,33 +317,10 @@ function ProductDetailCard({ product }: { product: typeof ownProducts[0] }) {
                                 </svg>
                             </Link>
                         )}
-                        {product.priceType !== "rd" ? (
-                            <>
-                                {!hasDedicatedPage && (
-                                    <Link href="/contact"
-                                        className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:border-emerald-500/40 hover:bg-emerald-500/10">
-                                        Enquire
-                                    </Link>
-                                )}
-                                <Link href="/contact"
-                                    className={`flex items-center gap-2 rounded-full ${hasDedicatedPage ? "border border-white/15 bg-white/5" : "bg-gradient-to-r from-emerald-600 to-cyan-600"} px-5 py-2.5 text-sm font-bold text-white shadow-lg hover:shadow-emerald-500/30 transition-all ${hasDedicatedPage ? "hover:border-emerald-500/40 hover:bg-emerald-500/10" : ""}`}>
-                                    {hasDedicatedPage ? "Enquire" : "Get Started"}
-                                    {!hasDedicatedPage && (
-                                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                        </svg>
-                                    )}
-                                </Link>
-                            </>
-                        ) : (
-                            <Link href="/contact"
-                                className="flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-600 to-cyan-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg hover:shadow-emerald-500/30 transition-all">
-                                Enquire / Collaborate
-                                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </Link>
-                        )}
+                        <Link href="/contact"
+                            className={`flex items-center gap-2 rounded-full ${hasDedicatedPage ? "border border-white/15 bg-white/5" : "bg-gradient-to-r from-emerald-600 to-cyan-600"} px-5 py-2.5 text-sm font-bold text-white shadow-lg hover:shadow-emerald-500/30 transition-all ${hasDedicatedPage ? "hover:border-emerald-500/40 hover:bg-emerald-500/10" : ""}`}>
+                            {hasDedicatedPage ? "Enquire" : "Get Started"}
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import TextPressure from '@/components/TextPressure';
 import { Header } from "@/components/Header";
 import { navLinks } from "@/lib/navLinks";
 import { CustomCursor } from "@/components/CustomCursor";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 export const metadata: Metadata = {
   alternates: {
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL('https://www.ecobridgers.com'),
   title: {
-    default: 'EcoBridgers | IoT & Embedded Systems Development, Surat',
+    default: 'EcoBridgers | Saas & IoT - Embedded Systems Development, Surat',
     template: '%s | EcoBridgers',
   },
   description: 'EcoBridgers builds IoT systems, web platforms, and mobile apps for startups, factories, and research labs. Based in Surat, India.',
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: 'https://www.ecobridgers.com',
     siteName: 'EcoBridgers',
-    title: 'EcoBridgers | IoT & Embedded Systems Development',
+    title: 'EcoBridgers | Saas & IoT - EmbeddedSystems Development',
     description: 'End-to-end IoT, cloud, and mobile development. Sensor to dashboard.',
     images: [
       {
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'EcoBridgers | IoT & Embedded Systems Development',
+    title: 'EcoBridgers | Saas & IoT - Embedded Systems Development',
     description: 'End-to-end IoT, cloud, and mobile development.',
     images: ['/og-image.jpg'],
   },
@@ -53,6 +54,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased bg-zinc-950 text-zinc-50 overflow-x-hidden">
         <CustomCursor />
+        <ScrollToTop />
 
         <div className="min-h-screen overflow-x-hidden">
           <Header />

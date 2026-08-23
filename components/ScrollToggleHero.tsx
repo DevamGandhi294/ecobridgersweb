@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 interface ScrollToggleHeroProps {
   accentGradient: string;
   accentColor: string;
-  badge: string;
+  badge?: string;
   badgeColor?: "emerald" | "cyan" | "violet" | "pink" | "amber" | "teal" | "blue" | "rose";
   icon: string;
   gridColor: string;
@@ -200,9 +200,11 @@ export function ScrollToggleHero({
 
           {/* Text Content (Right Side) */}
           <div className="md:col-span-8 lg:col-span-7 flex flex-col justify-center w-full min-h-[300px]">
-            <div className="mb-4">
-               <SectionBadge color={badgeColor}>{badge}</SectionBadge>
-            </div>
+            {badge && badge !== "Null" && (
+              <div className="mb-4">
+                 <SectionBadge color={badgeColor}>{badge}</SectionBadge>
+              </div>
+            )}
 
             <div className="relative h-[255px] w-full overflow-hidden" style={{ maskImage: "linear-gradient(to bottom, black 84%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, black 84%, transparent 100%)" }}>
               <div ref={textTrackRef} className="w-full absolute inset-0 flex flex-col">
@@ -255,9 +257,11 @@ export function ScrollToggleHero({
         {/* MOBILE LAYOUT (Stack: Text 1 -> Pill -> Text 2) */}
         <div ref={mobileContainerRef} className="hero-mobile-only items-center justify-center w-full py-12">
           
-          <div className="mb-8">
-            <SectionBadge color={badgeColor}>{badge}</SectionBadge>
-          </div>
+          {badge && badge !== "Null" && (
+            <div className="mb-8">
+              <SectionBadge color={badgeColor}>{badge}</SectionBadge>
+            </div>
+          )}
 
           {/* State 1 */}
           <div className="text-center flex flex-col items-center space-y-4 mb-20 px-4">
