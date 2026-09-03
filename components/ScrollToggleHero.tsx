@@ -230,9 +230,9 @@ export function ScrollToggleHero({
                   <p className="text-sm md:text-lg font-medium mb-3" style={{ fontFamily: "var(--font-display)", color: accentColor }}>
                     {pretitle2}
                   </p>
-                  <h1 className="font-medium leading-[1.05] tracking-tight text-white mb-6" style={{ fontSize: "clamp(2.5rem,5vw,5rem)", fontFamily: "var(--font-display)" }}>
+                  <h2 className="font-medium leading-[1.05] tracking-tight text-white mb-6" style={{ fontSize: "clamp(2.5rem,5vw,5rem)", fontFamily: "var(--font-display)" }}>
                     {title2}
-                  </h1>
+                  </h2>
                   <p className="text-base text-zinc-300 sm:text-lg max-w-xl" style={{ fontFamily: "var(--font-body)" }}>
                     {subtitle2}
                   </p>
@@ -330,9 +330,9 @@ export function ScrollToggleHero({
             <p className="text-sm font-medium" style={{ fontFamily: "var(--font-display)", color: accentColor }}>
               {pretitle2}
             </p>
-            <h1 className="font-medium leading-[1.05] tracking-tight text-white" style={{ fontSize: "2.8rem", fontFamily: "var(--font-display)" }}>
+            <h2 className="font-medium leading-[1.05] tracking-tight text-white" style={{ fontSize: "2.8rem", fontFamily: "var(--font-display)" }}>
               {title2}
-            </h1>
+            </h2>
             <p className="text-base text-zinc-300 max-w-sm" style={{ fontFamily: "var(--font-body)" }}>
               {subtitle2}
             </p>

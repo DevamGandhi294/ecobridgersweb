@@ -7,7 +7,7 @@ import { ValuesDiagram } from "./ValuesDiagram";
 
 export const metadata: Metadata = {
     alternates: {
-        canonical: 'https://www.ecobridgers.com/about',
+        canonical: 'https://ecobridgers.com/about',
     },
     title: 'About EcoBridgers — IoT & Software Agency in Surat, Gujarat',
     description: 'Meet the EcoBridgers team — a group of engineers and designers from Surat building IoT systems, mobile apps and software for startups and businesses across India.',

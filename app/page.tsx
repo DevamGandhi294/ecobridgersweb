@@ -3,7 +3,7 @@ import HomePageClient from './HomePageClient'
 
 export const metadata: Metadata = {
   alternates: {
-    canonical: 'https://www.ecobridgers.com',
+    canonical: 'https://ecobridgers.com',
   },
   title: 'EcoBridgers | SaaS & IoT Solutions for Indian SMEs | Surat, India',
   description: 'EcoBridgers builds practical SaaS products and IoT systems for small and mid-size businesses in Surat, Gujarat and across India. Affordable, industry-specific, market-ready.',
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'EcoBridgers | SaaS, IoT & Embedded Systems Development',
     description: 'End-to-end SaaS, IoT, and embedded systems development. From sensor to dashboard.',
-    url: 'https://www.ecobridgers.com',
+    url: 'https://ecobridgers.com',
     siteName: 'EcoBridgers',
     locale: 'en_US',
     type: 'website',
@@ -57,8 +57,8 @@ const structuredData = {
   '@type': 'Organization',
   name: 'EcoBridgers',
   description: 'End-to-end IoT, embedded systems, cloud and mobile development company based in Surat, India.',
-  url: 'https://www.ecobridgers.com',
-  logo: 'https://www.ecobridgers.com/logo.png',
+  url: 'https://ecobridgers.com',
+  logo: 'https://ecobridgers.com/logo.png',
   contactPoint: {
     '@type': 'ContactPoint',
     telephone: '+91 7862949437',

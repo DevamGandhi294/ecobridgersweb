@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
         destination: 'https://ecobridgers.com/:path*',
         permanent: true,
       },
+      {
+        // /services/mobile duplicated /services/app and had no internal links — merge into it
+        source: '/services/mobile',
+        destination: '/services/app',
+        permanent: true,
+      },
     ]
   },
 }

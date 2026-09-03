@@ -10,9 +10,9 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 
 export const metadata: Metadata = {
   alternates: {
-    canonical: 'https://www.ecobridgers.com',
+    canonical: 'https://ecobridgers.com',
   },
-  metadataBase: new URL('https://www.ecobridgers.com'),
+  metadataBase: new URL('https://ecobridgers.com'),
   title: {
     default: 'EcoBridgers | Saas & IoT - Embedded Systems Development, Surat',
     template: '%s | EcoBridgers',
@@ -26,15 +26,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://www.ecobridgers.com',
+    url: 'https://ecobridgers.com',
     siteName: 'EcoBridgers',
     title: 'EcoBridgers | Saas & IoT - EmbeddedSystems Development',
     description: 'End-to-end IoT, cloud, and mobile development. Sensor to dashboard.',
     images: [
       {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
+        url: '/logo.png',
+        width: 749,
+        height: 749,
         alt: 'EcoBridgers — IoT and software development team',
       },
     ],
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'EcoBridgers | Saas & IoT - Embedded Systems Development',
     description: 'End-to-end IoT, cloud, and mobile development.',
-    images: ['/og-image.jpg'],
+    images: ['/logo.png'],
   },
 };
 
