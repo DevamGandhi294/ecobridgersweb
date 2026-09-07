@@ -13,6 +13,18 @@ import { aiProjects } from "./work-data/ai-projects";
 // ─── Own Products ─────────────────────────────────────────────────────────────
 const ownProducts = [
     {
+        title: "Playco",
+        category: "Mobile Game · Social",
+        tagline: "Social party games & multiplayer deduction games (Imposter)",
+        price: "Free to Play / Pass & Play",
+        priceType: "freemium",
+        icon: "🎮",
+        image: null,
+        description:
+            "A social party gaming platform for 3–10 players featuring 'Imposter' — a secret identity deduction game of bluffing, hidden roles (Crew, Clone, Faker), and group deception. Play offline on one shared device or online across devices.",
+        features: ["Pass & Play (Offline zero internet)", "Online Room Code multiplayer", "3 Secret Roles (Crew, Clone, Faker)", "Category word engine & custom voting"],
+    },
+    {
         title: "TextileBridge",
         category: "SaaS · Textile",
         tagline: "Production & inventory management for textile units",
@@ -258,6 +270,7 @@ function ProductsSection() {
 function ProductDetailCard({ product }: { product: typeof ownProducts[0] }) {
     // Map product titles to their dedicated page paths
     const productPagePaths: Record<string, string> = {
+        "Playco": "/work/playco",
         "TextileBridge": "/work/textilebridge",
         "BIoTSense": "/work/biotsense",
         "TurfBridge": "/work/turfbridge",

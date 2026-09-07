@@ -14,6 +14,7 @@ export const navLinks = [
     href: "/work",
     label: "Products",
     children: [
+      { href: "/work/playco", label: "Playco (Imposter)", icon: "🎮" },
       { href: "/work/textilebridge", label: "TextileBridge", icon: "🧵" },
       { href: "/work/biotsense", label: "BIoTSense", icon: "⚙️" },
       { href: "/work/turfbridge", label: "TurfBridge", icon: "🏏" },

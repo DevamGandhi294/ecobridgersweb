@@ -135,6 +135,7 @@ export function Header() {
                             if (href.includes("iot")) return { bg: "bg-[#22d3ee]", text: "text-[#083344]", desc: "Dashboards & scalable SaaS" };
                             if (href.includes("app")) return { bg: "bg-[#6c78fb]", text: "text-white", desc: "Native & cross-platform apps" };
                             if (href.includes("web")) return { bg: "bg-[#ff6fb5]", text: "text-[#2e091b]", desc: "Web development & AI/ML" };
+                            if (href.includes("playco")) return { bg: "bg-[#a855f7]", text: "text-white", desc: "Social party & deduction game" };
                             if (href.includes("textilebridge")) return { bg: "bg-[#34d399]", text: "text-[#0d1f10]", desc: "Textile manufacturing management" };
                             if (href.includes("biotsense")) return { bg: "bg-[#22d3ee]", text: "text-[#083344]", desc: "Machine health & IoT monitoring" };
                             if (href.includes("turfbridge")) return { bg: "bg-[#a78bfa]", text: "text-white", desc: "Sports venue booking & management" };
@@ -160,6 +161,7 @@ export function Header() {
                                   {child.href.includes("iot") && <Cpu size={28} strokeWidth={1.5} />}
                                   {child.href.includes("app") && <Smartphone size={28} strokeWidth={1.5} />}
                                   {child.href.includes("web") && <Brain size={28} strokeWidth={1.5} />}
+                                  {child.href.includes("playco") && <span className="text-2xl">🎮</span>}
                                   {child.href.includes("textilebridge") && <span className="text-2xl">🧵</span>}
                                   {child.href.includes("biotsense") && <Cpu size={28} strokeWidth={1.5} />}
                                   {child.href.includes("turfbridge") && <span className="text-2xl">🏏</span>}
@@ -260,6 +262,7 @@ export function Header() {
                               {child.href.includes("iot") && <Globe size={18} strokeWidth={2} />}
                               {child.href.includes("mobile") && <Smartphone size={18} strokeWidth={2} />}
                               {child.href.includes("web") && <Brain size={18} strokeWidth={2} />}
+                              {child.href.includes("playco") && <span className="text-lg">🎮</span>}
                               {child.href.includes("textilebridge") && <span className="text-lg">🧵</span>}
                               {child.href.includes("biotsense") && <Cpu size={18} strokeWidth={2} />}
                               {child.href.includes("turfbridge") && <span className="text-lg">🏏</span>}
