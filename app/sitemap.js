@@ -46,6 +46,12 @@ export default function sitemap() {
       priority: 0.9,
     },
     {
+      url: 'https://ecobridgers.com/work/playco',
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
       url: 'https://ecobridgers.com/work/textilebridge',
       lastModified: now,
       changeFrequency: 'monthly',

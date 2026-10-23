@@ -18,6 +18,23 @@ export const metadata: Metadata = {
     template: '%s | EcoBridgers',
   },
   description: 'EcoBridgers builds IoT systems, web platforms, and mobile apps for startups, factories, and research labs. Based in Surat, India.',
+  applicationName: 'EcoBridgers',
+  authors: [{ name: 'EcoBridgers', url: 'https://ecobridgers.com' }],
+  creator: 'EcoBridgers',
+  publisher: 'EcoBridgers',
+  category: 'technology',
+  formatDetection: { telephone: false, email: false, address: false },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",
@@ -51,7 +68,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body className="antialiased bg-zinc-950 text-zinc-50 overflow-x-hidden">
         <CustomCursor />
         <ScrollToTop />

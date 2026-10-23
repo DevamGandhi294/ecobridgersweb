@@ -1,0 +1,23 @@
+# EcoBridgers
+
+> EcoBridgers is a SaaS, IoT and embedded systems development company based in Surat, Gujarat, India. We build SaaS products, IoT hardware and firmware, web platforms and mobile apps for SMEs, factories and research labs.
+
+Contact: ecobridgers.tech@gmail.com · +91 78629 49437 · Mon–Sat, 10am–7pm IST
+
+## Services
+- [SaaS Product Development](https://ecobridgers.com/services/saas): multi-tenant SaaS products for Indian SMEs
+- [IoT & Embedded Systems](https://ecobridgers.com/services/iot): ESP32/STM32 firmware, sensors, MQTT, real-time dashboards
+- [Mobile App Development](https://ecobridgers.com/services/app): Android and iOS apps
+- [Web & Cloud Platforms](https://ecobridgers.com/services/web): Next.js, React, Node.js, AWS, Supabase
+
+## Products
+- [Playco](https://ecobridgers.com/work/playco): free social party game app (Imposter hidden-role word game, 3–10 players, offline Pass & Play or online rooms). Download on Google Play: https://play.google.com/store/apps/details?id=com.ecobridgers.playco
+- [TextileBridge](https://ecobridgers.com/work/textilebridge): textile manufacturing and yarn inventory management
+- [CafeBridge](https://ecobridgers.com/work/cafebridge): cafe POS and WhatsApp order billing
+- [TurfBridge](https://ecobridgers.com/work/turfbridge): sports turf and box cricket booking
+- [BIoTSense](https://ecobridgers.com/work/biotsense): industrial machine vibration and temperature telemetry
+- [Underground Rover](https://ecobridgers.com/work/underground-rover): R&D rover for hazardous tunnel surveillance
+
+## Company
+- [About](https://ecobridgers.com/about)
+- [Contact](https://ecobridgers.com/contact)

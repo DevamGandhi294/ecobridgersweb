@@ -8,6 +8,30 @@ import {
   CreationProcessTimeline,
 } from "@/components/ServicePageShell";
 import { ScrollToggleHero } from "@/components/ScrollToggleHero";
+import { PLAY_STORE_URL, playcoFaqs } from "./playco-data";
+
+function PlayStoreButton() {
+  return (
+    <a
+      href={PLAY_STORE_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Download Playco on the Google Play Store"
+      className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-black px-6 py-3 text-left text-white shadow-lg transition-all hover:border-purple-400/60 hover:scale-[1.02] active:scale-[0.98]"
+    >
+      <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+        <path d="M3.6 1.8c-.3.3-.5.8-.5 1.4v17.6c0 .6.2 1.1.5 1.4l.1.1 9.9-9.9v-.2L3.7 1.7l-.1.1z" />
+        <path d="M16.9 15.7l-3.3-3.3v-.2l3.3-3.3.1.1 3.9 2.2c1.1.6 1.1 1.7 0 2.3l-3.9 2.2h-.1z" />
+        <path d="M17 15.6l-3.4-3.4-10 10c.4.4 1 .4 1.7.1L17 15.6" />
+        <path d="M17 8.8L5.3 2.1c-.7-.4-1.3-.3-1.7.1l10 10L17 8.8z" />
+      </svg>
+      <span className="leading-tight">
+        <span className="block text-[10px] uppercase tracking-wider text-zinc-300">Get it on</span>
+        <span className="block text-base font-bold">Google Play</span>
+      </span>
+    </a>
+  );
+}
 
 const ACCENT = "#a855f7";
 const ACCENT_GRAD = "from-purple-500 via-pink-500 to-amber-500";
@@ -174,6 +198,10 @@ export default function PlaycoClient() {
             Most players get a secret word — but one gets a different word, and one gets NO word at all!
             Give subtle clues, catch discrepancies, and vote out the Faker.
           </p>
+
+          <div className="flex justify-center">
+            <PlayStoreButton />
+          </div>
 
           <div className="grid gap-4 sm:grid-cols-3 pt-4">
             <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6 text-left hover:border-purple-500/30 transition-all">
@@ -390,24 +418,7 @@ export default function PlaycoClient() {
           </div>
 
           <div className="space-y-3">
-            {[
-              {
-                q: "Is Playco free to play?",
-                a: "Yes! Pass & Play (Offline mode) is 100% free for everyone. Online Mode allows one host to start rooms for friends.",
-              },
-              {
-                q: "How many players are required?",
-                a: "Playco Imposter supports 3 to 10 players in a single game room or shared device.",
-              },
-              {
-                q: "Do I need internet for Pass & Play?",
-                a: "No! Pass & Play works entirely offline on 1 single phone passed around the table.",
-              },
-              {
-                q: "What platforms is Playco available on?",
-                a: "Playco is available as a cross-platform Mobile App (Android & iOS) and Web App.",
-              },
-            ].map((faq, i) => (
+            {playcoFaqs.map((faq, i) => (
               <div
                 key={faq.q}
                 className="rounded-2xl border border-white/10 bg-zinc-900/60 overflow-hidden"
@@ -445,7 +456,8 @@ export default function PlaycoClient() {
                 Download Playco or get in touch for custom branded event editions and corporate party builds.
               </p>
 
-              <div className="flex flex-wrap gap-4 justify-center pt-2">
+              <div className="flex flex-wrap items-center gap-4 justify-center pt-2">
+                <PlayStoreButton />
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-500 to-amber-500 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-purple-500/25 transition-all hover:shadow-xl hover:shadow-purple-500/40 hover:scale-[1.02] active:scale-[0.98]"

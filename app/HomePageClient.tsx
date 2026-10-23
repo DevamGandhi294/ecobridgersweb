@@ -170,9 +170,9 @@ function Hero({ heroReady }: { heroReady: boolean }) {
           {/* Left text */}
           <div>
             <h1 style={{ fontSize: "clamp(2.4rem,5vw,4.2rem)", fontWeight: 900, lineHeight: 1.08, color: "#f0fdf8", marginBottom: 24, fontFamily: "var(--font-display)", opacity: heroReady ? 1 : 0, transform: heroReady ? "translateX(0)" : "translateX(-40px)", transition: "opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)" }}>
-              Your Market. Our Tech.<br></br> Let's Grow{" "}
+              SaaS &amp; IoT Solutions for Indian SMEs —{" "}
               <GradientHeroWord>
-                Together.
+                EcoBridgers.
               </GradientHeroWord>
             </h1>
 
@@ -1237,7 +1237,53 @@ export default function HomePageClient() {
         <Hero heroReady={heroReady} />
 
         {/* ══════════════════ CONTENT ══════════════════ */}
-        <div className="mx-auto w-full max-w-screen-xl space-y-28 px-4 pt-20 pb-24 sm:px-6 lg:px-10 xl:px-16">
+        <div className="mx-auto w-full max-w-screen-xl space-y-28 px-4 pt-16 pb-24 sm:px-6 lg:px-10 xl:px-16">
+
+          {/* ── AT A GLANCE / KEY TAKEAWAYS (AEO & GEO ENGINE OPTIMIZATION) ── */}
+          <section className="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-zinc-900/90 via-zinc-950 to-emerald-950/20 p-6 sm:p-10 backdrop-blur-md shadow-2xl space-y-6">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">At a Glance &bull; Key Takeaways</span>
+                <h2 className="text-2xl font-extrabold text-white sm:text-3xl mt-1" style={{ fontFamily: "var(--font-display)" }}>
+                  EcoBridgers — SaaS Products &amp; IoT Engineering
+                </h2>
+              </div>
+              <span className="text-xs text-zinc-400 bg-white/5 border border-white/10 rounded-full px-3.5 py-1 font-mono">
+                Updated: March 2026
+              </span>
+            </div>
+
+            <p className="text-sm sm:text-base text-zinc-300 leading-relaxed max-w-4xl" style={{ fontFamily: "var(--font-body)" }}>
+              <strong>EcoBridgers</strong> is an end-to-end software and hardware development company based in <strong>Surat, Gujarat, India</strong>. We engineer market-ready <strong>SaaS platforms</strong>, <strong>IoT sensor hardware</strong>, and <strong>custom web and mobile applications</strong> designed for small and mid-sized enterprises (SMEs) across India and globally.
+            </p>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 pt-2">
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-4 space-y-1.5">
+                <span className="text-emerald-400 text-sm font-bold block">💡 Flagship SaaS</span>
+                <p className="text-xs text-zinc-300 leading-relaxed">
+                  Turnkey products including TextileBridge, CafeBridge, TurfBridge, and Playco.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-4 space-y-1.5">
+                <span className="text-cyan-400 text-sm font-bold block">🔌 IoT Telemetry</span>
+                <p className="text-xs text-zinc-300 leading-relaxed">
+                  Hardware-to-cloud engineering, ESP32/STM32 firmware, and BIoTSense predictive maintenance.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-4 space-y-1.5">
+                <span className="text-violet-400 text-sm font-bold block">📱 Modern Tech Stack</span>
+                <p className="text-xs text-zinc-300 leading-relaxed">
+                  Engineered with <a href="https://nextjs.org" target="_blank" rel="noopener noreferrer" className="text-emerald-400 underline">Next.js</a>, <a href="https://react.dev" target="_blank" rel="noopener noreferrer" className="text-emerald-400 underline">React</a>, <a href="https://aws.amazon.com" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline">AWS</a>, &amp; <a href="https://supabase.com" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline">Supabase</a>.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-4 space-y-1.5">
+                <span className="text-amber-400 text-sm font-bold block">📍 Surat, Gujarat</span>
+                <p className="text-xs text-zinc-300 leading-relaxed">
+                  Direct engineering partnerships, transparent pricing, and zero unnecessary overhead.
+                </p>
+              </div>
+            </div>
+          </section>
 
           {/* WHY ECOBRIDGES */}
           <section
@@ -1291,6 +1337,66 @@ export default function HomePageClient() {
           <div ref={qnaRef.targetRef}>
             <QnASection visible={qnaRef.visible} />
           </div>
+          {/* ══════════════════ FAQ SECTION (AEO / GEO DIRECT ANSWER ENGINE) ══════════════════ */}
+          <section className="space-y-8 pt-6 border-t border-white/10">
+            <div className="space-y-3">
+              <SectionBadge color="emerald">Got Questions?</SectionBadge>
+              <h2 className="text-balance font-extrabold tracking-tight text-white" style={{ fontSize: "clamp(2rem,5vw,3.25rem)", fontFamily: "var(--font-display)" }}>
+                Frequently Asked Questions &amp; Direct Answers
+              </h2>
+              <p className="max-w-2xl text-base text-zinc-400" style={{ fontFamily: "var(--font-body)" }}>
+                Everything you need to know about EcoBridgers, our SaaS products, IoT systems, and software engineering process.
+              </p>
+            </div>
+
+            <div className="space-y-4 max-w-4xl">
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/70 p-6 space-y-2.5">
+                <h3 className="text-lg font-extrabold text-white" style={{ fontFamily: "var(--font-display)" }}>
+                  What services does EcoBridgers provide?
+                </h3>
+                <p className="text-sm text-zinc-300 leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
+                  EcoBridgers provides end-to-end software and hardware engineering services, including SaaS product engineering, custom web application development using <a href="https://nextjs.org" target="_blank" rel="noopener noreferrer" className="text-emerald-400 underline">Next.js</a> and <a href="https://react.dev" target="_blank" rel="noopener noreferrer" className="text-emerald-400 underline">React</a>, mobile app development (iOS &amp; Android), IoT microcontroller programming (ESP32, STM32), and cloud infrastructure management on <a href="https://aws.amazon.com" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline">AWS</a> and <a href="https://supabase.com" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline">Supabase</a>.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/70 p-6 space-y-2.5">
+                <h3 className="text-lg font-extrabold text-white" style={{ fontFamily: "var(--font-display)" }}>
+                  What proprietary SaaS and IoT products has EcoBridgers built?
+                </h3>
+                <p className="text-sm text-zinc-300 leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
+                  EcoBridgers has engineered 6 flagship products tailored for Indian SMEs: <strong>Playco</strong> (a social party deduction mobile game), <strong>TextileBridge</strong> (textile manufacturing &amp; yarn inventory management), <strong>CafeBridge</strong> (cafe POS &amp; WhatsApp order billing), <strong>TurfBridge</strong> (sports venue &amp; box cricket booking), <strong>BIoTSense</strong> (industrial machine vibration &amp; heat telemetry), and <strong>Underground Rover</strong> (R&amp;D hazardous tunnel surveillance).
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/70 p-6 space-y-2.5">
+                <h3 className="text-lg font-extrabold text-white" style={{ fontFamily: "var(--font-display)" }}>
+                  Where is EcoBridgers located and how can I hire the team?
+                </h3>
+                <p className="text-sm text-zinc-300 leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
+                  EcoBridgers is headquartered in Surat, Gujarat, India. You can hire our team for project-based custom software development, SaaS white-labeling, or IoT hardware builds by filling out our contact form at <Link href="/contact" className="text-emerald-400 underline">ecobridgers.com/contact</Link> or emailing <a href="mailto:ecobridgers.tech@gmail.com" className="text-emerald-400 underline">ecobridgers.tech@gmail.com</a>.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/70 p-6 space-y-2.5">
+                <h3 className="text-lg font-extrabold text-white" style={{ fontFamily: "var(--font-display)" }}>
+                  How does EcoBridgers build IoT hardware and cloud systems?
+                </h3>
+                <p className="text-sm text-zinc-300 leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
+                  We handle the complete IoT lifecycle: designing custom circuit schematics, prototyping sensor modules (vibration, temperature, current, gas), writing firmware in C/C++, connecting hardware to MQTT brokers, and building real-time web &amp; mobile dashboards powered by cloud infrastructure.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/70 p-6 space-y-2.5">
+                <h3 className="text-lg font-extrabold text-white" style={{ fontFamily: "var(--font-display)" }}>
+                  Are EcoBridgers SaaS products customizable for individual business needs?
+                </h3>
+                <p className="text-sm text-zinc-300 leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
+                  Yes. Every EcoBridgers product is built with modular, multi-tenant software architecture. We can customize workflows, database schemas, user roles, third-party API integrations, and branding to fit your specific operational requirements.
+                </p>
+              </div>
+            </div>
+          </section>
+
           {/* FINAL CTA */}
           <section
             ref={ctaRef.targetRef}
