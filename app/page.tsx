@@ -78,7 +78,7 @@ const structuredData = [
       'End-to-end IoT, embedded systems, SaaS products, cloud and mobile development company based in Surat, India.',
     url: 'https://ecobridgers.com',
     logo: 'https://ecobridgers.com/logo.png',
-    image: 'https://ecobridgers.com/og-image.jpg',
+    image: 'https://ecobridgers.com/logo.png',
     contactPoint: {
       '@type': 'ContactPoint',
       telephone: '+91 7862949437',
@@ -118,52 +118,6 @@ const structuredData = [
         position: 1,
         name: 'Home',
         item: 'https://ecobridgers.com',
-      },
-    ],
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'What services does EcoBridgers provide?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'EcoBridgers offers end-to-end software and hardware development services, including SaaS product engineering, custom web application development using Next.js and React, mobile app development (iOS & Android), IoT microcontroller programming (ESP32, STM32), and cloud infrastructure management on AWS and Supabase.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'What proprietary SaaS and IoT products has EcoBridgers built?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'EcoBridgers has built 6 flagship products tailored for Indian SMEs: Playco (a social party deduction mobile game), TextileBridge (textile manufacturing & yarn inventory management), CafeBridge (cafe POS & WhatsApp order billing), TurfBridge (sports venue & box cricket booking), BIoTSense (industrial machine vibration & heat telemetry), and Underground Rover (R&D hazardous tunnel surveillance).',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Where is EcoBridgers located and how can I hire the team?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'EcoBridgers is headquartered in Surat, Gujarat, India. You can hire our team for project-based custom software development, SaaS white-labeling, or IoT hardware builds by filling out our contact form at ecobridgers.com/contact or emailing ecobridgers.tech@gmail.com.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'How does EcoBridgers build IoT hardware and cloud systems?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'We handle the complete IoT lifecycle: designing custom circuit schematics, prototyping sensor modules (vibration, temperature, current, gas), writing firmware in C/C++, connecting hardware to MQTT brokers, and building real-time web & mobile dashboards powered by cloud infrastructure.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Are EcoBridgers SaaS products customizable for individual business needs?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes. Every EcoBridgers product is built with modular, multi-tenant software architecture. We can customize workflows, database schemas, user roles, third-party API integrations, and branding to fit your specific operational requirements.',
-        },
       },
     ],
   },

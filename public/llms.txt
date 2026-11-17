@@ -4,18 +4,26 @@
 
 Contact: ecobridgers.tech@gmail.com · +91 78629 49437 · Mon–Sat, 10am–7pm IST
 
+## Partner portfolio
+- [Portfolio for partners](https://ecobridgers.com/portfolio): every EcoBridgers product and service in one place, with reseller, white-label, co-development, distribution, pilot and research partnership models
+- Each product has a detail page at https://ecobridgers.com/portfolio/<product-id> covering what it does, current phase, tech stack, business model, market and the co-founder role we are looking for
+
 ## Services
+- [BIoTSense machine health monitoring](https://ecobridgers.com/work/biotsense): vibration, temperature and current sensors with live dashboards and anomaly alerts
 - [SaaS Product Development](https://ecobridgers.com/services/saas): multi-tenant SaaS products for Indian SMEs
 - [IoT & Embedded Systems](https://ecobridgers.com/services/iot): ESP32/STM32 firmware, sensors, MQTT, real-time dashboards
 - [Mobile App Development](https://ecobridgers.com/services/app): Android and iOS apps
 - [Web & Cloud Platforms](https://ecobridgers.com/services/web): Next.js, React, Node.js, AWS, Supabase
 
 ## Products
-- [Playco](https://ecobridgers.com/work/playco): free social party game app (Imposter hidden-role word game, 3–10 players, offline Pass & Play or online rooms). Download on Google Play: https://play.google.com/store/apps/details?id=com.ecobridgers.playco
-- [TextileBridge](https://ecobridgers.com/work/textilebridge): textile manufacturing and yarn inventory management
-- [CafeBridge](https://ecobridgers.com/work/cafebridge): cafe POS and WhatsApp order billing
-- [TurfBridge](https://ecobridgers.com/work/turfbridge): sports turf and box cricket booking
-- [BIoTSense](https://ecobridgers.com/work/biotsense): industrial machine vibration and temperature telemetry
+- [Water Tank](https://ecobridgers.com/portfolio/water-tank): smart water-level and pump controller; ESP32 ultrasonic sensor sends AES-encrypted LoRa readings to a pump unit controlled from a mobile app. About ₹4,000–5,000 one-time with a 1-year warranty; no plumber or electrician needed. Prototype: range and firmware testing, custom PCB next. Looking for distributors, sales and marketing partners
+- [PCB Design Extension](https://ecobridgers.com/portfolio/pcb-design-extension): prototype EasyEDA extension that draws a schematic from a prompt; users bring their own AI tool, EcoBridgers provides the drawing tool and prompt enhancement. Not public yet; pricing not decided
+- [Playco](https://ecobridgers.com/portfolio/playco): free desi party games app on Google Play with three games: Imposter (find the faker with clues and votes, online or pass and play), Colour Colour (race to snap a real object of the colour) and Chor Police (live-location team chase with QR catch). Ads live, in-app purchases planned. Download: https://play.google.com/store/apps/details?id=com.ecobridgers.playco
+- [TextileBridge](https://ecobridgers.com/portfolio/textilebridge): textile production and yarn inventory management; on hold
+- [CafeBridge](https://ecobridgers.com/portfolio/cafebridge): one app for India's food sellers, built first for street food: phone billing, cash/UPI tracking, daily expenses and profit, QR menu; plus KOT display, QR table ordering and inventory for cafes. Plans: Lite ₹300/month (₹3,000/year), Pro ₹500/month (₹5,000/year), Max ₹1,000/month (₹10,000/year), unlimited orders. Ready for launch
+- [TurfBridge](https://ecobridgers.com/portfolio/turfbridge): sports turf and box cricket booking; on hold
+- [Magic Outline](https://ecobridgers.com/portfolio/magic-outline): Adobe Photoshop plugin that extracts outlines from any design layer by layer, for designers and textile mills; digital printing now, embroidery next; in testing, pricing not decided
+- [Machine Counter](https://ecobridgers.com/portfolio/machine-counter): counts every roll from each circular knitting machine with daily production reports and management software. ₹3,000–5,000 one-time per device, then ₹100–200 per device per year. PCB ready, phase-2 testing with partners; looking for knitting-unit clients
 - [Underground Rover](https://ecobridgers.com/work/underground-rover): R&D rover for hazardous tunnel surveillance
 
 ## Company

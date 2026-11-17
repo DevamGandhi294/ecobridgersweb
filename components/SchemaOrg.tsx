@@ -5,8 +5,8 @@ export function OrganizationSchema() {
                 "@context": "https://schema.org",
                 "@type": ["Organization", "LocalBusiness"],
                 "name": "EcoBridgers",
-                "url": "https://www.ecobridgers.site",
-                "logo": "https://www.ecobridgers.site/logo.png",
+                "url": "https://ecobridgers.com",
+                "logo": "https://ecobridgers.com/logo.png",
                 "email": "ecobridgers.tech@gmail.com",
                 "telephone": "+917862949437",
                 "address": {

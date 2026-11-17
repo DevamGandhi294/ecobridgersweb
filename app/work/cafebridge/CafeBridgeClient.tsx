@@ -13,49 +13,31 @@ const GRID_COLOR = "rgba(251,191,36,0.7)";
 
 const plans = [
   {
-    id: "payg",
-    name: "Pay As You Go",
-    tagline: "30 orders today, pay for 30. Day off, pay nothing.",
-    price: null,
-    priceLabel: "No minimum",
-    badge: null,
-    rows: [
-      // { label: "Without QR", value: "₹0.30 / order" },
-      // { label: "With QR ordering", value: "₹0.40 / order" },
-      { label: "Monthly minimum", value: "None" },
-      { label: "Setup fee", value: "None" },
-    ],
-    cta: "Start free",
-    accent: false,
-  },
-  {
-    id: "base",
-    name: "Base",
-    tagline: "Steady cafe, steady cost.",
-    price: "₹499",
+    id: "lite",
+    name: "Lite",
+    tagline: "For street food stalls and small shops. About ₹10 a day.",
+    price: "₹300",
     priceLabel: "/mo",
     badge: null,
     rows: [
-      { label: "Orders included", value: "2,000 / month" },
-      { label: "Extra orders", value: "₹0.30 each" },
-      // { label: "QR add-on", value: "+ ₹199 / month" },
-      // { label: "Extra with QR", value: "₹0.40 each" },
+      { label: "Yearly", value: "₹3,000 / year" },
+      { label: "Orders", value: "Unlimited" },
+      { label: "Runs on", value: "Mobile app" },
     ],
-    cta: "Get Base",
+    cta: "Get Lite",
     accent: false,
   },
   {
     id: "pro",
     name: "Pro",
-    tagline: "Growing fast? This one keeps up.",
-    price: "₹999",
+    tagline: "For cafes and restaurants.",
+    price: "₹500",
     priceLabel: "/mo",
     badge: "Most popular",
     rows: [
-      { label: "Orders included", value: "5,000 / month" },
-      { label: "Extra orders", value: "₹0.30 each" },
-      // { label: "QR add-on", value: "+ ₹399 / month" },
-      // { label: "Extra with QR", value: "₹0.40 each" },
+      { label: "Yearly", value: "₹5,000 / year" },
+      { label: "Orders", value: "Unlimited" },
+      { label: "Runs on", value: "Mobile + Desktop" },
     ],
     cta: "Get Pro",
     accent: true,
@@ -63,15 +45,14 @@ const plans = [
   {
     id: "max",
     name: "Max",
-    tagline: "Full house every night.",
-    price: "₹1,999",
+    tagline: "For cafes and restaurants that want their own website.",
+    price: "₹1,000",
     priceLabel: "/mo",
     badge: null,
     rows: [
-      { label: "Orders included", value: "10,000 / month" },
-      { label: "Extra orders", value: "₹0.30 each" },
-      // { label: "QR add-on", value: "+ ₹799 / month" },
-      // { label: "Extra with QR", value: "₹0.40 each" },
+      { label: "Yearly", value: "₹10,000 / year" },
+      { label: "Orders", value: "Unlimited" },
+      { label: "Runs on", value: "Mobile + Desktop + Website + QR" },
     ],
     cta: "Get Max",
     accent: false,
@@ -208,10 +189,9 @@ function InquiryForm() {
           className={inputClass + " appearance-none cursor-pointer"}
         >
           <option value="">Not sure yet — just exploring</option>
-          <option value="payg">Pay As You Go</option>
-          <option value="base">Base — ₹499/mo</option>
-          <option value="pro">Pro — ₹999/mo</option>
-          <option value="max">Max — ₹1,999/mo</option>
+          <option value="lite">Lite — ₹300/mo</option>
+          <option value="pro">Pro — ₹500/mo</option>
+          <option value="max">Max — ₹1,000/mo</option>
           <option value="house">House Special — ₹29,999 one-time</option>
         </select>
       </div>
@@ -301,8 +281,8 @@ export default function CafeBridgePage() {
           <div className="grid gap-4 sm:grid-cols-3">
             {[
               {
-                title: "Pay per order",
-                desc: "You pay only on days your kitchen runs. Slow month costs less. No order, no charge. No yearly commitment.",
+                title: "Unlimited orders",
+                desc: "One flat monthly or yearly price, unlimited orders on every plan. Pay by UPI or card, cancel anytime.",
               },
               {
                 title: "QR ordering on every table",
@@ -310,7 +290,7 @@ export default function CafeBridgePage() {
               },
               {
                 title: "Your data stays yours",
-                desc: "Standard plans run on Firebase — secure by default. House Special gives you your own server. Not even we can see your sales data.",
+                desc: "Standard plans run on our own secure servers. House Special gives you your own server. Delete your account anytime and your shop data goes with it.",
               },
             ].map((item) => (
               <div key={item.title} className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6 hover:border-amber-500/25 hover:bg-amber-500/5 transition-all duration-200">
@@ -388,7 +368,7 @@ export default function CafeBridgePage() {
           {/* Monthly plans */}
           {billingTab === "saas" && (
             <>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {plans.map((plan) => (
                   <div
                     key={plan.id}
@@ -434,7 +414,7 @@ export default function CafeBridgePage() {
                 ))}
               </div>
               <p className="text-xs text-zinc-500 text-center">
-                Extra orders — ₹0.30 without QR · ₹0.40 with QR · Prepaid. Flexible. Zero risk.
+                Every plan has unlimited orders. Yearly plans cost the same as 10 months. Pay by UPI or card through Razorpay.
               </p>
             </>
           )}
@@ -475,7 +455,7 @@ export default function CafeBridgePage() {
               <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-5">
                 <p className="font-semibold text-white text-sm">Your data. Your server. Nobody else's.</p>
                 <p className="mt-1 text-xs text-zinc-400 leading-relaxed">
-                  Standard plans use Firebase — secure, Google-managed infrastructure. The House Special gives you full database access on your own server. Your orders, your revenue, your customer patterns — not visible to us, not shared with anyone. After year one, server and domain renew directly through you.
+                  Standard plans run on our own secure servers. The House Special gives you full database access on your own server. Your orders, your revenue, your customer patterns — not visible to us, not shared with anyone. After year one, server and domain renew directly through you.
                 </p>
               </div>
             </div>

@@ -2,10 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 const PLAN_LABELS: Record<string, string> = {
-  payg: "Pay As You Go",
-  base: "Base — ₹499/mo",
-  pro: "Pro — ₹999/mo",
-  max: "Max — ₹1,999/mo",
+  lite: "Lite — ₹300/mo",
+  pro: "Pro — ₹500/mo",
+  max: "Max — ₹1,000/mo",
   house: "House Special — ₹29,999 one-time",
   "": "Not decided yet",
 };

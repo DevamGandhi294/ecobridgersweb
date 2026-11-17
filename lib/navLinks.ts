@@ -22,6 +22,7 @@ export const navLinks = [
       { href: "/work/underground-rover", label: "Underground Rover", icon: "🤖" },
     ],
   },
+  { href: "/portfolio", label: "Portfolio" },
   { href: "/about",   label: "About"    },
   { href: "/contact", label: "Contact"  },
 ] as const;
